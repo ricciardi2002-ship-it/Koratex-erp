@@ -260,4 +260,72 @@ async function seedData() {
     ON CONFLICT DO NOTHING`);
 
   await query(`INSERT INTO zonas (nombre, km_ref) VALUES
-    ('Norte',12),('Sur',18),('Este',22​​​​​​​​​​​​​​​​
+    ('Norte',12),('Sur',18),('Este',22),('Oeste',15),('Centro',8),('Cono',28)
+    ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO tipos_producto (nombre) VALUES
+    ('Adhesivo'),('Estuco'),('Impermeabilizante'),('Mortero'),('Sellador'),('Pintura')
+    ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO clientes (codigo,nombre,ruc,tipo_id,zona_id,direccion,lat,lng,limite_credito) VALUES
+    ('C001','Constructora Andina SAC','20123456781',1,1,'Av. Túpac Amaru 890',-12.020,-77.050,100000),
+    ('C002','Obras Civiles Perú SRL','20123456782',1,2,'Av. Los Álamos 3450',-12.120,-77.020,80000),
+    ('C003','Ferretería Central','20123456783',2,5,'Jr. Colón 184',-12.060,-77.040,40000),
+    ('C004','Distribuidora Roca Fuerte','20123456784',2,3,'Calle Las Flores 340',-12.050,-76.970,35000),
+    ('C005','Maderas y Ferreterías SRL','20123456785',3,4,'Av. Universitaria 1820',-12.080,-77.090,20000),
+    ('C006','Acabados Premier','20123456786',1,1,'Jr. Los Pinos 305',-12.010,-77.060,90000)
+    ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO productos (codigo,nombre,tipo_id,presentacion,precio_lista_a,precio_lista_b,precio_lista_c,costo_produccion,peso_kg) VALUES
+    ('KTX-001','Estuco Fino Interior',2,'Bolsa 20kg',28.00,31.50,35.00,16.00,20.0),
+    ('KTX-002','Adhesivo Cerámico Plus',1,'Bolsa 25kg',22.50,25.00,28.00,13.00,25.0),
+    ('KTX-003','Impermeabilizante Flex',3,'Balde 20L',85.00,92.00,99.00,48.00,22.0),
+    ('KTX-004','Mortero Estructural',4,'Bolsa 30kg',32.00,36.00,40.00,18.50,30.0),
+    ('KTX-005','Sellador Multiusos',5,'Galón 4L',45.00,50.00,56.00,25.00,4.5),
+    ('KTX-006','Estuco Exterior Renovado',2,'Bolsa 20kg',31.00,35.00,39.00,17.50,20.0),
+    ('KTX-007','Pegamax Porcelanato',1,'Bolsa 25kg',26.00,29.50,33.00,14.50,25.0),
+    ('KTX-008','Hidrofugante Concentrado',3,'Balde 5L',38.00,43.00,48.00,21.00,6.0)
+    ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO inventario_pt (producto_id, stock_total, stock_reservado)
+    SELECT p.id,
+      CASE p.codigo WHEN 'KTX-001' THEN 480 WHEN 'KTX-002' THEN 620
+        WHEN 'KTX-003' THEN 190 WHEN 'KTX-004' THEN 340 WHEN 'KTX-005' THEN 210
+        WHEN 'KTX-006' THEN 280 WHEN 'KTX-007' THEN 390 WHEN 'KTX-008' THEN 150 END,
+      CASE p.codigo WHEN 'KTX-001' THEN 40 WHEN 'KTX-002' THEN 60
+        WHEN 'KTX-003' THEN 20 WHEN 'KTX-004' THEN 30 WHEN 'KTX-005' THEN 10
+        WHEN 'KTX-006' THEN 25 WHEN 'KTX-007' THEN 50 WHEN 'KTX-008' THEN 15 END
+    FROM productos p ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO proveedores (nombre, ruc) VALUES
+    ('Cementos Lima SAC','20100234321'),
+    ('Química Industrial Perú','20200567891'),
+    ('Minerales Andinos SAC','20300789012'),
+    ('Áridos del Sur','20400890123'),
+    ('Colorquím SAC','20500012345')
+    ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO materias_primas (codigo,nombre,unidad,stock_actual,stock_minimo,stock_maximo,consumo_mensual,costo_unitario,proveedor_id)
+    SELECT cod,nom,uni,sa,sm,sx,cm,cu,(SELECT id FROM proveedores WHERE nombre=prov LIMIT 1)
+    FROM (VALUES
+      ('MP-001','Cemento Portland Tipo I','bolsa 42.5kg',850,200,1200,420,28.50,'Cementos Lima SAC'),
+      ('MP-002','Arena Fina Lavada','m³',48,20,100,28,85.00,'Áridos del Sur'),
+      ('MP-003','Resina Acrílica','kg',180,100,500,120,12.40,'Química Industrial Perú'),
+      ('MP-004','Carbonato de Calcio','kg',2400,800,4000,900,1.80,'Minerales Andinos SAC'),
+      ('MP-005','Polvo de Talco','kg',90,150,600,200,3.20,'Minerales Andinos SAC'),
+      ('MP-006','Pigmento Blanco TiO2','kg',65,80,300,90,18.60,'Colorquím SAC'),
+      ('MP-007','Fibra Poliéster','kg',320,100,600,80,9.40,'Química Industrial Perú'),
+      ('MP-008','Acelerante de Fraguado','kg',40,60,200,55,22.00,'Cementos Lima SAC')
+    ) AS t(cod,nom,uni,sa,sm,sx,cm,cu,prov)
+    ON CONFLICT DO NOTHING`);
+
+  await query(`INSERT INTO vehiculos (placa,nombre,conductor,capacidad_kg) VALUES
+    ('ABC-123','Camión A','Pedro Sánchez',5000),
+    ('DEF-456','Camión B','Juan Ríos',8000),
+    ('GHI-789','Furgón C','Marco Torres',2500)
+    ON CONFLICT DO NOTHING`);
+
+  console.log('✅ Datos iniciales insertados.');
+}
+
+module.exports = { initDb };
