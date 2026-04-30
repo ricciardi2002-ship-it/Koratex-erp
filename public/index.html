@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koratex ERP · Sistema de Gestión Integral</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   KORATEX ERP — DESIGN SYSTEM
+   Estética: Industrial · Oscura · Funcional
+   Tipografía: Barlow Condensed + Barlow
+═══════════════════════════════════════════ */
+:root {
+  /* Paleta industrial */
+  --ink:        #0d1117;
+  --ink-2:      #161c26;
+  --ink-3:      #1e2633;
+  --steel:      #2a3342;
+  --steel-2:    #354050;
+  --wire:       #3d4d62;
+  --border:     #2e3d52;
+  --border-l:   #3d5068;
+
+/* Acentos */
+–orange:     #f07030;
+–orange-d:   #d05820;
+–orange-l:   rgba(240,112,48,.12);
+–cyan:       #30b8d0;
+–cyan-l:     rgba(48,184,208,.1);
+–green:      #28d98a;
+–green-l:    rgba(40,217,138,.1);
+–red:        #e84040;
+–red-l:      rgba(232,64,64,.1);
+–amber:      #f0b030;
+–amber-l:    rgba(240,176,48,.1);
+
+/* Texto */
+–t1: #e8eef8;
+–t2: #8fa0b8;
+–t3: #4d6080;
+–t4: #2a3850;
+
+–radius:    10px;
+–radius-lg: 16px;
+–shadow:    0 4px 24px rgba(0,0,0,.4);
+–shadow-lg: 0 12px 48px rgba(0,0,0,.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Barlow’, sans-serif;
+background: var(–ink);
+color: var(–t1);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(–ink-2); }
+::-webkit-scrollbar-thumb { background: var(–wire); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(–t3); }
+
+/* ══════════════════════════════
+LOGIN SCREEN
+══════════════════════════════ */
+.login-screen {
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+background:
+repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.02) 40px),
+repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.02) 40px),
+var(–ink);
+padding: 20px;
+position: relative;
+}
+.login-screen::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+background: radial-gradient(ellipse at 20% 50%, rgba(240,112,48,.08) 0%, transparent 60%),
+radial-gradient(ellipse at 80% 50%, rgba(48,184,208,.06) 0%, transparent 60%);
+pointer-events: none;
+}
+.login-card {
+background: var(–ink-2);
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 48px 44px;
+width: 100%;
+max-width: 440px;
+box-shadow: var(–shadow-lg);
+position: relative;
+z-index: 1;
+}
+.login-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 24px; right: 24px; height: 3px;
+background: linear-gradient(90deg, transparent, var(–orange), var(–cyan), transparent);
+border-radius: 0 0 2px 2px;
+}
+.login-brand {
+display: flex;
+align-items: center;
+gap: 14px;
+margin-bottom: 8px;
+}
+.brand-icon {
+width: 52px; height: 52px;
+background: linear-gradient(135deg, var(–orange), #c04020);
+border-radius: 13px;
+display: flex; align-items: center; justify-content: center;
+font-size: 26px;
+box-shadow: 0 6px 20px rgba(240,112,48,.4);
+flex-shrink: 0;
+}
+.brand-name {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 32px;
+font-weight: 900;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–t1);
+line-height: 1;
+}
+.brand-tagline {
+font-size: 11px;
+color: var(–t3);
+letter-spacing: 1.5px;
+text-transform: uppercase;
+margin-top: 2px;
+}
+.login-sep {
+height: 1px;
+background: linear-gradient(90deg, transparent, var(–border), transparent);
+margin: 24px 0;
+}
+.login-subtitle {
+font-size: 13px;
+color: var(–t3);
+margin-bottom: 20px;
+letter-spacing: .5px;
+text-transform: uppercase;
+font-weight: 600;
+}
+.role-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 20px;
+}
+.role-btn {
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 14px 12px;
+cursor: pointer;
+transition: all .2s;
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+}
+.role-btn:hover {
+border-color: var(–orange);
+background: var(–orange-l);
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(240,112,48,.2);
+}
+.role-btn .role-icon { font-size: 22px; }
+.role-btn .role-name {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+letter-spacing: .5px;
+text-transform: uppercase;
+color: var(–t1);
+}
+.role-btn .role-desc { font-size: 11px; color: var(–t3); }
+
+/* ══════════════════════════════
+APP LAYOUT
+══════════════════════════════ */
+.app { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+width: 230px;
+min-height: 100vh;
+background: var(–ink-2);
+border-right: 1px solid var(–border);
+display: flex;
+flex-direction: column;
+position: fixed;
+top: 0; left: 0;
+z-index: 200;
+transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.sidebar-brand {
+padding: 20px 18px 16px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.sb-icon {
+width: 34px; height: 34px;
+background: linear-gradient(135deg, var(–orange), #c04020);
+border-radius: 9px;
+display: flex; align-items: center; justify-content: center;
+font-size: 16px;
+box-shadow: 0 3px 10px rgba(240,112,48,.35);
+flex-shrink: 0;
+}
+.sb-name {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 20px;
+font-weight: 900;
+letter-spacing: 2px;
+text-transform: uppercase;
+line-height: 1;
+}
+.sb-name small {
+display: block;
+font-size: 9px;
+color: var(–t3);
+letter-spacing: 1.5px;
+font-family: ‘Barlow’, sans-serif;
+font-weight: 500;
+margin-top: 2px;
+}
+
+.sidebar-nav { flex: 1; padding: 8px 8px; overflow-y: auto; }
+.nav-group-label {
+font-size: 9px;
+font-weight: 700;
+letter-spacing: 1.8px;
+text-transform: uppercase;
+color: var(–t4);
+padding: 14px 10px 5px;
+}
+.nav-item {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 9px 12px;
+border-radius: 8px;
+cursor: pointer;
+transition: all .15s;
+font-size: 13px;
+font-weight: 500;
+color: var(–t2);
+margin-bottom: 1px;
+position: relative;
+}
+.nav-item:hover { background: var(–ink-3); color: var(–t1); }
+.nav-item.active {
+background: var(–orange-l);
+color: var(–orange);
+font-weight: 600;
+}
+.nav-item.active::before {
+content: ‘’;
+position: absolute;
+left: 0; top: 6px; bottom: 6px;
+width: 3px;
+background: var(–orange);
+border-radius: 0 2px 2px 0;
+}
+.nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+margin-left: auto;
+background: var(–red);
+color: #fff;
+font-size: 10px;
+font-weight: 700;
+padding: 2px 6px;
+border-radius: 10px;
+min-width: 18px;
+text-align: center;
+}
+
+.sidebar-user {
+padding: 12px 14px;
+border-top: 1px solid var(–border);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.s-av {
+width: 34px; height: 34px;
+border-radius: 9px;
+background: linear-gradient(135deg, var(–orange), var(–cyan));
+display: flex; align-items: center; justify-content: center;
+font-size: 13px; font-weight: 800;
+color: var(–ink);
+font-family: ‘Barlow Condensed’, sans-serif;
+flex-shrink: 0;
+}
+.s-info .s-name { font-size: 13px; font-weight: 600; color: var(–t1); }
+.s-info .s-role { font-size: 10px; color: var(–t3); text-transform: uppercase; letter-spacing: .5px; }
+.s-logout {
+margin-left: auto;
+background: none;
+border: none;
+color: var(–t3);
+cursor: pointer;
+font-size: 16px;
+padding: 4px;
+border-radius: 6px;
+transition: all .15s;
+}
+.s-logout:hover { background: var(–red-l); color: var(–red); }
+
+/* ── MAIN ── */
+.main { margin-left: 230px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar {
+height: 56px;
+background: var(–ink-2);
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 24px;
+position: sticky; top: 0; z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.menu-btn { display: none; background: none; border: none; color: var(–t2); font-size: 20px; cursor: pointer; }
+.page-crumb {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 18px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–t1);
+}
+.page-crumb span { color: var(–orange); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-clock { font-size: 12px; color: var(–t3); font-family: ‘Barlow Condensed’, sans-serif; letter-spacing: 1px; }
+.alert-btn {
+position: relative;
+width: 34px; height: 34px;
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 8px;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer;
+font-size: 16px;
+transition: all .15s;
+}
+.alert-btn:hover { border-color: var(–orange); background: var(–orange-l); }
+.alert-dot {
+position: absolute;
+top: 6px; right: 7px;
+width: 7px; height: 7px;
+background: var(–red);
+border-radius: 50%;
+border: 1.5px solid var(–ink-2);
+}
+
+/* ══════════════════════════════
+PAGES
+══════════════════════════════ */
+.page { display: none; padding: 24px; animation: fadeUp .2s ease; }
+.page.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── PAGE HEADER ── */
+.ph {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 14px;
+margin-bottom: 22px;
+}
+.ph-text h2 {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 26px;
+font-weight: 800;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–t1);
+line-height: 1;
+}
+.ph-text p { font-size: 13px; color: var(–t3); margin-top: 4px; }
+.ph-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ══════════════════════════════
+COMPONENTS
+══════════════════════════════ */
+
+/* ── BUTTONS ── */
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 8px 16px;
+border-radius: 8px;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+border: none;
+font-family: ‘Barlow’, sans-serif;
+transition: all .15s;
+letter-spacing: .2px;
+}
+.btn-primary {
+background: var(–orange);
+color: var(–ink);
+box-shadow: 0 3px 12px rgba(240,112,48,.35);
+}
+.btn-primary:hover { background: #ff8040; box-shadow: 0 5px 18px rgba(240,112,48,.5); transform: translateY(-1px); }
+.btn-ghost {
+background: transparent;
+color: var(–t2);
+border: 1px solid var(–border);
+}
+.btn-ghost:hover { background: var(–ink-3); color: var(–t1); border-color: var(–border-l); }
+.btn-cyan { background: var(–cyan); color: var(–ink); }
+.btn-cyan:hover { background: #48d8f0; }
+.btn-green { background: var(–green); color: var(–ink); }
+.btn-red { background: var(–red-l); color: var(–red); border: 1px solid rgba(232,64,64,.3); }
+.btn-red:hover { background: var(–red); color: #fff; }
+.btn-sm { padding: 5px 11px; font-size: 12px; border-radius: 6px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; border-radius: 5px; }
+
+/* ── KPI CARDS ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin-bottom: 22px; }
+.kpi {
+background: var(–ink-2);
+border: 1px solid var(–border);
+border-radius: var(–radius-lg);
+padding: 18px;
+position: relative;
+overflow: hidden;
+transition: transform .2s, box-shadow .2s;
+}
+.kpi:hover { transform: translateY(-2px); box-shadow: var(–shadow); }
+.kpi::after {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+}
+.kpi.ko::after { background: linear-gradient(90deg, var(–orange), transparent); }
+.kpi.kc::after { background: linear-gradient(90deg, var(–cyan), transparent); }
+.kpi.kg::after { background: linear-gradient(90deg, var(–green), transparent); }
+.kpi.kr::after { background: linear-gradient(90deg, var(–red), transparent); }
+.kpi.ka::after { background: linear-gradient(90deg, var(–amber), transparent); }
+.kpi-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(–t3); }
+.kpi-icon { font-size: 20px; opacity: .7; }
+.kpi-value {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 32px;
+font-weight: 800;
+line-height: 1;
+color: var(–t1);
+}
+.kpi-sub { font-size: 12px; color: var(–t3); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+.kpi-trend { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+.kpi-trend.up { background: var(–green-l); color: var(–green); }
+.kpi-trend.dn { background: var(–red-l); color: var(–red); }
+.kpi-trend.nt { background: var(–amber-l); color: var(–amber); }
+
+/* ── CARDS ── */
+.card {
+background: var(–ink-2);
+border: 1px solid var(–border);
+border-radius: var(–radius-lg);
+padding: 20px;
+}
+.card-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–t1);
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 16px;
+}
+.card-title-sub { font-size: 11px; color: var(–t3); text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 16px; }
+.g2x1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+.g1x2 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 16px; }
+
+/* ── TABLES ── */
+.table-wrap {
+background: var(–ink-2);
+border: 1px solid var(–border);
+border-radius: var(–radius-lg);
+overflow: hidden;
+}
+.table-toolbar {
+padding: 14px 18px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+flex-wrap: wrap;
+}
+.table-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–t1);
+}
+.search-box {
+display: flex;
+align-items: center;
+gap: 7px;
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 7px;
+padding: 6px 11px;
+}
+.search-box input {
+background: none;
+border: none;
+outline: none;
+font-size: 12.5px;
+color: var(–t1);
+font-family: ‘Barlow’, sans-serif;
+width: 150px;
+}
+.search-box input::placeholder { color: var(–t3); }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+background: var(–ink-3);
+padding: 10px 14px;
+font-size: 10.5px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–t3);
+text-align: left;
+}
+tbody tr { border-top: 1px solid var(–border); transition: background .1s; }
+tbody tr:hover { background: rgba(255,255,255,.02); }
+tbody td { padding: 11px 14px; font-size: 13px; color: var(–t1); }
+
+/* ── BADGES ── */
+.badge {
+display: inline-flex;
+align-items: center;
+gap: 5px;
+padding: 3px 9px;
+border-radius: 5px;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: .3px;
+}
+.badge-g { background: var(–green-l); color: var(–green); }
+.badge-r { background: var(–red-l); color: var(–red); }
+.badge-a { background: var(–amber-l); color: var(–amber); }
+.badge-b { background: var(–cyan-l); color: var(–cyan); }
+.badge-o { background: var(–orange-l); color: var(–orange); }
+.badge-s { background: rgba(143,160,184,.1); color: var(–t2); }
+
+/* ── SEMÁFORO ── */
+.semaforo {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+font-size: 12px;
+font-weight: 700;
+}
+.sem-dot {
+width: 9px; height: 9px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+.sem-ok .sem-dot { background: var(–green); box-shadow: 0 0 6px var(–green); }
+.sem-warn .sem-dot { background: var(–amber); box-shadow: 0 0 6px var(–amber); }
+.sem-crit .sem-dot { background: var(–red); box-shadow: 0 0 6px var(–red); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+.sem-ok { color: var(–green); }
+.sem-warn { color: var(–amber); }
+.sem-crit { color: var(–red); }
+
+/* ── PROGRESS BARS ── */
+.prog-wrap { margin-bottom: 12px; }
+.prog-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+.prog-bar { height: 7px; background: var(–ink-3); border-radius: 4px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 4px; transition: width .7s ease; }
+
+/* ── MODAL ── */
+.modal-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,.7);
+backdrop-filter: blur(4px);
+z-index: 600;
+align-items: center;
+justify-content: center;
+padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+background: var(–ink-2);
+border: 1px solid var(–border-l);
+border-radius: 18px;
+width: 100%;
+max-width: 780px;
+max-height: 92vh;
+overflow-y: auto;
+box-shadow: 0 32px 80px rgba(0,0,0,.6);
+animation: modalIn .2s cubic-bezier(.4,0,.2,1);
+}
+.modal.modal-lg { max-width: 1000px; }
+@keyframes modalIn { from { opacity:0; transform: scale(.95) translateY(10px); } to { opacity:1; transform: scale(1) translateY(0); } }
+.modal-header {
+padding: 20px 24px 16px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+background: var(–ink-2);
+z-index: 5;
+}
+.modal-header h3 {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 18px;
+font-weight: 800;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–t1);
+}
+.modal-close {
+width: 30px; height: 30px;
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 7px;
+color: var(–t2);
+font-size: 16px;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+transition: all .15s;
+}
+.modal-close:hover { background: var(–red-l); color: var(–red); }
+.modal-body { padding: 24px; }
+
+/* ── FORMS ── */
+.form-section { margin-bottom: 20px; }
+.form-section-title {
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–t3);
+margin-bottom: 12px;
+padding-bottom: 7px;
+border-bottom: 1px solid var(–border);
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg.full { grid-column: 1/-1; }
+label {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: .5px;
+text-transform: uppercase;
+color: var(–t3);
+}
+input, select, textarea {
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 8px;
+color: var(–t1);
+padding: 9px 12px;
+font-size: 13px;
+font-family: ‘Barlow’, sans-serif;
+outline: none;
+transition: all .15s;
+width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+border-color: var(–orange);
+background: var(–ink-2);
+box-shadow: 0 0 0 3px rgba(240,112,48,.1);
+}
+textarea { resize: vertical; min-height: 70px; }
+.form-actions {
+display: flex;
+gap: 10px;
+justify-content: flex-end;
+margin-top: 20px;
+padding-top: 16px;
+border-top: 1px solid var(–border);
+}
+
+/* ── ORDER LINES ── */
+.lines-head {
+display: grid;
+grid-template-columns: 28px 1fr 120px 80px 100px 100px 34px;
+gap: 6px;
+padding: 7px 8px;
+background: var(–ink-3);
+border-radius: 7px;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: .8px;
+text-transform: uppercase;
+color: var(–t3);
+margin-bottom: 5px;
+}
+.order-line {
+display: grid;
+grid-template-columns: 28px 1fr 120px 80px 100px 100px 34px;
+gap: 6px;
+align-items: center;
+padding: 5px 7px;
+border-radius: 7px;
+border: 1px solid var(–border);
+background: var(–ink-3);
+margin-bottom: 5px;
+transition: border-color .15s;
+}
+.order-line:hover { border-color: var(–orange); }
+.order-line.empty { opacity: .35; }
+.order-line select, .order-line input {
+padding: 6px 9px;
+font-size: 12px;
+border-radius: 6px;
+border: 1px solid transparent;
+}
+.order-line select:focus, .order-line input:focus { border-color: var(–orange); box-shadow: none; }
+.line-num { font-size: 11px; color: var(–t3); font-weight: 700; text-align: center; }
+.line-sub { font-size: 12px; font-weight: 700; color: var(–orange); text-align: right; }
+.line-clear {
+width: 26px; height: 26px;
+background: none;
+border: 1px solid var(–border);
+border-radius: 6px;
+color: var(–t3);
+cursor: pointer;
+font-size: 13px;
+display: flex; align-items: center; justify-content: center;
+transition: all .15s;
+}
+.line-clear:hover { background: var(–red-l); color: var(–red); border-color: transparent; }
+.order-total-bar {
+background: var(–orange-l);
+border: 1px solid rgba(240,112,48,.25);
+border-radius: 9px;
+padding: 12px 16px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-top: 12px;
+}
+.otb-label { font-size: 12px; color: var(–orange); font-weight: 600; }
+.otb-value {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 26px;
+font-weight: 800;
+color: var(–orange);
+}
+
+/* ── MINI BAR CHART ── */
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; padding: 10px 0 0; }
+.bc-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.bc-bar { width: 100%; border-radius: 4px 4px 0 0; transition: height .6s ease; min-height: 3px; }
+.bc-label { font-size: 10px; color: var(–t3); text-align: center; }
+.bc-val { font-size: 9px; font-weight: 700; color: var(–t2); }
+
+/* ── STOCK CARD ── */
+.stock-card {
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 14px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+transition: all .15s;
+}
+.stock-card:hover { border-color: var(–border-l); }
+.stock-icon { font-size: 26px; flex-shrink: 0; }
+.stock-info { flex: 1; }
+.stock-name { font-weight: 700; font-size: 13px; color: var(–t1); }
+.stock-detail { font-size: 11px; color: var(–t3); margin-top: 2px; }
+.stock-right { text-align: right; }
+.stock-qty {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 22px;
+font-weight: 800;
+line-height: 1;
+}
+.stock-unit { font-size: 10px; color: var(–t3); }
+
+/* ── ZONE MAP ── */
+.zone-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.zone-card {
+background: var(–ink-3);
+border: 1px solid var(–border);
+border-radius: 9px;
+padding: 12px;
+text-align: center;
+cursor: pointer;
+transition: all .2s;
+}
+.zone-card:hover, .zone-card.sel {
+border-color: var(–cyan);
+background: var(–cyan-l);
+}
+.zone-name { font-family: ‘Barlow Condensed’, sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(–t1); }
+.zone-count { font-size: 20px; font-weight: 800; font-family: ‘Barlow Condensed’, sans-serif; color: var(–cyan); margin: 3px 0; }
+.zone-km { font-size: 10px; color: var(–t3); }
+
+/* ── TIMELINE ── */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item { display: flex; gap: 12px; padding: 10px 0; position: relative; }
+.tl-item:not(:last-child)::after { content:’’; position:absolute; left:11px; top:30px; bottom:0; width:1px; background:var(–border); }
+.tl-dot { width: 23px; height: 23px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; margin-top: 1px; z-index: 1; }
+.tl-dot-g { background: var(–green-l); color: var(–green); border: 1.5px solid var(–green); }
+.tl-dot-o { background: var(–orange-l); color: var(–orange); border: 1.5px solid var(–orange); }
+.tl-dot-r { background: var(–red-l); color: var(–red); border: 1.5px solid var(–red); }
+.tl-dot-s { background: var(–ink-3); color: var(–t3); border: 1.5px solid var(–border); }
+.tl-content { flex: 1; }
+.tl-title { font-size: 13px; font-weight: 600; color: var(–t1); }
+.tl-desc { font-size: 11px; color: var(–t3); margin-top: 2px; }
+.tl-time { font-size: 10px; color: var(–t4); margin-top: 3px; font-family: ‘Barlow Condensed’, sans-serif; letter-spacing: .5px; }
+
+/* ── DONUT ── */
+.donut-wrap { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.donut-legend { display: flex; flex-direction: column; gap: 8px; }
+.dl-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(–t2); }
+.dl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── ALERT PANEL ── */
+.alert-panel {
+background: var(–ink-2);
+border: 1px solid var(–border);
+border-radius: var(–radius-lg);
+overflow: hidden;
+}
+.alert-item {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+padding: 13px 16px;
+border-bottom: 1px solid var(–border);
+transition: background .1s;
+}
+.alert-item:last-child { border-bottom: none; }
+.alert-item:hover { background: rgba(255,255,255,.015); }
+.alert-ico { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert-text { flex: 1; }
+.alert-title { font-size: 13px; font-weight: 600; color: var(–t1); }
+.alert-sub { font-size: 11px; color: var(–t3); margin-top: 2px; }
+.alert-time { font-size: 10px; color: var(–t4); font-family: ‘Barlow Condensed’, sans-serif; letter-spacing: .5px; white-space: nowrap; }
+
+/* ── CASH FLOW CHART ── */
+.cf-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+.cf-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.cf-bar-pos { width: 100%; border-radius: 3px 3px 0 0; background: var(–green); opacity: .8; transition: height .5s; }
+.cf-bar-neg { width: 100%; border-radius: 0 0 3px 3px; background: var(–red); opacity: .7; transition: height .5s; }
+.cf-label { font-size: 9px; color: var(–t3); text-align: center; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+.sidebar { transform: translateX(-100%); }
+.sidebar.open { transform: translateX(0); }
+.main { margin-left: 0; }
+.g2, .g3, .g2x1, .g1x2 { grid-template-columns: 1fr; }
+.form-grid { grid-template-columns: 1fr; }
+.form-grid.g3 { grid-template-columns: 1fr; }
+.kpi-grid { grid-template-columns: 1fr 1fr; }
+.menu-btn { display: flex !important; }
+.topbar { padding: 0 14px; }
+.page { padding: 14px; }
+.zone-grid { grid-template-columns: 1fr 1fr; }
+.lines-head, .order-line { grid-template-columns: 22px 1fr 90px 60px 80px 80px 28px; }
+}
+.sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 199; }
+.sb-overlay.open { display: block; }
+</style>
+
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-icon">🏗️</div>
+      <div>
+        <div class="brand-name">Koratex</div>
+        <div class="brand-tagline">Sistema ERP Integral</div>
+      </div>
+    </div>
+    <div class="login-sep"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <div class="fg"><label>Usuario</label><input type="text" value="admin@koratex.com" placeholder="usuario@koratex.com"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" value="••••••••" placeholder="••••••••"></div>
+    </div>
+    <div class="login-subtitle">Acceso rápido por rol</div>
+    <div class="role-grid">
+      <button class="role-btn" onclick="enterAs('admin')">
+        <div class="role-icon">⚙️</div>
+        <div class="role-name">Admin</div>
+        <div class="role-desc">Acceso total</div>
+      </button>
+      <button class="role-btn" onclick="enterAs('comercial')">
+        <div class="role-icon">📊</div>
+        <div class="role-name">Comercial</div>
+        <div class="role-desc">Ventas y pedidos</div>
+      </button>
+      <button class="role-btn" onclick="enterAs('logistica')">
+        <div class="role-icon">🚚</div>
+        <div class="role-name">Logística</div>
+        <div class="role-desc">Inventario y despacho</div>
+      </button>
+      <button class="role-btn" onclick="enterAs('finanzas')">
+        <div class="role-icon">💰</div>
+        <div class="role-name">Finanzas</div>
+        <div class="role-desc">Contabilidad y flujo</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+
+<div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
+
+<div class="app" id="appShell" style="display:none;">
+
+  <!-- SIDEBAR -->
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sb-icon">🏗️</div>
+      <div class="sb-name">KORATEX <small>ERP SYSTEM</small></div>
+    </div>
+    <div class="sidebar-nav" id="sidebarNav"></div>
+    <div class="sidebar-user">
+      <div class="s-av" id="sAv">AD</div>
+      <div class="s-info">
+        <div class="s-name" id="sName">Admin</div>
+        <div class="s-role" id="sRole">Administrador</div>
+      </div>
+      <button class="s-logout" onclick="logout()" title="Salir">⎋</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" onclick="openSb()">☰</button>
+        <div class="page-crumb" id="pageCrumb"><span>Koratex</span> · Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-clock" id="topClock">--:--:--</div>
+        <div class="alert-btn" onclick="navigate('alertas')">🔔<div class="alert-dot"></div></div>
+      </div>
+    </div>
+
+```
+<!-- ════ PAGE: DASHBOARD ════ -->
+<div class="page active" id="page-dashboard">
+  <div class="ph">
+    <div class="ph-text">
+      <h2>Dashboard General</h2>
+      <p>Vista ejecutiva · Koratex Productos para Construcción</p>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm">📥 Exportar</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('modalPedido')">＋ Nuevo Pedido</button>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi ko">
+      <div class="kpi-header"><div class="kpi-label">Ventas del Mes</div><div class="kpi-icon">💰</div></div>
+      <div class="kpi-value">$342,800</div>
+      <div class="kpi-sub"><span class="kpi-trend up">↑ 8.4%</span> vs mes anterior</div>
+    </div>
+    <div class="kpi kc">
+      <div class="kpi-header"><div class="kpi-label">Pedidos Activos</div><div class="kpi-icon">📦</div></div>
+      <div class="kpi-value">68</div>
+      <div class="kpi-sub"><span class="kpi-trend nt">14 pendientes despacho</span></div>
+    </div>
+    <div class="kpi kg">
+      <div class="kpi-header"><div class="kpi-label">Cobranza Efectiva</div><div class="kpi-icon">✅</div></div>
+      <div class="kpi-value">78.3%</div>
+      <div class="kpi-sub"><span class="kpi-trend up">↑ 3.1%</span> este trimestre</div>
+    </div>
+    <div class="kpi kr">
+      <div class="kpi-header"><div class="kpi-label">CxC Vencidas</div><div class="kpi-icon">⚠️</div></div>
+      <div class="kpi-value">$48,200</div>
+      <div class="kpi-sub"><span class="kpi-trend dn">12 facturas</span> en mora</div>
+    </div>
+    <div class="kpi ka">
+      <div class="kpi-header"><div class="kpi-label">Stock Crítico MP</div><div class="kpi-icon">🏭</div></div>
+      <div class="kpi-value">3 items</div>
+      <div class="kpi-sub"><span class="kpi-trend dn">Requieren reposición</span></div>
+    </div>
+  </div>
+
+  <div class="g2x1">
+    <div class="card">
+      <div class="card-title">Ventas Semanales <span class="card-title-sub">últimas 7 semanas</span></div>
+      <div class="bar-chart" id="bcVentas"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Por Tipo de Cliente</div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 100 100" width="110" height="110">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--ink-3)" stroke-width="16"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--orange)" stroke-width="16"
+            stroke-dasharray="239" stroke-dashoffset="60" stroke-linecap="butt" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--cyan)" stroke-width="16"
+            stroke-dasharray="239" stroke-dashoffset="167" stroke-linecap="butt" transform="rotate(62 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--t3)" stroke-width="16"
+            stroke-dasharray="239" stroke-dashoffset="203" stroke-linecap="butt" transform="rotate(148 50 50)"/>
+          <text x="50" y="46" text-anchor="middle" fill="var(--t1)" font-size="10" font-family="Barlow Condensed" font-weight="800">CLIENTES</text>
+          <text x="50" y="59" text-anchor="middle" fill="var(--t3)" font-size="7">3 tipos</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="dl-item"><div class="dl-dot" style="background:var(--orange)"></div>Oro — 45%</div>
+          <div class="dl-item"><div class="dl-dot" style="background:var(--cyan)"></div>Plata — 36%</div>
+          <div class="dl-item"><div class="dl-dot" style="background:var(--t3)"></div>Bronce — 19%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Alertas del Sistema</div>
+      <div class="alert-panel" id="dashAlerts"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Nivel de Inventario MP</div>
+      <div id="mpStocks"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PAGE: PEDIDOS ════ -->
+<div class="page" id="page-pedidos">
+  <div class="ph">
+    <div class="ph-text"><h2>Registro de Pedidos</h2><p>Gestión integral de órdenes de venta</p></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm">📤 Exportar</button>
+      <button class="btn btn-primary" onclick="openModal('modalPedido')">＋ Nuevo Pedido</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="table-title">Órdenes de Venta</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="search-box">🔍 <input type="text" placeholder="Buscar pedido..."></div>
+        <select style="padding:6px 10px;font-size:12px;border-radius:7px;width:auto;"><option>Todos</option><option>Pendiente</option><option>Despachado</option><option>Entregado</option></select>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>#Pedido</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Items</th><th>Total</th><th>Estado Pago</th><th>Despacho</th><th></th></tr></thead>
+      <tbody id="pedidosTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ PAGE: CATÁLOGO ════ -->
+<div class="page" id="page-catalogo">
+  <div class="ph">
+    <div class="ph-text"><h2>Catálogo de Productos</h2><p>Productos para construcción Koratex</p></div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" id="btnAddProd" onclick="openModal('modalProducto')">＋ Agregar Producto</button>
+    </div>
+  </div>
+  <div class="kpi-grid" id="catKpis"></div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="table-title">Productos Registrados</div>
+      <div class="search-box">🔍 <input type="text" placeholder="Buscar..."></div>
+    </div>
+    <table>
+      <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Presentación</th><th>Lista A (Oro)</th><th>Lista B (Plata)</th><th>Lista C (Bronce)</th><th>Stock PT</th><th></th></tr></thead>
+      <tbody id="catalogoTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ PAGE: COBRANZA ════ -->
+<div class="page" id="page-cobranza">
+  <div class="ph">
+    <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Control de cuentas por cobrar y mora</p></div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="openModal('modalCobro')">💳 Registrar Pago</button>
+    </div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total por Cobrar</div><div class="kpi-icon">📋</div></div><div class="kpi-value">$186,400</div><div class="kpi-sub">Al corriente + vencido</div></div>
+    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Vencidas</div><div class="kpi-icon">🚨</div></div><div class="kpi-value">$48,200</div><div class="kpi-sub"><span class="kpi-trend dn">12 facturas en mora</span></div></div>
+    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Cobrado este mes</div><div class="kpi-icon">✅</div></div><div class="kpi-value">$138,200</div><div class="kpi-sub"><span class="kpi-trend up">78.3% efectividad</span></div></div>
+    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Ticket Promedio</div><div class="kpi-icon">🎫</div></div><div class="kpi-value">$5,040</div><div class="kpi-sub">Por factura</div></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="table-title">Cuentas por Cobrar</div>
+      <div class="search-box">🔍 <input type="text" placeholder="Buscar cliente..."></div>
+    </div>
+    <table>
+      <thead><tr><th>Factura</th><th>Cliente</th><th>Tipo</th><th>Emisión</th><th>Vencimiento</th><th>Monto</th><th>Saldo</th><th>Días mora</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="cobranzaTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ PAGE: INVENTARIO MP ════ -->
+<div class="page" id="page-inv-mp">
+  <div class="ph">
+    <div class="ph-text"><h2>Inventario de Materia Prima</h2><p>Control de stock y consumo estimado</p></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm">📊 Analítica</button>
+      <button class="btn btn-primary" onclick="openModal('modalCompra')">＋ Registrar Compra</button>
+    </div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total MP en Stock</div><div class="kpi-icon">🏭</div></div><div class="kpi-value">28 ítems</div><div class="kpi-sub">Valuación $124,800</div></div>
+    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Stock Crítico</div><div class="kpi-icon">🔴</div></div><div class="kpi-value">3 ítems</div><div class="kpi-sub"><span class="kpi-trend dn">Bajo punto de reorden</span></div></div>
+    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Stock Advertencia</div><div class="kpi-icon">🟡</div></div><div class="kpi-value">5 ítems</div><div class="kpi-sub">Cerca del límite</div></div>
+    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">OC Pendientes</div><div class="kpi-icon">🛒</div></div><div class="kpi-value">4 OC</div><div class="kpi-sub">$38,600 en tránsito</div></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="table-title">Materias Primas</div>
+      <div class="search-box">🔍 <input type="text" placeholder="Buscar MP..."></div>
+    </div>
+    <table>
+      <thead><tr><th>Código</th><th>Material</th><th>Unidad</th><th>Stock Actual</th><th>Pto. Reorden</th><th>Stock Máx.</th><th>Consumo Est.</th><th>Proveedor</th><th>Estado</th></tr></thead>
+      <tbody id="mpTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ PAGE: INVENTARIO PT ════ -->
+<div class="page" id="page-inv-pt">
+  <div class="ph">
+    <div class="ph-text"><h2>Inventario Producto Terminado</h2><p>Stock disponible y reservas por pedido</p></div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="openModal('modalAjustePT')">⚙️ Ajuste de Stock</button>
+    </div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Stock Disponible</div><div class="kpi-icon">📦</div></div><div class="kpi-value">4,820 u.</div><div class="kpi-sub">Valuación $196,400</div></div>
+    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Reservado</div><div class="kpi-icon">🔒</div></div><div class="kpi-value">840 u.</div><div class="kpi-sub">14 pedidos activos</div></div>
+    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Libre para Venta</div><div class="kpi-icon">✅</div></div><div class="kpi-value">3,980 u.</div><div class="kpi-sub">Disponible inmediato</div></div>
+    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Rotación</div><div class="kpi-icon">🔄</div></div><div class="kpi-value">18.4 días</div><div class="kpi-sub">Ciclo promedio</div></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="table-title">Producto Terminado</div>
+      <div class="search-box">🔍 <input type="text" placeholder="Buscar producto..."></div>
+    </div>
+    <table>
+      <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Stock Total</th><th>Reservado</th><th>Disponible</th><th>Val. Unitaria</th><th>Estado</th></tr></thead>
+      <tbody id="ptTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ PAGE: DESPACHO ════ -->
+<div class="page" id="page-despacho">
+  <div class="ph">
+    <div class="ph-text"><h2>Planificación de Despacho</h2><p>Optimización heurística por zonas geográficas</p></div>
+    <div class="ph-actions">
+      <button class="btn btn-cyan" onclick="runOptimize()">⚡ Optimizar Rutas</button>
+      <button class="btn btn-primary" onclick="openModal('modalDespacho')">＋ Nuevo Despacho</button>
+    </div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Pedidos por Despachar</div><div class="kpi-icon">📦</div></div><div class="kpi-value">14</div><div class="kpi-sub">Listos para ruta</div></div>
+    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Vehículos Activos</div><div class="kpi-icon">🚚</div></div><div class="kpi-value">3</div><div class="kpi-sub">2 en ruta · 1 en base</div></div>
+    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Entregas Hoy</div><div class="kpi-icon">✅</div></div><div class="kpi-value">8 / 11</div><div class="kpi-sub"><span class="kpi-trend up">72.7% cumplimiento</span></div></div>
+    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Zonas Activas</div><div class="kpi-icon">🗺️</div></div><div class="kpi-value">6 zonas</div><div class="kpi-sub">Agrupación óptima</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Agrupación por Zonas <span class="card-title-sub">Heurística clustering</span></div>
+      <div class="zone-grid" id="zoneGrid"></div>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--cyan-l);border:1px solid rgba(48,184,208,.2);border-radius:8px;font-size:11.5px;color:var(--cyan);">
+        <strong>Lógica de optimización:</strong> Los pedidos se agrupan por zona geográfica (clustering por proximidad). Dentro de cada zona, la ruta se ordena por un algoritmo voraz (nearest neighbor) que minimiza la distancia total recorrida.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Estado de Despachos</div>
+      <div class="timeline" id="despachoTimeline"></div>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="margin-top:16px;">
+    <div class="table-toolbar">
+      <div class="table-title">Pedidos Pendientes de Despacho</div>
+      <button class="btn btn-ghost btn-sm">📋 Ver todos</button>
+    </div>
+    <table>
+      <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Dirección</th><th>Bultos</th><th>Peso(kg)</th><th>Prioridad</th><th>Estado</th></tr></thead>
+      <tbody id="despachoTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ PAGE: FINANZAS ════ -->
+<div class="page" id="page-finanzas">
+  <div class="ph">
+    <div class="ph-text"><h2>Módulo Financiero</h2><p>Flujo de caja · CxC · CxP · Precios</p></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Flujo Proyectado</div><div class="kpi-icon">📈</div></div><div class="kpi-value">$94,600</div><div class="kpi-sub"><span class="kpi-trend up">Próximos 30 días</span></div></div>
+    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">CxP Pendientes</div><div class="kpi-icon">🏦</div></div><div class="kpi-value">$67,400</div><div class="kpi-sub">8 proveedores</div></div>
+    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Margen Bruto</div><div class="kpi-icon">💹</div></div><div class="kpi-value">38.2%</div><div class="kpi-sub"><span class="kpi-trend up">↑ 2.4pp este mes</span></div></div>
+    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Ciclo Caja (CCE)</div><div class="kpi-icon">🔄</div></div><div class="kpi-value">42 días</div><div class="kpi-sub"><span class="kpi-trend nt">Estable</span></div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Flujo de Caja Proyectado <span class="card-title-sub">próx. 8 semanas</span></div>
+      <div class="cf-chart" id="cfChart"></div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <div class="dl-item"><div class="dl-dot" style="background:var(--green)"></div><span style="font-size:11px;color:var(--t2);">Ingresos</span></div>
+        <div class="dl-item"><div class="dl-dot" style="background:var(--red)"></div><span style="font-size:11px;color:var(--t2);">Egresos</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Listas de Precios</div>
+      <div id="priceListsCard"></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Cuentas por Pagar</div>
+      <div class="table-wrap" style="margin-top:0;"><table>
+        <thead><tr><th>Proveedor</th><th>Monto</th><th>Vence</th><th>Estado</th></tr></thead>
+        <tbody id="cxpTable"></tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Margen por Tipo de Producto</div>
+      <div id="marginChart"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PAGE: TRAZABILIDAD ════ -->
+<div class="page" id="page-trazabilidad">
+  <div class="ph">
+    <div class="ph-text"><h2>Trazabilidad</h2><p>Historial de movimientos e integraciones entre módulos</p></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Log de Movimientos del Sistema</div>
+    <div class="timeline" id="trazTimeline"></div>
+  </div>
+</div>
+
+<!-- ════ PAGE: ALERTAS ════ -->
+<div class="page" id="page-alertas">
+  <div class="ph">
+    <div class="ph-text"><h2>Centro de Alertas</h2><p>Notificaciones críticas y advertencias del sistema</p></div>
+  </div>
+  <div class="alert-panel" id="fullAlerts"></div>
+</div>
+```
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══════ MODAL: NUEVO PEDIDO ═══════ -->
+
+<div class="modal-overlay" id="modalPedido">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>📝 Nuevo Pedido</h3>
+      <button class="modal-close" onclick="closeModal('modalPedido')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <div class="form-section-title">Datos del pedido</div>
+        <div class="form-grid">
+          <div class="fg">
+            <label>Cliente</label>
+            <select id="pedCliente" onchange="onClienteChange()">
+              <option value="">— Seleccionar cliente —</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Tipo de cliente</label>
+            <input type="text" id="pedTipoCliente" readonly placeholder="Auto según cliente">
+          </div>
+          <div class="fg">
+            <label>Lista de precios</label>
+            <input type="text" id="pedLista" readonly placeholder="Auto según tipo">
+          </div>
+          <div class="fg">
+            <label>Fecha de entrega</label>
+            <input type="date" id="pedFechaEntrega">
+          </div>
+          <div class="fg full">
+            <label>Observaciones</label>
+            <textarea placeholder="Instrucciones especiales, dirección, etc."></textarea>
+          </div>
+        </div>
+      </div>
+
+```
+  <div class="form-section">
+    <div class="form-section-title">Líneas de producto (máx. 15 ítems)</div>
+    <div class="lines-head">
+      <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio Unit.</div><div>Subtotal</div><div></div>
+    </div>
+    <div id="orderLinesContainer"></div>
+    <div class="order-total-bar">
+      <div>
+        <div class="otb-label">Total del Pedido</div>
+        <div id="otbCount" style="font-size:11px;color:var(--orange);opacity:.7;">0 ítems</div>
+      </div>
+      <div class="otb-value" id="orderGrandTotal">$0.00</div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn-ghost" onclick="closeModal('modalPedido')">Cancelar</button>
+    <button class="btn btn-primary" onclick="savePedido()">💾 Confirmar Pedido</button>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ═══════ MODAL: COBRO ═══════ -->
+
+<div class="modal-overlay" id="modalCobro">
+  <div class="modal">
+    <div class="modal-header"><h3>💳 Registrar Pago</h3><button class="modal-close" onclick="closeModal('modalCobro')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Cliente</label><select><option>Constructora Andina SAC</option><option>Obras Civiles Perú</option><option>Ferretería Central</option></select></div>
+        <div class="fg"><label>N° Factura</label><input type="text" placeholder="F001-00234"></div>
+        <div class="fg"><label>Monto Pagado ($)</label><input type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Tipo de pago</label><select><option>Transferencia</option><option>Efectivo</option><option>Cheque</option></select></div>
+        <div class="fg"><label>N° Referencia</label><input type="text" placeholder="Op. bancaria"></div>
+        <div class="fg"><label>Fecha de pago</label><input type="date"></div>
+        <div class="fg full"><label>Observaciones</label><textarea placeholder="Notas del pago..."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modalCobro')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveCobro()">💾 Guardar Pago</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: COMPRA MP ═══════ -->
+
+<div class="modal-overlay" id="modalCompra">
+  <div class="modal">
+    <div class="modal-header"><h3>🛒 Registrar Compra de MP</h3><button class="modal-close" onclick="closeModal('modalCompra')">✕</button></div>
+    <div class="modal-body">
+      <div style="padding:10px 12px;background:var(--green-l);border:1px solid rgba(40,217,138,.2);border-radius:8px;font-size:12px;color:var(--green);margin-bottom:14px;">
+        ⚡ <strong>Integración automática:</strong> Al registrar esta compra, el stock de MP se actualizará automáticamente en tiempo real.
+      </div>
+      <div class="form-grid">
+        <div class="fg"><label>Proveedor</label><select><option>Cementos Lima SAC</option><option>Química Industrial Perú</option><option>Distribuidora Andina</option></select></div>
+        <div class="fg"><label>N° Orden de Compra</label><input type="text" placeholder="OC-2025-0041"></div>
+        <div class="fg"><label>Materia Prima</label><select id="compraMP"></select></div>
+        <div class="fg"><label>Cantidad</label><input type="number" placeholder="0" id="compraCant"></div>
+        <div class="fg"><label>Precio Unitario ($)</label><input type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Fecha de recepción</label><input type="date"></div>
+        <div class="fg full"><label>Observaciones</label><textarea placeholder="Condiciones de compra, almacén destino, etc."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modalCompra')">Cancelar</button>
+        <button class="btn btn-green" onclick="saveCompra()">✅ Recibir Compra</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: PRODUCTO ═══════ -->
+
+<div class="modal-overlay" id="modalProducto">
+  <div class="modal">
+    <div class="modal-header"><h3>📦 Agregar Producto</h3><button class="modal-close" onclick="closeModal('modalProducto')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg full"><label>Nombre del producto</label><input type="text" placeholder="Ej: Estuco Fino Koratex 20kg"></div>
+        <div class="fg"><label>Tipo</label><select><option>Adhesivo</option><option>Estuco</option><option>Impermeabilizante</option><option>Mortero</option><option>Sellador</option><option>Pintura</option></select></div>
+        <div class="fg"><label>Presentación</label><input type="text" placeholder="Ej: Bolsa 20kg"></div>
+        <div class="fg"><label>Precio Lista A – Oro ($)</label><input type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Precio Lista B – Plata ($)</label><input type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Precio Lista C – Bronce ($)</label><input type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Stock inicial PT</label><input type="number" placeholder="0"></div>
+        <div class="fg"><label>Costo de producción ($)</label><input type="number" placeholder="0.00" step="0.01"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modalProducto')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveProducto()">＋ Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: DESPACHO ═══════ -->
+
+<div class="modal-overlay" id="modalDespacho">
+  <div class="modal">
+    <div class="modal-header"><h3>🚚 Programar Despacho</h3><button class="modal-close" onclick="closeModal('modalDespacho')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Vehículo</label><select><option>Camión A – ABC-123</option><option>Camión B – DEF-456</option><option>Furgón C – GHI-789</option></select></div>
+        <div class="fg"><label>Conductor</label><select><option>Pedro Sánchez</option><option>Juan Ríos</option><option>Marco Torres</option></select></div>
+        <div class="fg"><label>Fecha de salida</label><input type="date"></div>
+        <div class="fg"><label>Zona</label><select><option>Norte</option><option>Sur</option><option>Este</option><option>Oeste</option><option>Centro</option></select></div>
+        <div class="fg full"><label>Pedidos a incluir (Ctrl+Click para múltiple)</label>
+          <select multiple style="height:110px;">
+            <option>PED-0048 – Constructora Andina SAC</option>
+            <option>PED-0049 – Ferretería Central</option>
+            <option>PED-0050 – Obras Civiles Perú</option>
+            <option>PED-0051 – Maderas y Ferreterías SRL</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Optimización de ruta</label>
+          <select><option>Automática – Nearest Neighbor Heurístico</option><option>Por hora de entrega pactada</option><option>Manual</option></select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modalDespacho')">Cancelar</button>
+        <button class="btn btn-cyan" onclick="saveDespacho()">⚡ Generar Ruta Optimizada</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: AJUSTE PT ═══════ -->
+
+<div class="modal-overlay" id="modalAjustePT">
+  <div class="modal">
+    <div class="modal-header"><h3>⚙️ Ajuste de Stock PT</h3><button class="modal-close" onclick="closeModal('modalAjustePT')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Producto</label><select id="ajusteProdSel"></select></div>
+        <div class="fg"><label>Tipo de ajuste</label><select><option>Entrada (producción)</option><option>Salida (devolución)</option><option>Corrección</option></select></div>
+        <div class="fg"><label>Cantidad</label><input type="number" placeholder="0"></div>
+        <div class="fg"><label>Referencia</label><input type="text" placeholder="Orden de producción, etc."></div>
+        <div class="fg full"><label>Motivo</label><textarea placeholder="Justificación del ajuste..."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modalAjustePT')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveAjustePT()">✅ Aplicar Ajuste</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   KORATEX ERP — DATA LAYER (Mock / Simulación)
+   En producción: reemplazar con llamadas API REST
+   al backend Node.js + PostgreSQL
+═══════════════════════════════════════════════ */
+
+// ─────────── CLIENTES ───────────
+const DB_clientes = [
+  {id:'C001', nombre:'Constructora Andina SAC',   tipo:'oro',    diasCredito:60, zona:'Norte', lat:-12.02, lng:-77.05},
+  {id:'C002', nombre:'Obras Civiles Perú SRL',    tipo:'oro',    diasCredito:45, zona:'Sur',   lat:-12.12, lng:-77.02},
+  {id:'C003', nombre:'Ferretería Central',         tipo:'plata',  diasCredito:30, zona:'Centro',lat:-12.06, lng:-77.04},
+  {id:'C004', nombre:'Distribuidora Roca Fuerte',  tipo:'plata',  diasCredito:30, zona:'Este',  lat:-12.05, lng:-76.97},
+  {id:'C005', nombre:'Maderas y Ferreterías SRL',  tipo:'bronce', diasCredito:15, zona:'Oeste', lat:-12.08, lng:-77.09},
+  {id:'C006', nombre:'Acabados Premier',           tipo:'oro',    diasCredito:60, zona:'Norte', lat:-12.01, lng:-77.06},
+  {id:'C007', nombre:'Grupo Constructor Lima',     tipo:'plata',  diasCredito:30, zona:'Sur',   lat:-12.13, lng:-77.01},
+  {id:'C008', nombre:'Ferretería El Maestro',      tipo:'bronce', diasCredito:15, zona:'Este',  lat:-12.04, lng:-76.98},
+];
+
+// ─────────── PRODUCTOS ───────────
+const DB_productos = [
+  {cod:'KTX-001', nombre:'Estuco Fino Interior',     tipo:'Estuco',            pres:'Bolsa 20kg', precioA:28.00, precioB:31.50, precioC:35.00, costo:16.00, stockPT:480},
+  {cod:'KTX-002', nombre:'Adhesivo Cerámico Plus',   tipo:'Adhesivo',          pres:'Bolsa 25kg', precioA:22.50, precioB:25.00, precioC:28.00, costo:13.00, stockPT:620},
+  {cod:'KTX-003', nombre:'Impermeabilizante Flex',   tipo:'Impermeabilizante', pres:'Balde 20L',  precioA:85.00, precioB:92.00, precioC:99.00, costo:48.00, stockPT:190},
+  {cod:'KTX-004', nombre:'Mortero Estructural',      tipo:'Mortero',           pres:'Bolsa 30kg', precioA:32.00, precioB:36.00, precioC:40.00, costo:18.50, stockPT:340},
+  {cod:'KTX-005', nombre:'Sellador Multiusos',       tipo:'Sellador',          pres:'Galón 4L',   precioA:45.00, precioB:50.00, precioC:56.00, costo:25.00, stockPT:210},
+  {cod:'KTX-006', nombre:'Estuco Exterior Renovado', tipo:'Estuco',            pres:'Bolsa 20kg', precioA:31.00, precioB:35.00, precioC:39.00, costo:17.50, stockPT:280},
+  {cod:'KTX-007', nombre:'Pegamax Porcelanato',      tipo:'Adhesivo',          pres:'Bolsa 25kg', precioA:26.00, precioB:29.50, precioC:33.00, costo:14.50, stockPT:390},
+  {cod:'KTX-008', nombre:'Hidrofugante Concentrado', tipo:'Impermeabilizante', pres:'Balde 5L',   precioA:38.00, precioB:43.00, precioC:48.00, costo:21.00, stockPT:150},
+];
+
+// ─────────── MATERIA PRIMA ───────────
+let DB_mp = [
+  {cod:'MP-001', nombre:'Cemento Portland Tipo I', unidad:'bolsa 42.5kg', stock:850,  reorden:200, stockMax:1200, consumoMes:420, proveedor:'Cementos Lima SAC'},
+  {cod:'MP-002', nombre:'Arena Fina Lavada',        unidad:'m³',          stock:48,   reorden:20,  stockMax:100,  consumoMes:28,  proveedor:'Áridos del Sur'},
+  {cod:'MP-003', nombre:'Resina Acrílica',          unidad:'kg',          stock:180,  reorden:100, stockMax:500,  consumoMes:120, proveedor:'Química Industrial'},
+  {cod:'MP-004', nombre:'Carbonato de Calcio',      unidad:'kg',          stock:2400, reorden:800, stockMax:4000, consumoMes:900, proveedor:'Minerales Andinos'},
+  {cod:'MP-005', nombre:'Polvo de Talco',           unidad:'kg',          stock:90,   reorden:150, stockMax:600,  consumoMes:200, proveedor:'Minerales Andinos'},
+  {cod:'MP-006', nombre:'Pigmento Blanco TiO2',     unidad:'kg',          stock:65,   reorden:80,  stockMax:300,  consumoMes:90,  proveedor:'Colorquím SAC'},
+  {cod:'MP-007', nombre:'Fibra Poliéster',          unidad:'kg',          stock:320,  reorden:100, stockMax:600,  consumoMes:80,  proveedor:'Química Industrial'},
+  {cod:'MP-008', nombre:'Acelerante de Fraguado',   unidad:'kg',          stock:40,   reorden:60,  stockMax:200,  consumoMes:55,  proveedor:'Cementos Lima SAC'},
+];
+
+// ─────────── PEDIDOS ───────────
+let DB_pedidos = [
+  {id:'PED-0044', fecha:'2025-04-20', clienteId:'C001', items:3, total:4620, estadoPago:'al_dia', estadoDespacho:'entregado'},
+  {id:'PED-0045', fecha:'2025-04-22', clienteId:'C003', items:2, total:1890, estadoPago:'pendiente', estadoDespacho:'despachado'},
+  {id:'PED-0046', fecha:'2025-04-24', clienteId:'C002', items:5, total:8400, estadoPago:'al_dia', estadoDespacho:'preparacion'},
+  {id:'PED-0047', fecha:'2025-04-25', clienteId:'C004', items:2, total:2100, estadoPago:'mora',    estadoDespacho:'pendiente'},
+  {id:'PED-0048', fecha:'2025-04-26', clienteId:'C005', items:4, total:3240, estadoPago:'pendiente',estadoDespacho:'pendiente'},
+  {id:'PED-0049', fecha:'2025-04-27', clienteId:'C006', items:6, total:9800, estadoPago:'al_dia',   estadoDespacho:'preparacion'},
+  {id:'PED-0050', fecha:'2025-04-28', clienteId:'C001', items:3, total:5600, estadoPago:'pendiente',estadoDespacho:'pendiente'},
+];
+
+// ─────────── COBRANZAS ───────────
+const DB_cobranza = [
+  {fac:'F001-00218', clienteId:'C001', emision:'2025-03-01', venc:'2025-04-30', monto:12800, saldo:0,      mora:0},
+  {fac:'F001-00224', clienteId:'C003', emision:'2025-03-15', venc:'2025-04-14', monto:4200,  saldo:4200,   mora:14},
+  {fac:'F001-00231', clienteId:'C002', emision:'2025-04-01', venc:'2025-05-16', monto:18400, saldo:18400,  mora:0},
+  {fac:'F001-00238', clienteId:'C004', emision:'2025-03-20', venc:'2025-04-04', monto:6800,  saldo:6800,   mora:24},
+  {fac:'F001-00244', clienteId:'C005', emision:'2025-04-10', venc:'2025-04-25', monto:2100,  saldo:2100,   mora:3},
+  {fac:'F001-00250', clienteId:'C006', emision:'2025-04-15', venc:'2025-06-14', monto:24000, saldo:24000,  mora:0},
+  {fac:'F001-00255', clienteId:'C007', emision:'2025-03-28', venc:'2025-04-27', monto:9200,  saldo:9200,   mora:1},
+  {fac:'F001-00261', clienteId:'C008', emision:'2025-04-20', venc:'2025-05-05', monto:3800,  saldo:3800,   mora:0},
+];
+
+// ─────────── CxP ───────────
+const DB_cxp = [
+  {proveedor:'Cementos Lima SAC',    monto:28400, vence:'2025-05-10', estado:'pendiente'},
+  {proveedor:'Química Industrial',   monto:12600, vence:'2025-05-05', estado:'pendiente'},
+  {proveedor:'Minerales Andinos',    monto:8900,  vence:'2025-04-30', estado:'mora'},
+  {proveedor:'Áridos del Sur',       monto:5400,  vence:'2025-05-15', estado:'pendiente'},
+  {proveedor:'Colorquím SAC',        monto:7100,  vence:'2025-05-20', estado:'pendiente'},
+  {proveedor:'Distribuidora Andina', monto:5000,  vence:'2025-06-01', estado:'pendiente'},
+];
+
+// ─────────── DESPACHOS ───────────
+const DB_despachos = [
+  {pedido:'PED-0046', cliente:'Obras Civiles Perú', zona:'Sur',    dir:'Av. Los Álamos 3450', bultos:12, peso:240, prio:'alta',   estado:'en_ruta'},
+  {pedido:'PED-0049', cliente:'Acabados Premier',   zona:'Norte',  dir:'Jr. Colón 184',       bultos:8,  peso:160, prio:'alta',   estado:'en_ruta'},
+  {pedido:'PED-0048', cliente:'Maderas y Ferreterías', zona:'Oeste',dir:'Av. Universitaria 1820',bultos:10,peso:195, prio:'media',estado:'pendiente'},
+  {pedido:'PED-0050', cliente:'Constructora Andina',zona:'Norte',  dir:'Av. Túpac Amaru 890', bultos:7,  peso:140, prio:'alta',   estado:'pendiente'},
+  {pedido:'PED-0047', cliente:'Distrib. Roca Fuerte',zona:'Este',  dir:'Calle Las Flores 340',bultos:5,  peso:100, prio:'media',  estado:'pendiente'},
+];
+
+// ─────────── ALERTAS ───────────
+const DB_alertas = [
+  {tipo:'crit', ico:'🔴', titulo:'Stock crítico: Polvo de Talco',     desc:'Solo 90 kg disponibles. Punto de reorden: 150 kg. Requiere OC urgente.',       tiempo:'hace 2h'},
+  {tipo:'crit', ico:'🔴', titulo:'Stock crítico: Pigmento TiO2',      desc:'65 kg disponibles. Punto de reorden: 80 kg.',                                    tiempo:'hace 3h'},
+  {tipo:'crit', ico:'🔴', titulo:'Stock crítico: Acelerante',         desc:'40 kg disponibles. Punto de reorden: 60 kg.',                                    tiempo:'hace 4h'},
+  {tipo:'warn', ico:'🟡', titulo:'Factura vencida: Ferretería Central',desc:'F001-00224 · $4,200 con 14 días de mora. Gestionar cobro.',                      tiempo:'hace 6h'},
+  {tipo:'warn', ico:'🟡', titulo:'Factura vencida: Distrib. Roca',    desc:'F001-00238 · $6,800 con 24 días de mora.',                                       tiempo:'hace 8h'},
+  {tipo:'warn', ico:'🟡', titulo:'CxP vencida: Minerales Andinos',    desc:'$8,900 con vencimiento hoy. Programar pago.',                                    tiempo:'hace 1h'},
+  {tipo:'info', ico:'🔵', titulo:'Nuevo pedido registrado',           desc:'PED-0050 de Constructora Andina SAC por $5,600.',                                 tiempo:'hace 30m'},
+  {tipo:'info', ico:'🟢', titulo:'Despacho completado',               desc:'PED-0044 entregado correctamente a Constructora Andina.',                         tiempo:'hace 5h'},
+];
+
+// ─────────── TRAZABILIDAD ───────────
+const DB_traz = [
+  {tipo:'g', evento:'Despacho completado', desc:'PED-0044 entregado · Constructora Andina SAC · $4,620', tiempo:'Hoy 14:30'},
+  {tipo:'o', evento:'Nuevo pedido',        desc:'PED-0050 registrado · Constructora Andina · $5,600 · impacta reserva PT', tiempo:'Hoy 11:15'},
+  {tipo:'g', evento:'Compra recibida',     desc:'OC-0039 · 500 bolsas Cemento Portland · stock MP actualizado +500u.', tiempo:'Hoy 09:00'},
+  {tipo:'o', evento:'Alerta generada',     desc:'Stock Polvo de Talco bajo punto de reorden (90 kg < 150 kg)', tiempo:'Hoy 08:45'},
+  {tipo:'r', evento:'Factura en mora',     desc:'F001-00238 · Distrib. Roca Fuerte · 24 días · $6,800', tiempo:'Ayer 17:00'},
+  {tipo:'g', evento:'Pago registrado',     desc:'F001-00218 · Constructora Andina · $12,800 cobrado', tiempo:'Ayer 15:20'},
+  {tipo:'o', evento:'Pedido despachado',   desc:'PED-0045 · Ferretería Central · Camión B', tiempo:'Ayer 07:30'},
+  {tipo:'s', evento:'Ajuste de stock',     desc:'PT KTX-003 · +50 unidades producción batch B-2025-04', tiempo:'24 abr 16:00'},
+];
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION & ROLE SYSTEM
+═══════════════════════════════════════════════ */
+let currentRole = 'admin';
+
+const ROLES = {
+  admin:     {label:'Administrador', initials:'AD', nav:['dashboard','pedidos','catalogo','cobranza','inv-mp','inv-pt','despacho','finanzas','trazabilidad','alertas']},
+  comercial: {label:'Comercial',     initials:'CM', nav:['dashboard','pedidos','catalogo','cobranza','alertas']},
+  logistica: {label:'Logística',     initials:'LG', nav:['dashboard','inv-mp','inv-pt','despacho','alertas']},
+  finanzas:  {label:'Finanzas',      initials:'FN', nav:['dashboard','cobranza','finanzas','alertas']},
+};
+
+const NAV_ITEMS = {
+  'dashboard':     {label:'Dashboard',        icon:'📊', group:'General'},
+  'pedidos':       {label:'Pedidos',          icon:'🛒', group:'Comercial'},
+  'catalogo':      {label:'Catálogo',         icon:'📋', group:'Comercial'},
+  'cobranza':      {label:'Cobranza',         icon:'💳', group:'Comercial'},
+  'inv-mp':        {label:'Inv. Mat. Prima',  icon:'🏭', group:'Logística'},
+  'inv-pt':        {label:'Inv. Prod. Term.', icon:'📦', group:'Logística'},
+  'despacho':      {label:'Despacho',         icon:'🚚', group:'Logística'},
+  'finanzas':      {label:'Finanzas',         icon:'💰', group:'Finanzas'},
+  'trazabilidad':  {label:'Trazabilidad',     icon:'🔍', group:'Sistema'},
+  'alertas':       {label:'Alertas',          icon:'🔔', group:'Sistema', badge:3},
+};
+
+function enterAs(role) {
+  currentRole = role;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  const r = ROLES[role];
+  document.getElementById('sAv').textContent = r.initials;
+  document.getElementById('sName').textContent = r.label;
+  document.getElementById('sRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  buildNav(role);
+  buildOrderLines();
+  populateSelects();
+  renderAll();
+  navigate('dashboard');
+  startClock();
+}
+
+function logout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appShell').style.display = 'none';
+}
+
+function buildNav(role) {
+  const navEl = document.getElementById('sidebarNav');
+  const items = ROLES[role].nav;
+  let html = ''; let lastGroup = '';
+  items.forEach(id => {
+    const item = NAV_ITEMS[id];
+    if (!item) return;
+    if (item.group !== lastGroup) {
+      html += `<div class="nav-group-label">${item.group}</div>`;
+      lastGroup = item.group;
+    }
+    html += `<div class="nav-item" id="nav-${id}" onclick="navigate('${id}')">
+      <span class="nav-icon">${item.icon}</span>${item.label}
+      ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+    </div>`;
+  });
+  navEl.innerHTML = html;
+}
+
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  const nv = document.getElementById('nav-' + page);
+  if (nv) nv.classList.add('active');
+  const item = NAV_ITEMS[page];
+  document.getElementById('pageCrumb').innerHTML = `<span>Koratex</span> · ${item ? item.label : page}`;
+  closeSb();
+}
+
+function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
+function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
+
+/* ═══════════════════════════════════════════════
+   CLOCK
+═══════════════════════════════════════════════ */
+function startClock() {
+  const tick = () => {
+    const now = new Date();
+    document.getElementById('topClock').textContent =
+      now.toLocaleDateString('es-PE', {day:'2-digit',month:'short',year:'numeric'}) + ' · ' +
+      now.toLocaleTimeString('es-PE');
+  };
+  tick(); setInterval(tick, 1000);
+}
+
+/* ═══════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════ */
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+/* ═══════════════════════════════════════════════
+   RENDER ALL
+═══════════════════════════════════════════════ */
+function renderAll() {
+  renderBarChart();
+  renderDashAlerts();
+  renderMpStocks();
+  renderPedidosTable();
+  renderCatalogoTable();
+  renderCatKpis();
+  renderCobranzaTable();
+  renderMPTable();
+  renderPTTable();
+  renderZones();
+  renderDespachoTimeline();
+  renderDespachoTable();
+  renderFinanzas();
+  renderTrazabilidad();
+  renderAlertas();
+}
+
+/* ── Dashboard ── */
+function renderBarChart() {
+  const vals = [42, 38, 55, 61, 48, 70, 67];
+  const labels = ['S1','S2','S3','S4','S5','S6','S7'];
+  const max = Math.max(...vals);
+  const colors = ['var(--wire)','var(--wire)','var(--steel-2)','var(--border-l)','var(--steel-2)','var(--orange)','var(--orange)'];
+  let h = '';
+  vals.forEach((v,i) => {
+    const pct = Math.round((v/max)*100);
+    h += `<div class="bc-col">
+      <div class="bc-val">$${v}k</div>
+      <div class="bc-bar" style="height:${pct}%;background:${colors[i]};"></div>
+      <div class="bc-label">${labels[i]}</div>
+    </div>`;
+  });
+  const el = document.getElementById('bcVentas');
+  if (el) el.innerHTML = h;
+}
+
+function renderDashAlerts() {
+  const el = document.getElementById('dashAlerts');
+  if (!el) return;
+  el.innerHTML = DB_alertas.slice(0,5).map(a =>
+    `<div class="alert-item">
+      <div class="alert-ico">${a.ico}</div>
+      <div class="alert-text">
+        <div class="alert-title">${a.titulo}</div>
+        <div class="alert-sub">${a.desc}</div>
+      </div>
+      <div class="alert-time">${a.tiempo}</div>
+    </div>`
+  ).join('');
+}
+
+function renderMpStocks() {
+  const el = document.getElementById('mpStocks');
+  if (!el) return;
+  el.innerHTML = DB_mp.slice(0,5).map(m => {
+    const pct = Math.min(Math.round((m.stock / m.stockMax) * 100), 100);
+    const cls = m.stock <= m.reorden ? 'var(--red)' : m.stock <= m.reorden * 1.5 ? 'var(--amber)' : 'var(--green)';
+    const sem = m.stock <= m.reorden ? 'sem-crit' : m.stock <= m.reorden * 1.5 ? 'sem-warn' : 'sem-ok';
+    const semL = m.stock <= m.reorden ? 'CRÍTICO' : m.stock <= m.reorden * 1.5 ? 'BAJO' : 'OK';
+    return `<div class="prog-wrap">
+      <div class="prog-label">
+        <span style="font-size:12px;font-weight:600;color:var(--t1);">${m.nombre}</span>
+        <span class="semaforo ${sem}"><span class="sem-dot"></span>${semL} · ${m.stock} ${m.unidad}</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${cls};"></div></div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Pedidos ── */
+function renderPedidosTable() {
+  const el = document.getElementById('pedidosTable');
+  if (!el) return;
+  el.innerHTML = DB_pedidos.map(p => {
+    const c = DB_clientes.find(x => x.id === p.clienteId);
+    const tipoC = c ? c.tipo : '?';
+    const tipoBadge = tipoC === 'oro' ? 'badge-o' : tipoC === 'plata' ? 'badge-b' : 'badge-s';
+    const pagoBadge = p.estadoPago === 'al_dia' ? 'badge-g' : p.estadoPago === 'pendiente' ? 'badge-a' : 'badge-r';
+    const pagoLabel = p.estadoPago === 'al_dia' ? 'Al día' : p.estadoPago === 'pendiente' ? 'Pendiente' : 'En mora';
+    const despBadge = p.estadoDespacho === 'entregado' ? 'badge-g' : p.estadoDespacho === 'despachado' ? 'badge-b' : p.estadoDespacho === 'preparacion' ? 'badge-o' : 'badge-s';
+    const despLabel = p.estadoDespacho === 'entregado' ? 'Entregado' : p.estadoDespacho === 'despachado' ? 'En ruta' : p.estadoDespacho === 'preparacion' ? 'Preparación' : 'Pendiente';
+    return `<tr>
+      <td><strong style="color:var(--orange);">${p.id}</strong></td>
+      <td style="color:var(--t2);">${p.fecha}</td>
+      <td style="font-weight:600;">${c ? c.nombre : p.clienteId}</td>
+      <td><span class="badge ${tipoBadge}">${tipoC.toUpperCase()}</span></td>
+      <td style="color:var(--t2);">${p.items} items</td>
+      <td style="font-weight:700;">$${p.total.toLocaleString()}</td>
+      <td><span class="badge ${pagoBadge}">${pagoLabel}</span></td>
+      <td><span class="badge ${despBadge}">${despLabel}</span></td>
+      <td><button class="btn btn-ghost btn-xs">Ver</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Catálogo ── */
+function renderCatKpis() {
+  const el = document.getElementById('catKpis');
+  if (!el) return;
+  const tipos = [...new Set(DB_productos.map(p => p.tipo))];
+  el.innerHTML = `
+    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total Productos</div><div class="kpi-icon">📦</div></div><div class="kpi-value">${DB_productos.length}</div></div>
+    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Tipos</div><div class="kpi-icon">🏷️</div></div><div class="kpi-value">${tipos.length}</div></div>
+    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Con stock</div><div class="kpi-icon">✅</div></div><div class="kpi-value">${DB_productos.filter(p=>p.stockPT>50).length}</div></div>
+    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Stock bajo</div><div class="kpi-icon">⚠️</div></div><div class="kpi-value">${DB_productos.filter(p=>p.stockPT<=50).length}</div></div>
+  `;
+}
+
+function renderCatalogoTable() {
+  const el = document.getElementById('catalogoTable');
+  if (!el) return;
+  el.innerHTML = DB_productos.map(p => {
+    const sc = p.stockPT > 200 ? 'badge-g' : p.stockPT > 100 ? 'badge-a' : 'badge-r';
+    return `<tr>
+      <td style="color:var(--cyan);font-weight:700;">${p.cod}</td>
+      <td style="font-weight:600;">${p.nombre}</td>
+      <td><span class="badge badge-s">${p.tipo}</span></td>
+      <td style="color:var(--t2);">${p.pres}</td>
+      <td style="color:var(--orange);font-weight:700;">$${p.precioA.toFixed(2)}</td>
+      <td style="color:var(--cyan);">$${p.precioB.toFixed(2)}</td>
+      <td style="color:var(--t2);">$${p.precioC.toFixed(2)}</td>
+      <td><span class="badge ${sc}">${p.stockPT} u.</span></td>
+      <td><button class="btn btn-ghost btn-xs">✏️</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Cobranza ── */
+function renderCobranzaTable() {
+  const el = document.getElementById('cobranzaTable');
+  if (!el) return;
+  el.innerHTML = DB_cobranza.map(c => {
+    const cli = DB_clientes.find(x => x.id === c.clienteId);
+    const tipoC = cli ? cli.tipo : '';
+    const tipoBadge = tipoC === 'oro' ? 'badge-o' : tipoC === 'plata' ? 'badge-b' : 'badge-s';
+    const moraSem = c.mora > 15 ? 'sem-crit' : c.mora > 0 ? 'sem-warn' : 'sem-ok';
+    const moraLabel = c.mora > 0 ? `${c.mora}d` : '—';
+    const estBadge = c.saldo === 0 ? 'badge-g' : c.mora > 0 ? 'badge-r' : 'badge-a';
+    const estLabel = c.saldo === 0 ? 'Pagado' : c.mora > 0 ? 'En mora' : 'Vigente';
+    return `<tr>
+      <td style="color:var(--cyan);font-weight:700;">${c.fac}</td>
+      <td style="font-weight:600;">${cli ? cli.nombre : c.clienteId}</td>
+      <td><span class="badge ${tipoBadge}">${tipoC.toUpperCase()}</span></td>
+      <td style="color:var(--t2);">${c.emision}</td>
+      <td style="color:var(--t2);">${c.venc}</td>
+      <td style="font-weight:700;">$${c.monto.toLocaleString()}</td>
+      <td style="font-weight:700;color:${c.saldo>0?'var(--red)':'var(--green)'}">$${c.saldo.toLocaleString()}</td>
+      <td><span class="semaforo ${moraSem}"><span class="sem-dot"></span>${moraLabel}</span></td>
+      <td><span class="badge ${estBadge}">${estLabel}</span></td>
+      <td><button class="btn btn-ghost btn-xs">💳</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── MP ── */
+function renderMPTable() {
+  const el = document.getElementById('mpTable');
+  if (!el) return;
+  el.innerHTML = DB_mp.map(m => {
+    const pct = Math.round((m.stock / m.stockMax) * 100);
+    const sem = m.stock <= m.reorden ? 'sem-crit' : m.stock <= m.reorden * 1.5 ? 'sem-warn' : 'sem-ok';
+    const semL = m.stock <= m.reorden ? 'CRÍTICO' : m.stock <= m.reorden * 1.5 ? 'ADVERTENCIA' : 'OK';
+    const diasCobertura = m.consumoMes > 0 ? Math.round((m.stock / m.consumoMes) * 30) : '∞';
+    return `<tr>
+      <td style="color:var(--amber);font-weight:700;">${m.cod}</td>
+      <td style="font-weight:600;">${m.nombre}</td>
+      <td style="color:var(--t2);">${m.unidad}</td>
+      <td style="font-weight:700;">${m.stock.toLocaleString()}</td>
+      <td style="color:var(--amber);">${m.reorden}</td>
+      <td style="color:var(--t2);">${m.stockMax}</td>
+      <td style="color:var(--t2);">${diasCobertura}d cobertura</td>
+      <td style="color:var(--t2);font-size:12px;">${m.proveedor}</td>
+      <td><span class="semaforo ${sem}"><span class="sem-dot"></span>${semL}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── PT ── */
+function renderPTTable() {
+  const el = document.getElementById('ptTable');
+  if (!el) return;
+  const reserva = [40, 60, 20, 30, 10, 25, 50, 15];
+  el.innerHTML = DB_productos.map((p,i) => {
+    const res = reserva[i];
+    const disp = p.stockPT - res;
+    const sc = disp > 100 ? 'sem-ok' : disp > 50 ? 'sem-warn' : 'sem-crit';
+    const scL = disp > 100 ? 'DISPONIBLE' : disp > 50 ? 'BAJO' : 'CRÍTICO';
+    return `<tr>
+      <td style="color:var(--cyan);font-weight:700;">${p.cod}</td>
+      <td style="font-weight:600;">${p.nombre}</td>
+      <td><span class="badge badge-s">${p.tipo}</span></td>
+      <td style="font-weight:700;">${p.stockPT}</td>
+      <td style="color:var(--amber);">${res}</td>
+      <td style="font-weight:700;color:var(--green);">${disp}</td>
+      <td style="color:var(--t2);">$${p.precioA.toFixed(2)}</td>
+      <td><span class="semaforo ${sc}"><span class="sem-dot"></span>${scL}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Despacho ── */
+const ZONAS = [
+  {nombre:'Norte', pedidos:4, kmRef:12},
+  {nombre:'Sur',   pedidos:3, kmRef:18},
+  {nombre:'Este',  pedidos:2, kmRef:22},
+  {nombre:'Oeste', pedidos:2, kmRef:15},
+  {nombre:'Centro',pedidos:5, kmRef:8},
+  {nombre:'Cono',  pedidos:2, kmRef:28},
+];
+
+function renderZones() {
+  const el = document.getElementById('zoneGrid');
+  if (!el) return;
+  el.innerHTML = ZONAS.map(z => `
+    <div class="zone-card" onclick="this.classList.toggle('sel')">
+      <div class="zone-name">${z.nombre}</div>
+      <div class="zone-count">${z.pedidos}</div>
+      <div class="zone-km">${z.kmRef} km aprox.</div>
+    </div>
+  `).join('');
+}
+
+function renderDespachoTimeline() {
+  const el = document.getElementById('despachoTimeline');
+  if (!el) return;
+  const items = [
+    {tipo:'g', title:'Camión A – ABC123 en ruta', desc:'Zona Sur · 3 paradas · ETA 16:30', time:'Hoy 08:00'},
+    {tipo:'g', title:'Camión B – DEF456 en ruta', desc:'Zona Norte · 4 paradas · ETA 17:00', time:'Hoy 09:30'},
+    {tipo:'o', title:'Furgón C – GHI789 cargando', desc:'Zona Oeste · 2 paradas · Salida 13:00', time:'Hoy 12:15'},
+    {tipo:'s', title:'Camión A · Mañana',          desc:'Zona Este + Centro · 4 paradas programadas', time:'Mañana'},
+  ];
+  el.innerHTML = items.map(i => `<div class="tl-item">
+    <div class="tl-dot tl-dot-${i.tipo}">${i.tipo==='g'?'▶':i.tipo==='o'?'◌':'○'}</div>
+    <div class="tl-content">
+      <div class="tl-title">${i.title}</div>
+      <div class="tl-desc">${i.desc}</div>
+      <div class="tl-time">${i.time}</div>
+    </div>
+  </div>`).join('');
+}
+
+function renderDespachoTable() {
+  const el = document.getElementById('despachoTable');
+  if (!el) return;
+  el.innerHTML = DB_despachos.map(d => {
+    const pb = d.prio === 'alta' ? 'badge-r' : 'badge-a';
+    const eb = d.estado === 'en_ruta' ? 'badge-b' : 'badge-s';
+    const el2 = d.estado === 'en_ruta' ? 'En ruta' : 'Pendiente';
+    return `<tr>
+      <td style="color:var(--orange);font-weight:700;">${d.pedido}</td>
+      <td style="font-weight:600;">${d.cliente}</td>
+      <td><span class="badge badge-b">${d.zona}</span></td>
+      <td style="color:var(--t2);font-size:12px;">${d.dir}</td>
+      <td>${d.bultos}</td>
+      <td>${d.peso} kg</td>
+      <td><span class="badge ${pb}">${d.prio.toUpperCase()}</span></td>
+      <td><span class="badge ${eb}">${el2}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function runOptimize() {
+  alert('⚡ Optimización ejecutada.\n\nAlgoritmo: Nearest Neighbor Heurístico\n\nProceso:\n1. Agrupar pedidos por zona geográfica (clustering).\n2. Dentro de cada zona, ordenar por distancia mínima al punto anterior (greedy).\n3. Asignar rutas a vehículos según capacidad y zona.\n\nResultado: 3 rutas generadas · ahorro estimado 18% distancia.');
+}
+
+/* ── Finanzas ── */
+function renderFinanzas() {
+  renderCFChart();
+  renderPriceLists();
+  renderCXPTable();
+  renderMarginChart();
+}
+
+function renderCFChart() {
+  const el = document.getElementById('cfChart');
+  if (!el) return;
+  const ingresos = [48,62,55,70,65,80,58,74];
+  const egresos  = [32,45,40,55,38,52,44,50];
+  const maxV = Math.max(...ingresos, ...egresos);
+  const labels = ['S1','S2','S3','S4','S5','S6','S7','S8'];
+  el.innerHTML = ingresos.map((v,i) => {
+    const hi = Math.round((v/maxV)*60);
+    const he = Math.round((egresos[i]/maxV)*60);
+    return `<div class="cf-col">
+      <div class="cf-bar-pos" style="height:${hi}px;"></div>
+      <div class="cf-bar-neg" style="height:${he}px;"></div>
+      <div class="cf-label">${labels[i]}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPriceLists() {
+  const el = document.getElementById('priceListsCard');
+  if (!el) return;
+  const ex = DB_productos[0];
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--orange-l);border:1px solid rgba(240,112,48,.2);border-radius:8px;">
+        <div><div style="font-size:11px;font-weight:700;color:var(--orange);letter-spacing:.5px;">LISTA A · CLIENTES ORO</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">60 días crédito · Mejor precio</div></div>
+        <span class="badge badge-o">ORO 🥇</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--cyan-l);border:1px solid rgba(48,184,208,.2);border-radius:8px;">
+        <div><div style="font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:.5px;">LISTA B · CLIENTES PLATA</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">30 días crédito · Precio estándar</div></div>
+        <span class="badge badge-b">PLATA 🥈</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--ink-3);border:1px solid var(--border);border-radius:8px;">
+        <div><div style="font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.5px;">LISTA C · CLIENTES BRONCE</div><div style="font-size:11px;color:var(--t3);margin-top:2px;">15 días crédito · Precio base</div></div>
+        <span class="badge badge-s">BRONCE 🥉</span>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Ejemplo: ${ex.nombre}</div>
+    <div style="display:flex;gap:8px;">
+      <div style="flex:1;text-align:center;padding:8px;background:var(--orange-l);border-radius:7px;"><div style="font-size:10px;color:var(--orange);">Lista A</div><div style="font-weight:700;color:var(--orange);">$${ex.precioA}</div></div>
+      <div style="flex:1;text-align:center;padding:8px;background:var(--cyan-l);border-radius:7px;"><div style="font-size:10px;color:var(--cyan);">Lista B</div><div style="font-weight:700;color:var(--cyan);">$${ex.precioB}</div></div>
+      <div style="flex:1;text-align:center;padding:8px;background:var(--ink-3);border-radius:7px;"><div style="font-size:10px;color:var(--t2);">Lista C</div><div style="font-weight:700;color:var(--t2);">$${ex.precioC}</div></div>
+    </div>
+  `;
+}
+
+function renderCXPTable() {
+  const el = document.getElementById('cxpTable');
+  if (!el) return;
+  el.innerHTML = DB_cxp.map(c => {
+    const eb = c.estado === 'mora' ? 'badge-r' : 'badge-a';
+    const el2 = c.estado === 'mora' ? 'En mora' : 'Pendiente';
+    return `<tr>
+      <td style="font-weight:600;">${c.proveedor}</td>
+      <td style="font-weight:700;color:var(--red);">$${c.monto.toLocaleString()}</td>
+      <td style="color:var(--t2);">${c.vence}</td>
+      <td><span class="badge ${eb}">${el2}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderMarginChart() {
+  const el = document.getElementById('marginChart');
+  if (!el) return;
+  const tipos = [...new Set(DB_productos.map(p => p.tipo))];
+  const margins = tipos.map(t => {
+    const prods = DB_productos.filter(p => p.tipo === t);
+    const avg = prods.reduce((s,p) => s + ((p.precioA - p.costo) / p.precioA * 100), 0) / prods.length;
+    return {tipo: t, margen: Math.round(avg)};
+  });
+  el.innerHTML = margins.map(m => `
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span style="font-size:12px;color:var(--t1);">${m.tipo}</span>
+        <span style="font-size:12px;font-weight:700;color:var(--green);">${m.margen}%</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${m.margen}%;background:var(--green);"></div></div>
+    </div>
+  `).join('');
+}
+
+/* ── Trazabilidad ── */
+function renderTrazabilidad() {
+  const el = document.getElementById('trazTimeline');
+  if (!el) return;
+  el.innerHTML = DB_traz.map(t => `
+    <div class="tl-item">
+      <div class="tl-dot tl-dot-${t.tipo}">${t.tipo==='g'?'✓':t.tipo==='o'?'◎':t.tipo==='r'?'!':'○'}</div>
+      <div class="tl-content">
+        <div class="tl-title">${t.evento}</div>
+        <div class="tl-desc">${t.desc}</div>
+        <div class="tl-time">${t.tiempo}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Alertas ── */
+function renderAlertas() {
+  const el = document.getElementById('fullAlerts');
+  if (!el) return;
+  el.innerHTML = DB_alertas.map(a => `
+    <div class="alert-item">
+      <div class="alert-ico">${a.ico}</div>
+      <div class="alert-text">
+        <div class="alert-title">${a.titulo}</div>
+        <div class="alert-sub">${a.desc}</div>
+      </div>
+      <div class="alert-time">${a.tiempo}</div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   ORDER LINES (15 líneas)
+═══════════════════════════════════════════════ */
+function buildOrderLines() {
+  const c = document.getElementById('orderLinesContainer');
+  if (!c) return;
+  c.innerHTML = '';
+  for (let i = 1; i <= 15; i++) {
+    const d = document.createElement('div');
+    d.className = 'order-line' + (i > 1 ? ' empty' : '');
+    d.id = 'oline-' + i;
+    d.innerHTML = `
+      <div class="line-num">${i}</div>
+      <select id="olp-${i}" onchange="onLineChange(${i})">
+        <option value="">— Seleccionar producto —</option>
+        ${DB_productos.map(p => `<option value="${p.cod}" data-pa="${p.precioA}" data-pb="${p.precioB}" data-pc="${p.precioC}">${p.cod} · ${p.nombre}</option>`).join('')}
+      </select>
+      <input type="text" id="olpres-${i}" placeholder="—" readonly style="font-size:11px;color:var(--t3);">
+      <input type="number" id="olq-${i}" value="" placeholder="0" min="1" onchange="onLineChange(${i})">
+      <input type="number" id="olpu-${i}" placeholder="0.00" step="0.01" onchange="onLineChange(${i})">
+      <div class="line-sub" id="olsub-${i}">$0.00</div>
+      <button class="line-clear" onclick="clearLine(${i})">✕</button>
+    `;
+    c.appendChild(d);
+  }
+  updateOrderTotal();
+}
+
+function onClienteChange() {
+  const sel = document.getElementById('pedCliente');
+  const clienteId = sel.value;
+  const cli = DB_clientes.find(x => x.id === clienteId);
+  if (cli) {
+    document.getElementById('pedTipoCliente').value = cli.tipo.toUpperCase();
+    const listaMap = {oro: 'Lista A – Precio Oro', plata: 'Lista B – Precio Plata', bronce: 'Lista C – Precio Bronce'};
+    document.getElementById('pedLista').value = listaMap[cli.tipo];
+    // actualizar precios en líneas ya seleccionadas
+    for (let i = 1; i <= 15; i++) onLineChange(i, cli.tipo);
+  }
+}
+
+function getPrecio(prod, tipo) {
+  if (!prod) return 0;
+  return tipo === 'plata' ? prod.precioB : tipo === 'bronce' ? prod.precioC : prod.precioA;
+}
+
+function onLineChange(i, tipoOverride) {
+  const sel = document.getElementById('olp-' + i);
+  const qEl = document.getElementById('olq-' + i);
+  const puEl = document.getElementById('olpu-' + i);
+  const subEl = document.getElementById('olsub-' + i);
+  const presEl = document.getElementById('olpres-' + i);
+  const lineEl = document.getElementById('oline-' + i);
+
+  if (!sel) return;
+  const cod = sel.value;
+  const prod = DB_productos.find(p => p.cod === cod);
+
+  if (prod) {
+    lineEl.classList.remove('empty');
+    presEl.value = prod.pres;
+    // determinar tipo de cliente
+    const cliSel = document.getElementById('pedCliente');
+    const cliId = cliSel ? cliSel.value : '';
+    const cli = DB_clientes.find(x => x.id === cliId);
+    const tipo = tipoOverride || (cli ? cli.tipo : 'bronce');
+    const precio = getPrecio(prod, tipo);
+    if (!puEl.dataset.edited) puEl.value = precio.toFixed(2);
+  } else {
+    lineEl.classList.add('empty');
+    presEl.value = ''; puEl.value = ''; qEl.value = '';
+    subEl.textContent = '$0.00';
+  }
+  const pu = parseFloat(puEl.value) || 0;
+  const q  = parseInt(qEl.value) || 0;
+  const sub = pu * q;
+  subEl.textContent = sub > 0 ? '$' + sub.toFixed(2) : '$0.00';
+  updateOrderTotal();
+}
+
+function clearLine(i) {
+  ['olp','olpres','olq','olpu'].forEach(id => {
+    const el = document.getElementById(id + '-' + i);
+    if (el) el.value = '';
+  });
+  const sub = document.getElementById('olsub-' + i);
+  if (sub) sub.textContent = '$0.00';
+  const line = document.getElementById('oline-' + i);
+  if (line) line.classList.add('empty');
+  updateOrderTotal();
+}
+
+function updateOrderTotal() {
+  let total = 0, count = 0;
+  for (let i = 1; i <= 15; i++) {
+    const sub = document.getElementById('olsub-' + i);
+    if (sub) { const v = parseFloat(sub.textContent.replace('$','')) || 0; if (v > 0) { total += v; count++; } }
+  }
+  const gt = document.getElementById('orderGrandTotal');
+  const ct = document.getElementById('otbCount');
+  if (gt) gt.textContent = '$' + total.toFixed(2);
+  if (ct) ct.textContent = count + ' ítem' + (count !== 1 ? 's' : '');
+}
+
+/* ═══════════════════════════════════════════════
+   POPULATE SELECTS
+═══════════════════════════════════════════════ */
+function populateSelects() {
+  // Clientes en modal pedido
+  const pedCli = document.getElementById('pedCliente');
+  if (pedCli) {
+    pedCli.innerHTML = '<option value="">— Seleccionar cliente —</option>' +
+      DB_clientes.map(c => `<option value="${c.id}">${c.nombre} (${c.tipo.toUpperCase()})</option>`).join('');
+  }
+  // MP en modal compra
+  const compMP = document.getElementById('compraMP');
+  if (compMP) {
+    compMP.innerHTML = DB_mp.map(m => `<option value="${m.cod}">${m.nombre}</option>`).join('');
+  }
+  // PT en ajuste
+  const ajProd = document.getElementById('ajusteProdSel');
+  if (ajProd) {
+    ajProd.innerHTML = DB_productos.map(p => `<option value="${p.cod}">${p.nombre}</option>`).join('');
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   ACTIONS
+═══════════════════════════════════════════════ */
+function savePedido() {
+  const cliSel = document.getElementById('pedCliente');
+  const cliId  = cliSel ? cliSel.value : '';
+  if (!cliId) { alert('Selecciona un cliente.'); return; }
+  const total  = parseFloat(document.getElementById('orderGrandTotal').textContent.replace('$','')) || 0;
+  const count  = parseInt(document.getElementById('otbCount').textContent) || 0;
+  if (count === 0) { alert('Agrega al menos un producto.'); return; }
+
+  const newId = 'PED-' + String(DB_pedidos.length + 51).padStart(4,'0');
+  DB_pedidos.unshift({
+    id: newId,
+    fecha: new Date().toISOString().split('T')[0],
+    clienteId: cliId,
+    items: count,
+    total: total,
+    estadoPago: 'pendiente',
+    estadoDespacho: 'pendiente',
+  });
+
+  // Integración: reducir stock PT (simulado)
+  DB_traz.unshift({
+    tipo:'o', evento:'Nuevo pedido registrado',
+    desc:`${newId} · ${DB_clientes.find(x=>x.id===cliId)?.nombre} · $${total.toFixed(2)} · stock PT reservado automáticamente`,
+    tiempo:'Hace un momento'
+  });
+
+  renderPedidosTable();
+  renderTrazabilidad();
+  closeModal('modalPedido');
+  buildOrderLines();
+}
+
+function saveCobro() {
+  DB_traz.unshift({tipo:'g', evento:'Pago registrado', desc:'Cobro registrado y aplicado a factura.', tiempo:'Hace un momento'});
+  renderTrazabilidad();
+  closeModal('modalCobro');
+}
+
+function saveCompra() {
+  const mpSel = document.getElementById('compraMP');
+  const cant  = parseInt(document.getElementById('compraCant').value) || 0;
+  if (!mpSel || cant <= 0) { alert('Completa los datos de la compra.'); return; }
+  const mp = DB_mp.find(m => m.cod === mpSel.value);
+  if (mp) {
+    mp.stock += cant;
+    DB_traz.unshift({
+      tipo:'g', evento:'Compra de MP recibida',
+      desc:`${mp.nombre} · +${cant} ${mp.unidad} · stock actualizado a ${mp.stock}`,
+      tiempo:'Hace un momento'
+    });
+    renderMPTable();
+    renderMpStocks();
+    renderTrazabilidad();
+  }
+  closeModal('modalCompra');
+}
+
+function saveProducto() {
+  renderCatalogoTable();
+  renderCatKpis();
+  closeModal('modalProducto');
+}
+
+function saveDespacho() {
+  DB_traz.unshift({tipo:'o', evento:'Ruta de despacho generada', desc:'Nueva ruta optimizada creada con algoritmo Nearest Neighbor.', tiempo:'Hace un momento'});
+  renderTrazabilidad();
+  renderDespachoTimeline();
+  closeModal('modalDespacho');
+}
+
+function saveAjustePT() {
+  DB_traz.unshift({tipo:'g', evento:'Ajuste de stock PT', desc:'Inventario de producto terminado ajustado manualmente.', tiempo:'Hace un momento'});
+  renderTrazabilidad();
+  renderPTTable();
+  closeModal('modalAjustePT');
+}
+
+</script>
+
+</body>
+</html>
