@@ -1,6 +1,8 @@
+// src/middleware/auth.js
 const jwt = require('jsonwebtoken');
 const { query } = require('../config/db');
 
+// Verificar token JWT
 const auth = async (req, res, next) => {
   try {
     const header = req.headers.authorization;
@@ -10,6 +12,7 @@ const auth = async (req, res, next) => {
     const token = header.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    // Verificar que el usuario sigue activo
     const result = await query(
       `SELECT u.id, u.nombre, u.email, u.activo, r.nombre as rol
        FROM usuarios u JOIN roles r ON r.id = u.rol_id
@@ -26,9 +29,14 @@ const auth = async (req, res, next) => {
   }
 };
 
+// Control de acceso por rol
 const roles = (...rolesPermitidos) => (req, res, next) => {
   if (!rolesPermitidos.includes(req.user.rol)) {
-    return res.status(403).json({ error: 'No tienes permiso para esta acción' });
+    return res.status(403).json({
+      error: 'No tienes permiso para esta acción',
+      tu_rol: req.user.rol,
+      roles_requeridos: rolesPermitidos
+    });
   }
   next();
 };
