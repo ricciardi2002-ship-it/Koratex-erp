@@ -1,3 +1,4 @@
+# railway.toml — Configuración de despliegue en Railway
 [build]
 builder = "nixpacks"
 
@@ -5,3 +6,6 @@ builder = "nixpacks"
 startCommand = "npm start"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
+
+[environments.production.variables]
+NODE_ENV = "production"

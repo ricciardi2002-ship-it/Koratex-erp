@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -23,352 +22,352 @@
   --border:     #2e3d52;
   --border-l:   #3d5068;
 
-/* Acentos */
-–orange:     #f07030;
-–orange-d:   #d05820;
-–orange-l:   rgba(240,112,48,.12);
-–cyan:       #30b8d0;
-–cyan-l:     rgba(48,184,208,.1);
-–green:      #28d98a;
-–green-l:    rgba(40,217,138,.1);
-–red:        #e84040;
-–red-l:      rgba(232,64,64,.1);
-–amber:      #f0b030;
-–amber-l:    rgba(240,176,48,.1);
+  /* Acentos */
+  --orange:     #f07030;
+  --orange-d:   #d05820;
+  --orange-l:   rgba(240,112,48,.12);
+  --cyan:       #30b8d0;
+  --cyan-l:     rgba(48,184,208,.1);
+  --green:      #28d98a;
+  --green-l:    rgba(40,217,138,.1);
+  --red:        #e84040;
+  --red-l:      rgba(232,64,64,.1);
+  --amber:      #f0b030;
+  --amber-l:    rgba(240,176,48,.1);
 
-/* Texto */
-–t1: #e8eef8;
-–t2: #8fa0b8;
-–t3: #4d6080;
-–t4: #2a3850;
+  /* Texto */
+  --t1: #e8eef8;
+  --t2: #8fa0b8;
+  --t3: #4d6080;
+  --t4: #2a3850;
 
-–radius:    10px;
-–radius-lg: 16px;
-–shadow:    0 4px 24px rgba(0,0,0,.4);
-–shadow-lg: 0 12px 48px rgba(0,0,0,.5);
+  --radius:    10px;
+  --radius-lg: 16px;
+  --shadow:    0 4px 24px rgba(0,0,0,.4);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,.5);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-font-family: ‘Barlow’, sans-serif;
-background: var(–ink);
-color: var(–t1);
-min-height: 100vh;
-overflow-x: hidden;
+  font-family: 'Barlow', sans-serif;
+  background: var(--ink);
+  color: var(--t1);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(–ink-2); }
-::-webkit-scrollbar-thumb { background: var(–wire); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(–t3); }
+::-webkit-scrollbar-track { background: var(--ink-2); }
+::-webkit-scrollbar-thumb { background: var(--wire); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--t3); }
 
 /* ══════════════════════════════
-LOGIN SCREEN
+   LOGIN SCREEN
 ══════════════════════════════ */
 .login-screen {
-min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-background:
-repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.02) 40px),
-repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.02) 40px),
-var(–ink);
-padding: 20px;
-position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.02) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.02) 40px),
+    var(--ink);
+  padding: 20px;
+  position: relative;
 }
 .login-screen::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0; bottom: 0;
-background: radial-gradient(ellipse at 20% 50%, rgba(240,112,48,.08) 0%, transparent 60%),
-radial-gradient(ellipse at 80% 50%, rgba(48,184,208,.06) 0%, transparent 60%);
-pointer-events: none;
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(240,112,48,.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 50%, rgba(48,184,208,.06) 0%, transparent 60%);
+  pointer-events: none;
 }
 .login-card {
-background: var(–ink-2);
-border: 1px solid var(–border);
-border-radius: 20px;
-padding: 48px 44px;
-width: 100%;
-max-width: 440px;
-box-shadow: var(–shadow-lg);
-position: relative;
-z-index: 1;
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 44px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  z-index: 1;
 }
 .login-card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 24px; right: 24px; height: 3px;
-background: linear-gradient(90deg, transparent, var(–orange), var(–cyan), transparent);
-border-radius: 0 0 2px 2px;
+  content: '';
+  position: absolute;
+  top: 0; left: 24px; right: 24px; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--orange), var(--cyan), transparent);
+  border-radius: 0 0 2px 2px;
 }
 .login-brand {
-display: flex;
-align-items: center;
-gap: 14px;
-margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
 }
 .brand-icon {
-width: 52px; height: 52px;
-background: linear-gradient(135deg, var(–orange), #c04020);
-border-radius: 13px;
-display: flex; align-items: center; justify-content: center;
-font-size: 26px;
-box-shadow: 0 6px 20px rgba(240,112,48,.4);
-flex-shrink: 0;
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, var(--orange), #c04020);
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 6px 20px rgba(240,112,48,.4);
+  flex-shrink: 0;
 }
 .brand-name {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 32px;
-font-weight: 900;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(–t1);
-line-height: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--t1);
+  line-height: 1;
 }
 .brand-tagline {
-font-size: 11px;
-color: var(–t3);
-letter-spacing: 1.5px;
-text-transform: uppercase;
-margin-top: 2px;
+  font-size: 11px;
+  color: var(--t3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 .login-sep {
-height: 1px;
-background: linear-gradient(90deg, transparent, var(–border), transparent);
-margin: 24px 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 24px 0;
 }
 .login-subtitle {
-font-size: 13px;
-color: var(–t3);
-margin-bottom: 20px;
-letter-spacing: .5px;
-text-transform: uppercase;
-font-weight: 600;
+  font-size: 13px;
+  color: var(--t3);
+  margin-bottom: 20px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 .role-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 .role-btn {
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 14px 12px;
-cursor: pointer;
-transition: all .2s;
-text-align: center;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 6px;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 .role-btn:hover {
-border-color: var(–orange);
-background: var(–orange-l);
-transform: translateY(-2px);
-box-shadow: 0 6px 20px rgba(240,112,48,.2);
+  border-color: var(--orange);
+  background: var(--orange-l);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240,112,48,.2);
 }
 .role-btn .role-icon { font-size: 22px; }
 .role-btn .role-name {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 14px;
-font-weight: 700;
-letter-spacing: .5px;
-text-transform: uppercase;
-color: var(–t1);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--t1);
 }
-.role-btn .role-desc { font-size: 11px; color: var(–t3); }
+.role-btn .role-desc { font-size: 11px; color: var(--t3); }
 
 /* ══════════════════════════════
-APP LAYOUT
+   APP LAYOUT
 ══════════════════════════════ */
 .app { display: flex; min-height: 100vh; }
 
 /* ── SIDEBAR ── */
 .sidebar {
-width: 230px;
-min-height: 100vh;
-background: var(–ink-2);
-border-right: 1px solid var(–border);
-display: flex;
-flex-direction: column;
-position: fixed;
-top: 0; left: 0;
-z-index: 200;
-transition: transform .3s cubic-bezier(.4,0,.2,1);
+  width: 230px;
+  min-height: 100vh;
+  background: var(--ink-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 200;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
 }
 .sidebar-brand {
-padding: 20px 18px 16px;
-border-bottom: 1px solid var(–border);
-display: flex;
-align-items: center;
-gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .sb-icon {
-width: 34px; height: 34px;
-background: linear-gradient(135deg, var(–orange), #c04020);
-border-radius: 9px;
-display: flex; align-items: center; justify-content: center;
-font-size: 16px;
-box-shadow: 0 3px 10px rgba(240,112,48,.35);
-flex-shrink: 0;
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--orange), #c04020);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 3px 10px rgba(240,112,48,.35);
+  flex-shrink: 0;
 }
 .sb-name {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 20px;
-font-weight: 900;
-letter-spacing: 2px;
-text-transform: uppercase;
-line-height: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1;
 }
 .sb-name small {
-display: block;
-font-size: 9px;
-color: var(–t3);
-letter-spacing: 1.5px;
-font-family: ‘Barlow’, sans-serif;
-font-weight: 500;
-margin-top: 2px;
+  display: block;
+  font-size: 9px;
+  color: var(--t3);
+  letter-spacing: 1.5px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .sidebar-nav { flex: 1; padding: 8px 8px; overflow-y: auto; }
 .nav-group-label {
-font-size: 9px;
-font-weight: 700;
-letter-spacing: 1.8px;
-text-transform: uppercase;
-color: var(–t4);
-padding: 14px 10px 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--t4);
+  padding: 14px 10px 5px;
 }
 .nav-item {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 9px 12px;
-border-radius: 8px;
-cursor: pointer;
-transition: all .15s;
-font-size: 13px;
-font-weight: 500;
-color: var(–t2);
-margin-bottom: 1px;
-position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .15s;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--t2);
+  margin-bottom: 1px;
+  position: relative;
 }
-.nav-item:hover { background: var(–ink-3); color: var(–t1); }
+.nav-item:hover { background: var(--ink-3); color: var(--t1); }
 .nav-item.active {
-background: var(–orange-l);
-color: var(–orange);
-font-weight: 600;
+  background: var(--orange-l);
+  color: var(--orange);
+  font-weight: 600;
 }
 .nav-item.active::before {
-content: ‘’;
-position: absolute;
-left: 0; top: 6px; bottom: 6px;
-width: 3px;
-background: var(–orange);
-border-radius: 0 2px 2px 0;
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  background: var(--orange);
+  border-radius: 0 2px 2px 0;
 }
 .nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
 .nav-badge {
-margin-left: auto;
-background: var(–red);
-color: #fff;
-font-size: 10px;
-font-weight: 700;
-padding: 2px 6px;
-border-radius: 10px;
-min-width: 18px;
-text-align: center;
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
 }
 
 .sidebar-user {
-padding: 12px 14px;
-border-top: 1px solid var(–border);
-display: flex;
-align-items: center;
-gap: 10px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .s-av {
-width: 34px; height: 34px;
-border-radius: 9px;
-background: linear-gradient(135deg, var(–orange), var(–cyan));
-display: flex; align-items: center; justify-content: center;
-font-size: 13px; font-weight: 800;
-color: var(–ink);
-font-family: ‘Barlow Condensed’, sans-serif;
-flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--orange), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+  color: var(--ink);
+  font-family: 'Barlow Condensed', sans-serif;
+  flex-shrink: 0;
 }
-.s-info .s-name { font-size: 13px; font-weight: 600; color: var(–t1); }
-.s-info .s-role { font-size: 10px; color: var(–t3); text-transform: uppercase; letter-spacing: .5px; }
+.s-info .s-name { font-size: 13px; font-weight: 600; color: var(--t1); }
+.s-info .s-role { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: .5px; }
 .s-logout {
-margin-left: auto;
-background: none;
-border: none;
-color: var(–t3);
-cursor: pointer;
-font-size: 16px;
-padding: 4px;
-border-radius: 6px;
-transition: all .15s;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--t3);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all .15s;
 }
-.s-logout:hover { background: var(–red-l); color: var(–red); }
+.s-logout:hover { background: var(--red-l); color: var(--red); }
 
 /* ── MAIN ── */
 .main { margin-left: 230px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
 /* ── TOPBAR ── */
 .topbar {
-height: 56px;
-background: var(–ink-2);
-border-bottom: 1px solid var(–border);
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0 24px;
-position: sticky; top: 0; z-index: 100;
+  height: 56px;
+  background: var(--ink-2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky; top: 0; z-index: 100;
 }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
-.menu-btn { display: none; background: none; border: none; color: var(–t2); font-size: 20px; cursor: pointer; }
+.menu-btn { display: none; background: none; border: none; color: var(--t2); font-size: 20px; cursor: pointer; }
 .page-crumb {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 18px;
-font-weight: 700;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–t1);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t1);
 }
-.page-crumb span { color: var(–orange); }
+.page-crumb span { color: var(--orange); }
 .topbar-right { display: flex; align-items: center; gap: 10px; }
-.topbar-clock { font-size: 12px; color: var(–t3); font-family: ‘Barlow Condensed’, sans-serif; letter-spacing: 1px; }
+.topbar-clock { font-size: 12px; color: var(--t3); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; }
 .alert-btn {
-position: relative;
-width: 34px; height: 34px;
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 8px;
-display: flex; align-items: center; justify-content: center;
-cursor: pointer;
-font-size: 16px;
-transition: all .15s;
+  position: relative;
+  width: 34px; height: 34px;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all .15s;
 }
-.alert-btn:hover { border-color: var(–orange); background: var(–orange-l); }
+.alert-btn:hover { border-color: var(--orange); background: var(--orange-l); }
 .alert-dot {
-position: absolute;
-top: 6px; right: 7px;
-width: 7px; height: 7px;
-background: var(–red);
-border-radius: 50%;
-border: 1.5px solid var(–ink-2);
+  position: absolute;
+  top: 6px; right: 7px;
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-2);
 }
 
 /* ══════════════════════════════
-PAGES
+   PAGES
 ══════════════════════════════ */
 .page { display: none; padding: 24px; animation: fadeUp .2s ease; }
 .page.active { display: block; }
@@ -376,123 +375,123 @@ PAGES
 
 /* ── PAGE HEADER ── */
 .ph {
-display: flex;
-align-items: flex-start;
-justify-content: space-between;
-flex-wrap: wrap;
-gap: 14px;
-margin-bottom: 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 .ph-text h2 {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 26px;
-font-weight: 800;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–t1);
-line-height: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t1);
+  line-height: 1;
 }
-.ph-text p { font-size: 13px; color: var(–t3); margin-top: 4px; }
+.ph-text p { font-size: 13px; color: var(--t3); margin-top: 4px; }
 .ph-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* ══════════════════════════════
-COMPONENTS
+   COMPONENTS
 ══════════════════════════════ */
 
 /* ── BUTTONS ── */
 .btn {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 8px 16px;
-border-radius: 8px;
-font-size: 13px;
-font-weight: 600;
-cursor: pointer;
-border: none;
-font-family: ‘Barlow’, sans-serif;
-transition: all .15s;
-letter-spacing: .2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: 'Barlow', sans-serif;
+  transition: all .15s;
+  letter-spacing: .2px;
 }
 .btn-primary {
-background: var(–orange);
-color: var(–ink);
-box-shadow: 0 3px 12px rgba(240,112,48,.35);
+  background: var(--orange);
+  color: var(--ink);
+  box-shadow: 0 3px 12px rgba(240,112,48,.35);
 }
 .btn-primary:hover { background: #ff8040; box-shadow: 0 5px 18px rgba(240,112,48,.5); transform: translateY(-1px); }
 .btn-ghost {
-background: transparent;
-color: var(–t2);
-border: 1px solid var(–border);
+  background: transparent;
+  color: var(--t2);
+  border: 1px solid var(--border);
 }
-.btn-ghost:hover { background: var(–ink-3); color: var(–t1); border-color: var(–border-l); }
-.btn-cyan { background: var(–cyan); color: var(–ink); }
+.btn-ghost:hover { background: var(--ink-3); color: var(--t1); border-color: var(--border-l); }
+.btn-cyan { background: var(--cyan); color: var(--ink); }
 .btn-cyan:hover { background: #48d8f0; }
-.btn-green { background: var(–green); color: var(–ink); }
-.btn-red { background: var(–red-l); color: var(–red); border: 1px solid rgba(232,64,64,.3); }
-.btn-red:hover { background: var(–red); color: #fff; }
+.btn-green { background: var(--green); color: var(--ink); }
+.btn-red { background: var(--red-l); color: var(--red); border: 1px solid rgba(232,64,64,.3); }
+.btn-red:hover { background: var(--red); color: #fff; }
 .btn-sm { padding: 5px 11px; font-size: 12px; border-radius: 6px; }
 .btn-xs { padding: 3px 8px; font-size: 11px; border-radius: 5px; }
 
 /* ── KPI CARDS ── */
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin-bottom: 22px; }
 .kpi {
-background: var(–ink-2);
-border: 1px solid var(–border);
-border-radius: var(–radius-lg);
-padding: 18px;
-position: relative;
-overflow: hidden;
-transition: transform .2s, box-shadow .2s;
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
 }
-.kpi:hover { transform: translateY(-2px); box-shadow: var(–shadow); }
+.kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .kpi::after {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
 }
-.kpi.ko::after { background: linear-gradient(90deg, var(–orange), transparent); }
-.kpi.kc::after { background: linear-gradient(90deg, var(–cyan), transparent); }
-.kpi.kg::after { background: linear-gradient(90deg, var(–green), transparent); }
-.kpi.kr::after { background: linear-gradient(90deg, var(–red), transparent); }
-.kpi.ka::after { background: linear-gradient(90deg, var(–amber), transparent); }
+.kpi.ko::after { background: linear-gradient(90deg, var(--orange), transparent); }
+.kpi.kc::after { background: linear-gradient(90deg, var(--cyan), transparent); }
+.kpi.kg::after { background: linear-gradient(90deg, var(--green), transparent); }
+.kpi.kr::after { background: linear-gradient(90deg, var(--red), transparent); }
+.kpi.ka::after { background: linear-gradient(90deg, var(--amber), transparent); }
 .kpi-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
-.kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(–t3); }
+.kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--t3); }
 .kpi-icon { font-size: 20px; opacity: .7; }
 .kpi-value {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 32px;
-font-weight: 800;
-line-height: 1;
-color: var(–t1);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--t1);
 }
-.kpi-sub { font-size: 12px; color: var(–t3); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+.kpi-sub { font-size: 12px; color: var(--t3); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
 .kpi-trend { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
-.kpi-trend.up { background: var(–green-l); color: var(–green); }
-.kpi-trend.dn { background: var(–red-l); color: var(–red); }
-.kpi-trend.nt { background: var(–amber-l); color: var(–amber); }
+.kpi-trend.up { background: var(--green-l); color: var(--green); }
+.kpi-trend.dn { background: var(--red-l); color: var(--red); }
+.kpi-trend.nt { background: var(--amber-l); color: var(--amber); }
 
 /* ── CARDS ── */
 .card {
-background: var(–ink-2);
-border: 1px solid var(–border);
-border-radius: var(–radius-lg);
-padding: 20px;
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
 }
 .card-title {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 15px;
-font-weight: 700;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–t1);
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
-.card-title-sub { font-size: 11px; color: var(–t3); text-transform: none; letter-spacing: 0; font-weight: 400; }
+.card-title-sub { font-size: 11px; color: var(--t3); text-transform: none; letter-spacing: 0; font-weight: 400; }
 
 /* ── GRIDS ── */
 .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -502,411 +501,409 @@ margin-bottom: 16px;
 
 /* ── TABLES ── */
 .table-wrap {
-background: var(–ink-2);
-border: 1px solid var(–border);
-border-radius: var(–radius-lg);
-overflow: hidden;
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 .table-toolbar {
-padding: 14px 18px;
-border-bottom: 1px solid var(–border);
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 12px;
-flex-wrap: wrap;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .table-title {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 15px;
-font-weight: 700;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–t1);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t1);
 }
 .search-box {
-display: flex;
-align-items: center;
-gap: 7px;
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 7px;
-padding: 6px 11px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 11px;
 }
 .search-box input {
-background: none;
-border: none;
-outline: none;
-font-size: 12.5px;
-color: var(–t1);
-font-family: ‘Barlow’, sans-serif;
-width: 150px;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 12.5px;
+  color: var(--t1);
+  font-family: 'Barlow', sans-serif;
+  width: 150px;
 }
-.search-box input::placeholder { color: var(–t3); }
+.search-box input::placeholder { color: var(--t3); }
 
 table { width: 100%; border-collapse: collapse; }
 thead th {
-background: var(–ink-3);
-padding: 10px 14px;
-font-size: 10.5px;
-font-weight: 700;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–t3);
-text-align: left;
+  background: var(--ink-3);
+  padding: 10px 14px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t3);
+  text-align: left;
 }
-tbody tr { border-top: 1px solid var(–border); transition: background .1s; }
+tbody tr { border-top: 1px solid var(--border); transition: background .1s; }
 tbody tr:hover { background: rgba(255,255,255,.02); }
-tbody td { padding: 11px 14px; font-size: 13px; color: var(–t1); }
+tbody td { padding: 11px 14px; font-size: 13px; color: var(--t1); }
 
 /* ── BADGES ── */
 .badge {
-display: inline-flex;
-align-items: center;
-gap: 5px;
-padding: 3px 9px;
-border-radius: 5px;
-font-size: 11px;
-font-weight: 700;
-letter-spacing: .3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .3px;
 }
-.badge-g { background: var(–green-l); color: var(–green); }
-.badge-r { background: var(–red-l); color: var(–red); }
-.badge-a { background: var(–amber-l); color: var(–amber); }
-.badge-b { background: var(–cyan-l); color: var(–cyan); }
-.badge-o { background: var(–orange-l); color: var(–orange); }
-.badge-s { background: rgba(143,160,184,.1); color: var(–t2); }
+.badge-g { background: var(--green-l); color: var(--green); }
+.badge-r { background: var(--red-l); color: var(--red); }
+.badge-a { background: var(--amber-l); color: var(--amber); }
+.badge-b { background: var(--cyan-l); color: var(--cyan); }
+.badge-o { background: var(--orange-l); color: var(--orange); }
+.badge-s { background: rgba(143,160,184,.1); color: var(--t2); }
 
 /* ── SEMÁFORO ── */
 .semaforo {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-font-size: 12px;
-font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
 }
 .sem-dot {
-width: 9px; height: 9px;
-border-radius: 50%;
-flex-shrink: 0;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.sem-ok .sem-dot { background: var(–green); box-shadow: 0 0 6px var(–green); }
-.sem-warn .sem-dot { background: var(–amber); box-shadow: 0 0 6px var(–amber); }
-.sem-crit .sem-dot { background: var(–red); box-shadow: 0 0 6px var(–red); animation: pulse 1.5s infinite; }
+.sem-ok .sem-dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.sem-warn .sem-dot { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.sem-crit .sem-dot { background: var(--red); box-shadow: 0 0 6px var(--red); animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
-.sem-ok { color: var(–green); }
-.sem-warn { color: var(–amber); }
-.sem-crit { color: var(–red); }
+.sem-ok { color: var(--green); }
+.sem-warn { color: var(--amber); }
+.sem-crit { color: var(--red); }
 
 /* ── PROGRESS BARS ── */
 .prog-wrap { margin-bottom: 12px; }
 .prog-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
-.prog-bar { height: 7px; background: var(–ink-3); border-radius: 4px; overflow: hidden; }
+.prog-bar { height: 7px; background: var(--ink-3); border-radius: 4px; overflow: hidden; }
 .prog-fill { height: 100%; border-radius: 4px; transition: width .7s ease; }
 
 /* ── MODAL ── */
 .modal-overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,.7);
-backdrop-filter: blur(4px);
-z-index: 600;
-align-items: center;
-justify-content: center;
-padding: 16px;
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(4px);
+  z-index: 600;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
 }
 .modal-overlay.open { display: flex; }
 .modal {
-background: var(–ink-2);
-border: 1px solid var(–border-l);
-border-radius: 18px;
-width: 100%;
-max-width: 780px;
-max-height: 92vh;
-overflow-y: auto;
-box-shadow: 0 32px 80px rgba(0,0,0,.6);
-animation: modalIn .2s cubic-bezier(.4,0,.2,1);
+  background: var(--ink-2);
+  border: 1px solid var(--border-l);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 780px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0,0,0,.6);
+  animation: modalIn .2s cubic-bezier(.4,0,.2,1);
 }
 .modal.modal-lg { max-width: 1000px; }
 @keyframes modalIn { from { opacity:0; transform: scale(.95) translateY(10px); } to { opacity:1; transform: scale(1) translateY(0); } }
 .modal-header {
-padding: 20px 24px 16px;
-border-bottom: 1px solid var(–border);
-display: flex;
-align-items: center;
-justify-content: space-between;
-position: sticky;
-top: 0;
-background: var(–ink-2);
-z-index: 5;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--ink-2);
+  z-index: 5;
 }
 .modal-header h3 {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 18px;
-font-weight: 800;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–t1);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t1);
 }
 .modal-close {
-width: 30px; height: 30px;
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 7px;
-color: var(–t2);
-font-size: 16px;
-cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-transition: all .15s;
+  width: 30px; height: 30px;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--t2);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
 }
-.modal-close:hover { background: var(–red-l); color: var(–red); }
+.modal-close:hover { background: var(--red-l); color: var(--red); }
 .modal-body { padding: 24px; }
 
 /* ── FORMS ── */
 .form-section { margin-bottom: 20px; }
 .form-section-title {
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 1.5px;
-text-transform: uppercase;
-color: var(–t3);
-margin-bottom: 12px;
-padding-bottom: 7px;
-border-bottom: 1px solid var(–border);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--border);
 }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
 .fg { display: flex; flex-direction: column; gap: 5px; }
 .fg.full { grid-column: 1/-1; }
 label {
-font-size: 11px;
-font-weight: 700;
-letter-spacing: .5px;
-text-transform: uppercase;
-color: var(–t3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--t3);
 }
 input, select, textarea {
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 8px;
-color: var(–t1);
-padding: 9px 12px;
-font-size: 13px;
-font-family: ‘Barlow’, sans-serif;
-outline: none;
-transition: all .15s;
-width: 100%;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--t1);
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: 'Barlow', sans-serif;
+  outline: none;
+  transition: all .15s;
+  width: 100%;
 }
 input:focus, select:focus, textarea:focus {
-border-color: var(–orange);
-background: var(–ink-2);
-box-shadow: 0 0 0 3px rgba(240,112,48,.1);
+  border-color: var(--orange);
+  background: var(--ink-2);
+  box-shadow: 0 0 0 3px rgba(240,112,48,.1);
 }
 textarea { resize: vertical; min-height: 70px; }
 .form-actions {
-display: flex;
-gap: 10px;
-justify-content: flex-end;
-margin-top: 20px;
-padding-top: 16px;
-border-top: 1px solid var(–border);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 /* ── ORDER LINES ── */
 .lines-head {
-display: grid;
-grid-template-columns: 28px 1fr 120px 80px 100px 100px 34px;
-gap: 6px;
-padding: 7px 8px;
-background: var(–ink-3);
-border-radius: 7px;
-font-size: 10px;
-font-weight: 700;
-letter-spacing: .8px;
-text-transform: uppercase;
-color: var(–t3);
-margin-bottom: 5px;
+  display: grid;
+  grid-template-columns: 28px 1fr 120px 80px 100px 100px 34px;
+  gap: 6px;
+  padding: 7px 8px;
+  background: var(--ink-3);
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 5px;
 }
 .order-line {
-display: grid;
-grid-template-columns: 28px 1fr 120px 80px 100px 100px 34px;
-gap: 6px;
-align-items: center;
-padding: 5px 7px;
-border-radius: 7px;
-border: 1px solid var(–border);
-background: var(–ink-3);
-margin-bottom: 5px;
-transition: border-color .15s;
+  display: grid;
+  grid-template-columns: 28px 1fr 120px 80px 100px 100px 34px;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 7px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--ink-3);
+  margin-bottom: 5px;
+  transition: border-color .15s;
 }
-.order-line:hover { border-color: var(–orange); }
+.order-line:hover { border-color: var(--orange); }
 .order-line.empty { opacity: .35; }
 .order-line select, .order-line input {
-padding: 6px 9px;
-font-size: 12px;
-border-radius: 6px;
-border: 1px solid transparent;
+  padding: 6px 9px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
 }
-.order-line select:focus, .order-line input:focus { border-color: var(–orange); box-shadow: none; }
-.line-num { font-size: 11px; color: var(–t3); font-weight: 700; text-align: center; }
-.line-sub { font-size: 12px; font-weight: 700; color: var(–orange); text-align: right; }
+.order-line select:focus, .order-line input:focus { border-color: var(--orange); box-shadow: none; }
+.line-num { font-size: 11px; color: var(--t3); font-weight: 700; text-align: center; }
+.line-sub { font-size: 12px; font-weight: 700; color: var(--orange); text-align: right; }
 .line-clear {
-width: 26px; height: 26px;
-background: none;
-border: 1px solid var(–border);
-border-radius: 6px;
-color: var(–t3);
-cursor: pointer;
-font-size: 13px;
-display: flex; align-items: center; justify-content: center;
-transition: all .15s;
+  width: 26px; height: 26px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--t3);
+  cursor: pointer;
+  font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
 }
-.line-clear:hover { background: var(–red-l); color: var(–red); border-color: transparent; }
+.line-clear:hover { background: var(--red-l); color: var(--red); border-color: transparent; }
 .order-total-bar {
-background: var(–orange-l);
-border: 1px solid rgba(240,112,48,.25);
-border-radius: 9px;
-padding: 12px 16px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-top: 12px;
+  background: var(--orange-l);
+  border: 1px solid rgba(240,112,48,.25);
+  border-radius: 9px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
 }
-.otb-label { font-size: 12px; color: var(–orange); font-weight: 600; }
+.otb-label { font-size: 12px; color: var(--orange); font-weight: 600; }
 .otb-value {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 26px;
-font-weight: 800;
-color: var(–orange);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--orange);
 }
 
 /* ── MINI BAR CHART ── */
 .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; padding: 10px 0 0; }
 .bc-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .bc-bar { width: 100%; border-radius: 4px 4px 0 0; transition: height .6s ease; min-height: 3px; }
-.bc-label { font-size: 10px; color: var(–t3); text-align: center; }
-.bc-val { font-size: 9px; font-weight: 700; color: var(–t2); }
+.bc-label { font-size: 10px; color: var(--t3); text-align: center; }
+.bc-val { font-size: 9px; font-weight: 700; color: var(--t2); }
 
 /* ── STOCK CARD ── */
 .stock-card {
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 14px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 12px;
-transition: all .15s;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all .15s;
 }
-.stock-card:hover { border-color: var(–border-l); }
+.stock-card:hover { border-color: var(--border-l); }
 .stock-icon { font-size: 26px; flex-shrink: 0; }
 .stock-info { flex: 1; }
-.stock-name { font-weight: 700; font-size: 13px; color: var(–t1); }
-.stock-detail { font-size: 11px; color: var(–t3); margin-top: 2px; }
+.stock-name { font-weight: 700; font-size: 13px; color: var(--t1); }
+.stock-detail { font-size: 11px; color: var(--t3); margin-top: 2px; }
 .stock-right { text-align: right; }
 .stock-qty {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: 22px;
-font-weight: 800;
-line-height: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
 }
-.stock-unit { font-size: 10px; color: var(–t3); }
+.stock-unit { font-size: 10px; color: var(--t3); }
 
 /* ── ZONE MAP ── */
 .zone-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 .zone-card {
-background: var(–ink-3);
-border: 1px solid var(–border);
-border-radius: 9px;
-padding: 12px;
-text-align: center;
-cursor: pointer;
-transition: all .2s;
+  background: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
 }
 .zone-card:hover, .zone-card.sel {
-border-color: var(–cyan);
-background: var(–cyan-l);
+  border-color: var(--cyan);
+  background: var(--cyan-l);
 }
-.zone-name { font-family: ‘Barlow Condensed’, sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(–t1); }
-.zone-count { font-size: 20px; font-weight: 800; font-family: ‘Barlow Condensed’, sans-serif; color: var(–cyan); margin: 3px 0; }
-.zone-km { font-size: 10px; color: var(–t3); }
+.zone-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(--t1); }
+.zone-count { font-size: 20px; font-weight: 800; font-family: 'Barlow Condensed', sans-serif; color: var(--cyan); margin: 3px 0; }
+.zone-km { font-size: 10px; color: var(--t3); }
 
 /* ── TIMELINE ── */
 .timeline { display: flex; flex-direction: column; gap: 0; }
 .tl-item { display: flex; gap: 12px; padding: 10px 0; position: relative; }
-.tl-item:not(:last-child)::after { content:’’; position:absolute; left:11px; top:30px; bottom:0; width:1px; background:var(–border); }
+.tl-item:not(:last-child)::after { content:''; position:absolute; left:11px; top:30px; bottom:0; width:1px; background:var(--border); }
 .tl-dot { width: 23px; height: 23px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; margin-top: 1px; z-index: 1; }
-.tl-dot-g { background: var(–green-l); color: var(–green); border: 1.5px solid var(–green); }
-.tl-dot-o { background: var(–orange-l); color: var(–orange); border: 1.5px solid var(–orange); }
-.tl-dot-r { background: var(–red-l); color: var(–red); border: 1.5px solid var(–red); }
-.tl-dot-s { background: var(–ink-3); color: var(–t3); border: 1.5px solid var(–border); }
+.tl-dot-g { background: var(--green-l); color: var(--green); border: 1.5px solid var(--green); }
+.tl-dot-o { background: var(--orange-l); color: var(--orange); border: 1.5px solid var(--orange); }
+.tl-dot-r { background: var(--red-l); color: var(--red); border: 1.5px solid var(--red); }
+.tl-dot-s { background: var(--ink-3); color: var(--t3); border: 1.5px solid var(--border); }
 .tl-content { flex: 1; }
-.tl-title { font-size: 13px; font-weight: 600; color: var(–t1); }
-.tl-desc { font-size: 11px; color: var(–t3); margin-top: 2px; }
-.tl-time { font-size: 10px; color: var(–t4); margin-top: 3px; font-family: ‘Barlow Condensed’, sans-serif; letter-spacing: .5px; }
+.tl-title { font-size: 13px; font-weight: 600; color: var(--t1); }
+.tl-desc { font-size: 11px; color: var(--t3); margin-top: 2px; }
+.tl-time { font-size: 10px; color: var(--t4); margin-top: 3px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: .5px; }
 
 /* ── DONUT ── */
 .donut-wrap { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
 .donut-legend { display: flex; flex-direction: column; gap: 8px; }
-.dl-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(–t2); }
+.dl-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--t2); }
 .dl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
 /* ── ALERT PANEL ── */
 .alert-panel {
-background: var(–ink-2);
-border: 1px solid var(–border);
-border-radius: var(–radius-lg);
-overflow: hidden;
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 .alert-item {
-display: flex;
-align-items: flex-start;
-gap: 12px;
-padding: 13px 16px;
-border-bottom: 1px solid var(–border);
-transition: background .1s;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
 }
 .alert-item:last-child { border-bottom: none; }
 .alert-item:hover { background: rgba(255,255,255,.015); }
 .alert-ico { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .alert-text { flex: 1; }
-.alert-title { font-size: 13px; font-weight: 600; color: var(–t1); }
-.alert-sub { font-size: 11px; color: var(–t3); margin-top: 2px; }
-.alert-time { font-size: 10px; color: var(–t4); font-family: ‘Barlow Condensed’, sans-serif; letter-spacing: .5px; white-space: nowrap; }
+.alert-title { font-size: 13px; font-weight: 600; color: var(--t1); }
+.alert-sub { font-size: 11px; color: var(--t3); margin-top: 2px; }
+.alert-time { font-size: 10px; color: var(--t4); font-family: 'Barlow Condensed', sans-serif; letter-spacing: .5px; white-space: nowrap; }
 
 /* ── CASH FLOW CHART ── */
 .cf-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
 .cf-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.cf-bar-pos { width: 100%; border-radius: 3px 3px 0 0; background: var(–green); opacity: .8; transition: height .5s; }
-.cf-bar-neg { width: 100%; border-radius: 0 0 3px 3px; background: var(–red); opacity: .7; transition: height .5s; }
-.cf-label { font-size: 9px; color: var(–t3); text-align: center; }
+.cf-bar-pos { width: 100%; border-radius: 3px 3px 0 0; background: var(--green); opacity: .8; transition: height .5s; }
+.cf-bar-neg { width: 100%; border-radius: 0 0 3px 3px; background: var(--red); opacity: .7; transition: height .5s; }
+.cf-label { font-size: 9px; color: var(--t3); text-align: center; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-.sidebar { transform: translateX(-100%); }
-.sidebar.open { transform: translateX(0); }
-.main { margin-left: 0; }
-.g2, .g3, .g2x1, .g1x2 { grid-template-columns: 1fr; }
-.form-grid { grid-template-columns: 1fr; }
-.form-grid.g3 { grid-template-columns: 1fr; }
-.kpi-grid { grid-template-columns: 1fr 1fr; }
-.menu-btn { display: flex !important; }
-.topbar { padding: 0 14px; }
-.page { padding: 14px; }
-.zone-grid { grid-template-columns: 1fr 1fr; }
-.lines-head, .order-line { grid-template-columns: 22px 1fr 90px 60px 80px 80px 28px; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .g2, .g3, .g2x1, .g1x2 { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid.g3 { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .menu-btn { display: flex !important; }
+  .topbar { padding: 0 14px; }
+  .page { padding: 14px; }
+  .zone-grid { grid-template-columns: 1fr 1fr; }
+  .lines-head, .order-line { grid-template-columns: 22px 1fr 90px 60px 80px 80px 28px; }
 }
 .sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 199; }
 .sb-overlay.open { display: block; }
 </style>
-
 </head>
 <body>
 
 <!-- ═══════════════ LOGIN ═══════════════ -->
-
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div class="login-brand">
@@ -948,13 +945,11 @@ transition: background .1s;
 </div>
 
 <!-- ═══════════════ APP ═══════════════ -->
-
 <div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
 
 <div class="app" id="appShell" style="display:none;">
 
   <!-- SIDEBAR -->
-
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <div class="sb-icon">🏗️</div>
@@ -972,7 +967,6 @@ transition: background .1s;
   </nav>
 
   <!-- MAIN -->
-
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
@@ -985,321 +979,318 @@ transition: background .1s;
       </div>
     </div>
 
-```
-<!-- ════ PAGE: DASHBOARD ════ -->
-<div class="page active" id="page-dashboard">
-  <div class="ph">
-    <div class="ph-text">
-      <h2>Dashboard General</h2>
-      <p>Vista ejecutiva · Koratex Productos para Construcción</p>
-    </div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm">📥 Exportar</button>
-      <button class="btn btn-primary btn-sm" onclick="openModal('modalPedido')">＋ Nuevo Pedido</button>
-    </div>
-  </div>
+    <!-- ════ PAGE: DASHBOARD ════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph">
+        <div class="ph-text">
+          <h2>Dashboard General</h2>
+          <p>Vista ejecutiva · Koratex Productos para Construcción</p>
+        </div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm">📥 Exportar</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modalPedido')">＋ Nuevo Pedido</button>
+        </div>
+      </div>
 
-  <div class="kpi-grid">
-    <div class="kpi ko">
-      <div class="kpi-header"><div class="kpi-label">Ventas del Mes</div><div class="kpi-icon">💰</div></div>
-      <div class="kpi-value">$342,800</div>
-      <div class="kpi-sub"><span class="kpi-trend up">↑ 8.4%</span> vs mes anterior</div>
-    </div>
-    <div class="kpi kc">
-      <div class="kpi-header"><div class="kpi-label">Pedidos Activos</div><div class="kpi-icon">📦</div></div>
-      <div class="kpi-value">68</div>
-      <div class="kpi-sub"><span class="kpi-trend nt">14 pendientes despacho</span></div>
-    </div>
-    <div class="kpi kg">
-      <div class="kpi-header"><div class="kpi-label">Cobranza Efectiva</div><div class="kpi-icon">✅</div></div>
-      <div class="kpi-value">78.3%</div>
-      <div class="kpi-sub"><span class="kpi-trend up">↑ 3.1%</span> este trimestre</div>
-    </div>
-    <div class="kpi kr">
-      <div class="kpi-header"><div class="kpi-label">CxC Vencidas</div><div class="kpi-icon">⚠️</div></div>
-      <div class="kpi-value">$48,200</div>
-      <div class="kpi-sub"><span class="kpi-trend dn">12 facturas</span> en mora</div>
-    </div>
-    <div class="kpi ka">
-      <div class="kpi-header"><div class="kpi-label">Stock Crítico MP</div><div class="kpi-icon">🏭</div></div>
-      <div class="kpi-value">3 items</div>
-      <div class="kpi-sub"><span class="kpi-trend dn">Requieren reposición</span></div>
-    </div>
-  </div>
+      <div class="kpi-grid">
+        <div class="kpi ko">
+          <div class="kpi-header"><div class="kpi-label">Ventas del Mes</div><div class="kpi-icon">💰</div></div>
+          <div class="kpi-value">$342,800</div>
+          <div class="kpi-sub"><span class="kpi-trend up">↑ 8.4%</span> vs mes anterior</div>
+        </div>
+        <div class="kpi kc">
+          <div class="kpi-header"><div class="kpi-label">Pedidos Activos</div><div class="kpi-icon">📦</div></div>
+          <div class="kpi-value">68</div>
+          <div class="kpi-sub"><span class="kpi-trend nt">14 pendientes despacho</span></div>
+        </div>
+        <div class="kpi kg">
+          <div class="kpi-header"><div class="kpi-label">Cobranza Efectiva</div><div class="kpi-icon">✅</div></div>
+          <div class="kpi-value">78.3%</div>
+          <div class="kpi-sub"><span class="kpi-trend up">↑ 3.1%</span> este trimestre</div>
+        </div>
+        <div class="kpi kr">
+          <div class="kpi-header"><div class="kpi-label">CxC Vencidas</div><div class="kpi-icon">⚠️</div></div>
+          <div class="kpi-value">$48,200</div>
+          <div class="kpi-sub"><span class="kpi-trend dn">12 facturas</span> en mora</div>
+        </div>
+        <div class="kpi ka">
+          <div class="kpi-header"><div class="kpi-label">Stock Crítico MP</div><div class="kpi-icon">🏭</div></div>
+          <div class="kpi-value">3 items</div>
+          <div class="kpi-sub"><span class="kpi-trend dn">Requieren reposición</span></div>
+        </div>
+      </div>
 
-  <div class="g2x1">
-    <div class="card">
-      <div class="card-title">Ventas Semanales <span class="card-title-sub">últimas 7 semanas</span></div>
-      <div class="bar-chart" id="bcVentas"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Por Tipo de Cliente</div>
-      <div class="donut-wrap">
-        <svg viewBox="0 0 100 100" width="110" height="110">
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--ink-3)" stroke-width="16"/>
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--orange)" stroke-width="16"
-            stroke-dasharray="239" stroke-dashoffset="60" stroke-linecap="butt" transform="rotate(-90 50 50)"/>
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--cyan)" stroke-width="16"
-            stroke-dasharray="239" stroke-dashoffset="167" stroke-linecap="butt" transform="rotate(62 50 50)"/>
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--t3)" stroke-width="16"
-            stroke-dasharray="239" stroke-dashoffset="203" stroke-linecap="butt" transform="rotate(148 50 50)"/>
-          <text x="50" y="46" text-anchor="middle" fill="var(--t1)" font-size="10" font-family="Barlow Condensed" font-weight="800">CLIENTES</text>
-          <text x="50" y="59" text-anchor="middle" fill="var(--t3)" font-size="7">3 tipos</text>
-        </svg>
-        <div class="donut-legend">
-          <div class="dl-item"><div class="dl-dot" style="background:var(--orange)"></div>Oro — 45%</div>
-          <div class="dl-item"><div class="dl-dot" style="background:var(--cyan)"></div>Plata — 36%</div>
-          <div class="dl-item"><div class="dl-dot" style="background:var(--t3)"></div>Bronce — 19%</div>
+      <div class="g2x1">
+        <div class="card">
+          <div class="card-title">Ventas Semanales <span class="card-title-sub">últimas 7 semanas</span></div>
+          <div class="bar-chart" id="bcVentas"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Por Tipo de Cliente</div>
+          <div class="donut-wrap">
+            <svg viewBox="0 0 100 100" width="110" height="110">
+              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--ink-3)" stroke-width="16"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--orange)" stroke-width="16"
+                stroke-dasharray="239" stroke-dashoffset="60" stroke-linecap="butt" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--cyan)" stroke-width="16"
+                stroke-dasharray="239" stroke-dashoffset="167" stroke-linecap="butt" transform="rotate(62 50 50)"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--t3)" stroke-width="16"
+                stroke-dasharray="239" stroke-dashoffset="203" stroke-linecap="butt" transform="rotate(148 50 50)"/>
+              <text x="50" y="46" text-anchor="middle" fill="var(--t1)" font-size="10" font-family="Barlow Condensed" font-weight="800">CLIENTES</text>
+              <text x="50" y="59" text-anchor="middle" fill="var(--t3)" font-size="7">3 tipos</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="dl-item"><div class="dl-dot" style="background:var(--orange)"></div>Oro — 45%</div>
+              <div class="dl-item"><div class="dl-dot" style="background:var(--cyan)"></div>Plata — 36%</div>
+              <div class="dl-item"><div class="dl-dot" style="background:var(--t3)"></div>Bronce — 19%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Alertas del Sistema</div>
+          <div class="alert-panel" id="dashAlerts"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Nivel de Inventario MP</div>
+          <div id="mpStocks"></div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Alertas del Sistema</div>
-      <div class="alert-panel" id="dashAlerts"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Nivel de Inventario MP</div>
-      <div id="mpStocks"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ════ PAGE: PEDIDOS ════ -->
-<div class="page" id="page-pedidos">
-  <div class="ph">
-    <div class="ph-text"><h2>Registro de Pedidos</h2><p>Gestión integral de órdenes de venta</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm">📤 Exportar</button>
-      <button class="btn btn-primary" onclick="openModal('modalPedido')">＋ Nuevo Pedido</button>
-    </div>
-  </div>
-  <div class="table-wrap">
-    <div class="table-toolbar">
-      <div class="table-title">Órdenes de Venta</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <div class="search-box">🔍 <input type="text" placeholder="Buscar pedido..."></div>
-        <select style="padding:6px 10px;font-size:12px;border-radius:7px;width:auto;"><option>Todos</option><option>Pendiente</option><option>Despachado</option><option>Entregado</option></select>
+    <!-- ════ PAGE: PEDIDOS ════ -->
+    <div class="page" id="page-pedidos">
+      <div class="ph">
+        <div class="ph-text"><h2>Registro de Pedidos</h2><p>Gestión integral de órdenes de venta</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm">📤 Exportar</button>
+          <button class="btn btn-primary" onclick="openModal('modalPedido')">＋ Nuevo Pedido</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <div class="table-title">Órdenes de Venta</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div class="search-box">🔍 <input type="text" placeholder="Buscar pedido..."></div>
+            <select style="padding:6px 10px;font-size:12px;border-radius:7px;width:auto;"><option>Todos</option><option>Pendiente</option><option>Despachado</option><option>Entregado</option></select>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>#Pedido</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Items</th><th>Total</th><th>Estado Pago</th><th>Despacho</th><th></th></tr></thead>
+          <tbody id="pedidosTable"></tbody>
+        </table>
       </div>
     </div>
-    <table>
-      <thead><tr><th>#Pedido</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Items</th><th>Total</th><th>Estado Pago</th><th>Despacho</th><th></th></tr></thead>
-      <tbody id="pedidosTable"></tbody>
-    </table>
-  </div>
-</div>
 
-<!-- ════ PAGE: CATÁLOGO ════ -->
-<div class="page" id="page-catalogo">
-  <div class="ph">
-    <div class="ph-text"><h2>Catálogo de Productos</h2><p>Productos para construcción Koratex</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-primary" id="btnAddProd" onclick="openModal('modalProducto')">＋ Agregar Producto</button>
-    </div>
-  </div>
-  <div class="kpi-grid" id="catKpis"></div>
-  <div class="table-wrap">
-    <div class="table-toolbar">
-      <div class="table-title">Productos Registrados</div>
-      <div class="search-box">🔍 <input type="text" placeholder="Buscar..."></div>
-    </div>
-    <table>
-      <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Presentación</th><th>Lista A (Oro)</th><th>Lista B (Plata)</th><th>Lista C (Bronce)</th><th>Stock PT</th><th></th></tr></thead>
-      <tbody id="catalogoTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ════ PAGE: COBRANZA ════ -->
-<div class="page" id="page-cobranza">
-  <div class="ph">
-    <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Control de cuentas por cobrar y mora</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-primary" onclick="openModal('modalCobro')">💳 Registrar Pago</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total por Cobrar</div><div class="kpi-icon">📋</div></div><div class="kpi-value">$186,400</div><div class="kpi-sub">Al corriente + vencido</div></div>
-    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Vencidas</div><div class="kpi-icon">🚨</div></div><div class="kpi-value">$48,200</div><div class="kpi-sub"><span class="kpi-trend dn">12 facturas en mora</span></div></div>
-    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Cobrado este mes</div><div class="kpi-icon">✅</div></div><div class="kpi-value">$138,200</div><div class="kpi-sub"><span class="kpi-trend up">78.3% efectividad</span></div></div>
-    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Ticket Promedio</div><div class="kpi-icon">🎫</div></div><div class="kpi-value">$5,040</div><div class="kpi-sub">Por factura</div></div>
-  </div>
-  <div class="table-wrap">
-    <div class="table-toolbar">
-      <div class="table-title">Cuentas por Cobrar</div>
-      <div class="search-box">🔍 <input type="text" placeholder="Buscar cliente..."></div>
-    </div>
-    <table>
-      <thead><tr><th>Factura</th><th>Cliente</th><th>Tipo</th><th>Emisión</th><th>Vencimiento</th><th>Monto</th><th>Saldo</th><th>Días mora</th><th>Estado</th><th></th></tr></thead>
-      <tbody id="cobranzaTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ════ PAGE: INVENTARIO MP ════ -->
-<div class="page" id="page-inv-mp">
-  <div class="ph">
-    <div class="ph-text"><h2>Inventario de Materia Prima</h2><p>Control de stock y consumo estimado</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm">📊 Analítica</button>
-      <button class="btn btn-primary" onclick="openModal('modalCompra')">＋ Registrar Compra</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total MP en Stock</div><div class="kpi-icon">🏭</div></div><div class="kpi-value">28 ítems</div><div class="kpi-sub">Valuación $124,800</div></div>
-    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Stock Crítico</div><div class="kpi-icon">🔴</div></div><div class="kpi-value">3 ítems</div><div class="kpi-sub"><span class="kpi-trend dn">Bajo punto de reorden</span></div></div>
-    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Stock Advertencia</div><div class="kpi-icon">🟡</div></div><div class="kpi-value">5 ítems</div><div class="kpi-sub">Cerca del límite</div></div>
-    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">OC Pendientes</div><div class="kpi-icon">🛒</div></div><div class="kpi-value">4 OC</div><div class="kpi-sub">$38,600 en tránsito</div></div>
-  </div>
-  <div class="table-wrap">
-    <div class="table-toolbar">
-      <div class="table-title">Materias Primas</div>
-      <div class="search-box">🔍 <input type="text" placeholder="Buscar MP..."></div>
-    </div>
-    <table>
-      <thead><tr><th>Código</th><th>Material</th><th>Unidad</th><th>Stock Actual</th><th>Pto. Reorden</th><th>Stock Máx.</th><th>Consumo Est.</th><th>Proveedor</th><th>Estado</th></tr></thead>
-      <tbody id="mpTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ════ PAGE: INVENTARIO PT ════ -->
-<div class="page" id="page-inv-pt">
-  <div class="ph">
-    <div class="ph-text"><h2>Inventario Producto Terminado</h2><p>Stock disponible y reservas por pedido</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-primary" onclick="openModal('modalAjustePT')">⚙️ Ajuste de Stock</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Stock Disponible</div><div class="kpi-icon">📦</div></div><div class="kpi-value">4,820 u.</div><div class="kpi-sub">Valuación $196,400</div></div>
-    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Reservado</div><div class="kpi-icon">🔒</div></div><div class="kpi-value">840 u.</div><div class="kpi-sub">14 pedidos activos</div></div>
-    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Libre para Venta</div><div class="kpi-icon">✅</div></div><div class="kpi-value">3,980 u.</div><div class="kpi-sub">Disponible inmediato</div></div>
-    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Rotación</div><div class="kpi-icon">🔄</div></div><div class="kpi-value">18.4 días</div><div class="kpi-sub">Ciclo promedio</div></div>
-  </div>
-  <div class="table-wrap">
-    <div class="table-toolbar">
-      <div class="table-title">Producto Terminado</div>
-      <div class="search-box">🔍 <input type="text" placeholder="Buscar producto..."></div>
-    </div>
-    <table>
-      <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Stock Total</th><th>Reservado</th><th>Disponible</th><th>Val. Unitaria</th><th>Estado</th></tr></thead>
-      <tbody id="ptTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ════ PAGE: DESPACHO ════ -->
-<div class="page" id="page-despacho">
-  <div class="ph">
-    <div class="ph-text"><h2>Planificación de Despacho</h2><p>Optimización heurística por zonas geográficas</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-cyan" onclick="runOptimize()">⚡ Optimizar Rutas</button>
-      <button class="btn btn-primary" onclick="openModal('modalDespacho')">＋ Nuevo Despacho</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Pedidos por Despachar</div><div class="kpi-icon">📦</div></div><div class="kpi-value">14</div><div class="kpi-sub">Listos para ruta</div></div>
-    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Vehículos Activos</div><div class="kpi-icon">🚚</div></div><div class="kpi-value">3</div><div class="kpi-sub">2 en ruta · 1 en base</div></div>
-    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Entregas Hoy</div><div class="kpi-icon">✅</div></div><div class="kpi-value">8 / 11</div><div class="kpi-sub"><span class="kpi-trend up">72.7% cumplimiento</span></div></div>
-    <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Zonas Activas</div><div class="kpi-icon">🗺️</div></div><div class="kpi-value">6 zonas</div><div class="kpi-sub">Agrupación óptima</div></div>
-  </div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Agrupación por Zonas <span class="card-title-sub">Heurística clustering</span></div>
-      <div class="zone-grid" id="zoneGrid"></div>
-      <div style="margin-top:12px;padding:10px 12px;background:var(--cyan-l);border:1px solid rgba(48,184,208,.2);border-radius:8px;font-size:11.5px;color:var(--cyan);">
-        <strong>Lógica de optimización:</strong> Los pedidos se agrupan por zona geográfica (clustering por proximidad). Dentro de cada zona, la ruta se ordena por un algoritmo voraz (nearest neighbor) que minimiza la distancia total recorrida.
+    <!-- ════ PAGE: CATÁLOGO ════ -->
+    <div class="page" id="page-catalogo">
+      <div class="ph">
+        <div class="ph-text"><h2>Catálogo de Productos</h2><p>Productos para construcción Koratex</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" id="btnAddProd" onclick="openModal('modalProducto')">＋ Agregar Producto</button>
+        </div>
+      </div>
+      <div class="kpi-grid" id="catKpis"></div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <div class="table-title">Productos Registrados</div>
+          <div class="search-box">🔍 <input type="text" placeholder="Buscar..."></div>
+        </div>
+        <table>
+          <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Presentación</th><th>Lista A (Oro)</th><th>Lista B (Plata)</th><th>Lista C (Bronce)</th><th>Stock PT</th><th></th></tr></thead>
+          <tbody id="catalogoTable"></tbody>
+        </table>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Estado de Despachos</div>
-      <div class="timeline" id="despachoTimeline"></div>
-    </div>
-  </div>
 
-  <div class="table-wrap" style="margin-top:16px;">
-    <div class="table-toolbar">
-      <div class="table-title">Pedidos Pendientes de Despacho</div>
-      <button class="btn btn-ghost btn-sm">📋 Ver todos</button>
-    </div>
-    <table>
-      <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Dirección</th><th>Bultos</th><th>Peso(kg)</th><th>Prioridad</th><th>Estado</th></tr></thead>
-      <tbody id="despachoTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ════ PAGE: FINANZAS ════ -->
-<div class="page" id="page-finanzas">
-  <div class="ph">
-    <div class="ph-text"><h2>Módulo Financiero</h2><p>Flujo de caja · CxC · CxP · Precios</p></div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Flujo Proyectado</div><div class="kpi-icon">📈</div></div><div class="kpi-value">$94,600</div><div class="kpi-sub"><span class="kpi-trend up">Próximos 30 días</span></div></div>
-    <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">CxP Pendientes</div><div class="kpi-icon">🏦</div></div><div class="kpi-value">$67,400</div><div class="kpi-sub">8 proveedores</div></div>
-    <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Margen Bruto</div><div class="kpi-icon">💹</div></div><div class="kpi-value">38.2%</div><div class="kpi-sub"><span class="kpi-trend up">↑ 2.4pp este mes</span></div></div>
-    <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Ciclo Caja (CCE)</div><div class="kpi-icon">🔄</div></div><div class="kpi-value">42 días</div><div class="kpi-sub"><span class="kpi-trend nt">Estable</span></div></div>
-  </div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Flujo de Caja Proyectado <span class="card-title-sub">próx. 8 semanas</span></div>
-      <div class="cf-chart" id="cfChart"></div>
-      <div style="display:flex;gap:12px;margin-top:8px;">
-        <div class="dl-item"><div class="dl-dot" style="background:var(--green)"></div><span style="font-size:11px;color:var(--t2);">Ingresos</span></div>
-        <div class="dl-item"><div class="dl-dot" style="background:var(--red)"></div><span style="font-size:11px;color:var(--t2);">Egresos</span></div>
+    <!-- ════ PAGE: COBRANZA ════ -->
+    <div class="page" id="page-cobranza">
+      <div class="ph">
+        <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Control de cuentas por cobrar y mora</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" onclick="openModal('modalCobro')">💳 Registrar Pago</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total por Cobrar</div><div class="kpi-icon">📋</div></div><div class="kpi-value">$186,400</div><div class="kpi-sub">Al corriente + vencido</div></div>
+        <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Vencidas</div><div class="kpi-icon">🚨</div></div><div class="kpi-value">$48,200</div><div class="kpi-sub"><span class="kpi-trend dn">12 facturas en mora</span></div></div>
+        <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Cobrado este mes</div><div class="kpi-icon">✅</div></div><div class="kpi-value">$138,200</div><div class="kpi-sub"><span class="kpi-trend up">78.3% efectividad</span></div></div>
+        <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Ticket Promedio</div><div class="kpi-icon">🎫</div></div><div class="kpi-value">$5,040</div><div class="kpi-sub">Por factura</div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <div class="table-title">Cuentas por Cobrar</div>
+          <div class="search-box">🔍 <input type="text" placeholder="Buscar cliente..."></div>
+        </div>
+        <table>
+          <thead><tr><th>Factura</th><th>Cliente</th><th>Tipo</th><th>Emisión</th><th>Vencimiento</th><th>Monto</th><th>Saldo</th><th>Días mora</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="cobranzaTable"></tbody>
+        </table>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Listas de Precios</div>
-      <div id="priceListsCard"></div>
-    </div>
-  </div>
 
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Cuentas por Pagar</div>
-      <div class="table-wrap" style="margin-top:0;"><table>
-        <thead><tr><th>Proveedor</th><th>Monto</th><th>Vence</th><th>Estado</th></tr></thead>
-        <tbody id="cxpTable"></tbody>
-      </table></div>
+    <!-- ════ PAGE: INVENTARIO MP ════ -->
+    <div class="page" id="page-inv-mp">
+      <div class="ph">
+        <div class="ph-text"><h2>Inventario de Materia Prima</h2><p>Control de stock y consumo estimado</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm">📊 Analítica</button>
+          <button class="btn btn-primary" onclick="openModal('modalCompra')">＋ Registrar Compra</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Total MP en Stock</div><div class="kpi-icon">🏭</div></div><div class="kpi-value">28 ítems</div><div class="kpi-sub">Valuación $124,800</div></div>
+        <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">Stock Crítico</div><div class="kpi-icon">🔴</div></div><div class="kpi-value">3 ítems</div><div class="kpi-sub"><span class="kpi-trend dn">Bajo punto de reorden</span></div></div>
+        <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Stock Advertencia</div><div class="kpi-icon">🟡</div></div><div class="kpi-value">5 ítems</div><div class="kpi-sub">Cerca del límite</div></div>
+        <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">OC Pendientes</div><div class="kpi-icon">🛒</div></div><div class="kpi-value">4 OC</div><div class="kpi-sub">$38,600 en tránsito</div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <div class="table-title">Materias Primas</div>
+          <div class="search-box">🔍 <input type="text" placeholder="Buscar MP..."></div>
+        </div>
+        <table>
+          <thead><tr><th>Código</th><th>Material</th><th>Unidad</th><th>Stock Actual</th><th>Pto. Reorden</th><th>Stock Máx.</th><th>Consumo Est.</th><th>Proveedor</th><th>Estado</th></tr></thead>
+          <tbody id="mpTable"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title">Margen por Tipo de Producto</div>
-      <div id="marginChart"></div>
+
+    <!-- ════ PAGE: INVENTARIO PT ════ -->
+    <div class="page" id="page-inv-pt">
+      <div class="ph">
+        <div class="ph-text"><h2>Inventario Producto Terminado</h2><p>Stock disponible y reservas por pedido</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" onclick="openModal('modalAjustePT')">⚙️ Ajuste de Stock</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Stock Disponible</div><div class="kpi-icon">📦</div></div><div class="kpi-value">4,820 u.</div><div class="kpi-sub">Valuación $196,400</div></div>
+        <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Reservado</div><div class="kpi-icon">🔒</div></div><div class="kpi-value">840 u.</div><div class="kpi-sub">14 pedidos activos</div></div>
+        <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Libre para Venta</div><div class="kpi-icon">✅</div></div><div class="kpi-value">3,980 u.</div><div class="kpi-sub">Disponible inmediato</div></div>
+        <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Rotación</div><div class="kpi-icon">🔄</div></div><div class="kpi-value">18.4 días</div><div class="kpi-sub">Ciclo promedio</div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <div class="table-title">Producto Terminado</div>
+          <div class="search-box">🔍 <input type="text" placeholder="Buscar producto..."></div>
+        </div>
+        <table>
+          <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Stock Total</th><th>Reservado</th><th>Disponible</th><th>Val. Unitaria</th><th>Estado</th></tr></thead>
+          <tbody id="ptTable"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ════ PAGE: TRAZABILIDAD ════ -->
-<div class="page" id="page-trazabilidad">
-  <div class="ph">
-    <div class="ph-text"><h2>Trazabilidad</h2><p>Historial de movimientos e integraciones entre módulos</p></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Log de Movimientos del Sistema</div>
-    <div class="timeline" id="trazTimeline"></div>
-  </div>
-</div>
+    <!-- ════ PAGE: DESPACHO ════ -->
+    <div class="page" id="page-despacho">
+      <div class="ph">
+        <div class="ph-text"><h2>Planificación de Despacho</h2><p>Optimización heurística por zonas geográficas</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-cyan" onclick="runOptimize()">⚡ Optimizar Rutas</button>
+          <button class="btn btn-primary" onclick="openModal('modalDespacho')">＋ Nuevo Despacho</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Pedidos por Despachar</div><div class="kpi-icon">📦</div></div><div class="kpi-value">14</div><div class="kpi-sub">Listos para ruta</div></div>
+        <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Vehículos Activos</div><div class="kpi-icon">🚚</div></div><div class="kpi-value">3</div><div class="kpi-sub">2 en ruta · 1 en base</div></div>
+        <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Entregas Hoy</div><div class="kpi-icon">✅</div></div><div class="kpi-value">8 / 11</div><div class="kpi-sub"><span class="kpi-trend up">72.7% cumplimiento</span></div></div>
+        <div class="kpi ka"><div class="kpi-header"><div class="kpi-label">Zonas Activas</div><div class="kpi-icon">🗺️</div></div><div class="kpi-value">6 zonas</div><div class="kpi-sub">Agrupación óptima</div></div>
+      </div>
 
-<!-- ════ PAGE: ALERTAS ════ -->
-<div class="page" id="page-alertas">
-  <div class="ph">
-    <div class="ph-text"><h2>Centro de Alertas</h2><p>Notificaciones críticas y advertencias del sistema</p></div>
-  </div>
-  <div class="alert-panel" id="fullAlerts"></div>
-</div>
-```
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Agrupación por Zonas <span class="card-title-sub">Heurística clustering</span></div>
+          <div class="zone-grid" id="zoneGrid"></div>
+          <div style="margin-top:12px;padding:10px 12px;background:var(--cyan-l);border:1px solid rgba(48,184,208,.2);border-radius:8px;font-size:11.5px;color:var(--cyan);">
+            <strong>Lógica de optimización:</strong> Los pedidos se agrupan por zona geográfica (clustering por proximidad). Dentro de cada zona, la ruta se ordena por un algoritmo voraz (nearest neighbor) que minimiza la distancia total recorrida.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Estado de Despachos</div>
+          <div class="timeline" id="despachoTimeline"></div>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:16px;">
+        <div class="table-toolbar">
+          <div class="table-title">Pedidos Pendientes de Despacho</div>
+          <button class="btn btn-ghost btn-sm">📋 Ver todos</button>
+        </div>
+        <table>
+          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Dirección</th><th>Bultos</th><th>Peso(kg)</th><th>Prioridad</th><th>Estado</th></tr></thead>
+          <tbody id="despachoTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: FINANZAS ════ -->
+    <div class="page" id="page-finanzas">
+      <div class="ph">
+        <div class="ph-text"><h2>Módulo Financiero</h2><p>Flujo de caja · CxC · CxP · Precios</p></div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-header"><div class="kpi-label">Flujo Proyectado</div><div class="kpi-icon">📈</div></div><div class="kpi-value">$94,600</div><div class="kpi-sub"><span class="kpi-trend up">Próximos 30 días</span></div></div>
+        <div class="kpi kr"><div class="kpi-header"><div class="kpi-label">CxP Pendientes</div><div class="kpi-icon">🏦</div></div><div class="kpi-value">$67,400</div><div class="kpi-sub">8 proveedores</div></div>
+        <div class="kpi kg"><div class="kpi-header"><div class="kpi-label">Margen Bruto</div><div class="kpi-icon">💹</div></div><div class="kpi-value">38.2%</div><div class="kpi-sub"><span class="kpi-trend up">↑ 2.4pp este mes</span></div></div>
+        <div class="kpi kc"><div class="kpi-header"><div class="kpi-label">Ciclo Caja (CCE)</div><div class="kpi-icon">🔄</div></div><div class="kpi-value">42 días</div><div class="kpi-sub"><span class="kpi-trend nt">Estable</span></div></div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Flujo de Caja Proyectado <span class="card-title-sub">próx. 8 semanas</span></div>
+          <div class="cf-chart" id="cfChart"></div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <div class="dl-item"><div class="dl-dot" style="background:var(--green)"></div><span style="font-size:11px;color:var(--t2);">Ingresos</span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:var(--red)"></div><span style="font-size:11px;color:var(--t2);">Egresos</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Listas de Precios</div>
+          <div id="priceListsCard"></div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Cuentas por Pagar</div>
+          <div class="table-wrap" style="margin-top:0;"><table>
+            <thead><tr><th>Proveedor</th><th>Monto</th><th>Vence</th><th>Estado</th></tr></thead>
+            <tbody id="cxpTable"></tbody>
+          </table></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Margen por Tipo de Producto</div>
+          <div id="marginChart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: TRAZABILIDAD ════ -->
+    <div class="page" id="page-trazabilidad">
+      <div class="ph">
+        <div class="ph-text"><h2>Trazabilidad</h2><p>Historial de movimientos e integraciones entre módulos</p></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Log de Movimientos del Sistema</div>
+        <div class="timeline" id="trazTimeline"></div>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: ALERTAS ════ -->
+    <div class="page" id="page-alertas">
+      <div class="ph">
+        <div class="ph-text"><h2>Centro de Alertas</h2><p>Notificaciones críticas y advertencias del sistema</p></div>
+      </div>
+      <div class="alert-panel" id="fullAlerts"></div>
+    </div>
 
   </div><!-- /main -->
 </div><!-- /app -->
 
 <!-- ═══════ MODAL: NUEVO PEDIDO ═══════ -->
-
 <div class="modal-overlay" id="modalPedido">
   <div class="modal modal-lg">
     <div class="modal-header">
@@ -1335,34 +1326,30 @@ transition: background .1s;
         </div>
       </div>
 
-```
-  <div class="form-section">
-    <div class="form-section-title">Líneas de producto (máx. 15 ítems)</div>
-    <div class="lines-head">
-      <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio Unit.</div><div>Subtotal</div><div></div>
-    </div>
-    <div id="orderLinesContainer"></div>
-    <div class="order-total-bar">
-      <div>
-        <div class="otb-label">Total del Pedido</div>
-        <div id="otbCount" style="font-size:11px;color:var(--orange);opacity:.7;">0 ítems</div>
+      <div class="form-section">
+        <div class="form-section-title">Líneas de producto (máx. 15 ítems)</div>
+        <div class="lines-head">
+          <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio Unit.</div><div>Subtotal</div><div></div>
+        </div>
+        <div id="orderLinesContainer"></div>
+        <div class="order-total-bar">
+          <div>
+            <div class="otb-label">Total del Pedido</div>
+            <div id="otbCount" style="font-size:11px;color:var(--orange);opacity:.7;">0 ítems</div>
+          </div>
+          <div class="otb-value" id="orderGrandTotal">$0.00</div>
+        </div>
       </div>
-      <div class="otb-value" id="orderGrandTotal">$0.00</div>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modalPedido')">Cancelar</button>
+        <button class="btn btn-primary" onclick="savePedido()">💾 Confirmar Pedido</button>
+      </div>
     </div>
-  </div>
-
-  <div class="form-actions">
-    <button class="btn btn-ghost" onclick="closeModal('modalPedido')">Cancelar</button>
-    <button class="btn btn-primary" onclick="savePedido()">💾 Confirmar Pedido</button>
-  </div>
-</div>
-```
-
   </div>
 </div>
 
 <!-- ═══════ MODAL: COBRO ═══════ -->
-
 <div class="modal-overlay" id="modalCobro">
   <div class="modal">
     <div class="modal-header"><h3>💳 Registrar Pago</h3><button class="modal-close" onclick="closeModal('modalCobro')">✕</button></div>
@@ -1385,7 +1372,6 @@ transition: background .1s;
 </div>
 
 <!-- ═══════ MODAL: COMPRA MP ═══════ -->
-
 <div class="modal-overlay" id="modalCompra">
   <div class="modal">
     <div class="modal-header"><h3>🛒 Registrar Compra de MP</h3><button class="modal-close" onclick="closeModal('modalCompra')">✕</button></div>
@@ -1411,7 +1397,6 @@ transition: background .1s;
 </div>
 
 <!-- ═══════ MODAL: PRODUCTO ═══════ -->
-
 <div class="modal-overlay" id="modalProducto">
   <div class="modal">
     <div class="modal-header"><h3>📦 Agregar Producto</h3><button class="modal-close" onclick="closeModal('modalProducto')">✕</button></div>
@@ -1435,7 +1420,6 @@ transition: background .1s;
 </div>
 
 <!-- ═══════ MODAL: DESPACHO ═══════ -->
-
 <div class="modal-overlay" id="modalDespacho">
   <div class="modal">
     <div class="modal-header"><h3>🚚 Programar Despacho</h3><button class="modal-close" onclick="closeModal('modalDespacho')">✕</button></div>
@@ -1466,7 +1450,6 @@ transition: background .1s;
 </div>
 
 <!-- ═══════ MODAL: AJUSTE PT ═══════ -->
-
 <div class="modal-overlay" id="modalAjustePT">
   <div class="modal">
     <div class="modal-header"><h3>⚙️ Ajuste de Stock PT</h3><button class="modal-close" onclick="closeModal('modalAjustePT')">✕</button></div>
@@ -2294,6 +2277,5 @@ function saveAjustePT() {
 }
 
 </script>
-
 </body>
 </html>
