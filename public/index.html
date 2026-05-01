@@ -623,17 +623,19 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
       <div class="login-name" style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;color:#f0f0f0;">KORATEX</div>
     </div>
     <div class="login-sub" style="font-size:10px;letter-spacing:2px;color:#555;">MORTERO SECO, C.A. &nbsp;·&nbsp; J-30805882-3 &nbsp;·&nbsp; SISTEMA ERP</div>
-    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
-      <div class="fg"><label>Usuario</label><input type="email" value="admin@koratex.com" placeholder="usuario@koratex.com"></div>
-      <div class="fg"><label>Contraseña</label><input type="password" value="••••••••"></div>
-    </div>
+    <form onsubmit="event.preventDefault();doLogin();" style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+      <div class="fg"><label>Usuario</label><input id="loginEmail" type="email" value="admin@koratex.com" placeholder="usuario@koratex.com" required></div>
+      <div class="fg"><label>Contraseña</label><input id="loginPass" type="password" value="koratex2025" required></div>
+      <div id="loginError" style="color:var(--red);font-size:12px;text-align:center;min-height:16px;"></div>
+      <button type="submit" id="loginBtn" class="btn btn-primary" style="padding:12px;font-size:14px;letter-spacing:1px;">Entrar al sistema</button>
+    </form>
     <div class="login-sep"></div>
-    <div class="login-label">Acceso rápido por rol</div>
+    <div class="login-label">Acceso rápido</div>
     <div class="role-grid">
-      <button class="role-btn" onclick="enterAs('admin')"><div class="ri">⚙️</div><div class="rn">Admin</div><div class="rd">Acceso total</div></button>
-      <button class="role-btn" onclick="enterAs('comercial')"><div class="ri">📊</div><div class="rn">Comercial</div><div class="rd">Yine · Pedidos</div></button>
-      <button class="role-btn" onclick="enterAs('logistica')"><div class="ri">🚚</div><div class="rn">Logística</div><div class="rd">Despacho</div></button>
-      <button class="role-btn" onclick="enterAs('finanzas')"><div class="ri">💰</div><div class="rn">Finanzas</div><div class="rd">Cobranza</div></button>
+      <button class="role-btn" onclick="quickLogin('admin@koratex.com')"><div class="ri">⚙️</div><div class="rn">Admin</div><div class="rd">Acceso total</div></button>
+      <button class="role-btn" onclick="quickLogin('comercial@koratex.com')"><div class="ri">📊</div><div class="rn">Comercial</div><div class="rd">Pedidos</div></button>
+      <button class="role-btn" onclick="quickLogin('logistica@koratex.com')"><div class="ri">🚚</div><div class="rn">Logística</div><div class="rd">Despacho</div></button>
+      <button class="role-btn" onclick="quickLogin('finanzas@koratex.com')"><div class="ri">💰</div><div class="rn">Finanzas</div><div class="rd">Cobranza</div></button>
     </div>
   </div>
 </div>
@@ -668,7 +670,6 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
       </div>
     </div>
 
-```
 <!-- ══ DASHBOARD ══ -->
 <div class="page active" id="page-dashboard">
   <div class="ph">
@@ -1140,7 +1141,6 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
   <div class="ph"><div class="ph-text"><h2>Trazabilidad</h2><p>Log de movimientos del sistema</p></div></div>
   <div class="card"><div class="card-title">Historial de movimientos</div><div class="tl" id="trazTl"></div></div>
 </div>
-```
 
   </div><!-- /main -->
 </div><!-- /app -->
@@ -1273,64 +1273,153 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 </div>
 
 <script>
+
+/* ════════ API LAYER ════════ */
+let TOKEN = localStorage.getItem('kx_token') || '';
+let currentUser = null;
+
+async function api(path, opts) {
+  opts = opts || {};
+  const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN };
+  if (opts.headers) Object.assign(headers, opts.headers);
+  const r = await fetch('/api' + path, Object.assign({}, opts, { headers: headers }));
+  if (r.status === 401) { logout(); return null; }
+  if (!r.ok) { const e = await r.json().catch(function(){ return {}; }); throw new Error(e.error || r.statusText); }
+  return r.json();
+}
+
+async function loadData() {
+  if (!TOKEN) return;
+  try {
+    const results = await Promise.all([
+      api('/clientes'),
+      api('/productos'),
+      api('/pedidos'),
+      api('/cobranza'),
+      api('/inventario/materias-primas'),
+    ]);
+    const clientes = results[0] || [], productos = results[1] || [],
+          pedidos  = results[2] || [], facturas  = results[3] || [],
+          mp       = results[4] || [];
+
+    DB_clientes = clientes.map(function(c) {
+      return { id: c.id, codigo: c.codigo, nombre: c.nombre,
+        tipo: (c.tipo_nombre || 'bronce').toLowerCase(),
+        zona: c.zona_nombre || 'Centro',
+        diasCredito: parseInt(c.dias_credito) || 15,
+        limCredit: parseFloat(c.limite_credito) || 0,
+        telefono: c.telefono || '', email: c.email || '',
+        rif: c.ruc || '', ciudad: 'Caracas',
+        activo: c.activo !== false,
+        descuento: c.tipo_nombre === 'oro' ? 5 : c.tipo_nombre === 'plata' ? 2 : 0,
+        lista_precios: c.lista_precios || 'C', direccion: c.direccion || '',
+      };
+    });
+
+    DB_productos = productos.map(function(p) {
+      return { id: p.id, cod: p.codigo, nombre: p.nombre, tipo: p.tipo || '',
+        pres: p.presentacion, pA: parseFloat(p.precio_lista_a) || 0,
+        pB: parseFloat(p.precio_lista_b) || 0, pC: parseFloat(p.precio_lista_c) || 0,
+        costo: parseFloat(p.costo_produccion) || 0,
+        stockPT: parseInt(p.stock_total) || 0,
+      };
+    });
+
+    DB_pedidos = pedidos.map(function(p) {
+      var dias = p.fecha_pedido ? Math.floor((Date.now() - new Date(p.fecha_pedido).getTime()) / 86400000) : 0;
+      return { id: p.numero, dbId: p.id, fecha: p.fecha_pedido,
+        clienteId: p.cliente_id, clienteNombre: p.cliente_nombre,
+        items: 0, total: parseFloat(p.total) || 0,
+        estadoPago: p.estado_pago || 'pendiente',
+        estadoDesp: p.estado_despacho || 'pendiente', diasAnt: dias,
+      };
+    });
+
+    DB_facturas = facturas.map(function(f) {
+      var venc = f.fecha_vencimiento ? f.fecha_vencimiento.split('T')[0] : '';
+      var mora = venc && new Date(venc) < new Date() && f.estado !== 'pagada'
+        ? Math.floor((Date.now() - new Date(venc).getTime()) / 86400000) : 0;
+      return { id: f.id, num: f.numero, clienteId: f.cliente_id,
+        clienteNombre: f.cliente_nombre,
+        total: parseFloat(f.monto_total) || 0, pagado: parseFloat(f.monto_pagado) || 0,
+        estado: f.estado === 'pagada' ? 'pagada' : 'pendiente',
+        venc: venc, mora: mora,
+      };
+    });
+
+    DB_mp = mp.map(function(m) {
+      return { id: m.id, cod: m.codigo, nombre: m.nombre, unidad: m.unidad,
+        stock: parseFloat(m.stock_actual) || 0, min: parseFloat(m.stock_minimo) || 0,
+        max: parseFloat(m.stock_maximo) || 0, consumo: parseFloat(m.consumo_mensual) || 1,
+        prov: m.proveedor_nombre || '', icon: '📦',
+      };
+    });
+  } catch(e) { console.error('loadData error:', e); }
+}
+
+/* ════════ AUTH ════════ */
+async function doLogin() {
+  var email = document.getElementById('loginEmail').value;
+  var pass  = document.getElementById('loginPass').value;
+  var errEl = document.getElementById('loginError');
+  var btn   = document.getElementById('loginBtn');
+  errEl.textContent = '';
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  try {
+    var r = await fetch('/api/auth/login', { method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: pass }) });
+    var data = await r.json();
+    if (data.token) {
+      TOKEN = data.token; currentUser = data.user;
+      localStorage.setItem('kx_token', TOKEN);
+      await enterApp();
+    } else { errEl.textContent = data.error || 'Credenciales inválidas'; }
+  } catch(e) { errEl.textContent = 'Error de conexión con el servidor'; }
+  btn.disabled = false; btn.textContent = 'Entrar al sistema';
+}
+
+function quickLogin(email) {
+  document.getElementById('loginEmail').value = email;
+  document.getElementById('loginPass').value  = 'koratex2025';
+  doLogin();
+}
+
+async function enterApp() {
+  var role = currentUser.rol;
+  currentRole = role;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display    = 'flex';
+  var r = ROLES[role] || ROLES['admin'];
+  var initials = (currentUser.nombre || 'U').split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
+  document.getElementById('sbAv').textContent   = initials;
+  document.getElementById('sbName').textContent = currentUser.nombre;
+  document.getElementById('sbRole').textContent = r.label;
+  await loadData();
+  buildNav(role);
+  populateSelects();
+  buildAllLines();
+  renderAll();
+  navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
+  startClock();
+  setInterval(async function(){ await loadData(); renderAll(); }, 60000);
+}
+
 /* ════════════════════════════════════
    KORATEX ERP v2 — DATA & LOGIC
    Optimizado para los 4 problemas reales
 ════════════════════════════════════ */
 
 // ─── DATA ───
-const DB_clientes = [
-  {id:'C001',nombre:'Constructora Andina SAC',  tipo:'oro',   zona:'Norte',  diasCredito:60, lat:-12.020,lng:-77.050, limCredit:100000},
-  {id:'C002',nombre:'Obras Civiles Perú SRL',   tipo:'oro',   zona:'Sur',    diasCredito:60, lat:-12.120,lng:-77.020, limCredit:80000},
-  {id:'C003',nombre:'Ferretería Central',        tipo:'plata', zona:'Centro', diasCredito:30, lat:-12.060,lng:-77.040, limCredit:40000},
-  {id:'C004',nombre:'Distribuidora Roca Fuerte', tipo:'plata', zona:'Este',   diasCredito:30, lat:-12.050,lng:-76.970, limCredit:35000},
-  {id:'C005',nombre:'Maderas y Ferreterías SRL', tipo:'bronce',zona:'Oeste',  diasCredito:15, lat:-12.080,lng:-77.090, limCredit:20000},
-  {id:'C006',nombre:'Acabados Premier',          tipo:'oro',   zona:'Norte',  diasCredito:60, lat:-12.010,lng:-77.060, limCredit:90000},
-  {id:'C007',nombre:'Grupo Constructor Lima',    tipo:'plata', zona:'Sur',    diasCredito:30, lat:-12.130,lng:-77.010, limCredit:45000},
-  {id:'C008',nombre:'Ferretería El Maestro',     tipo:'bronce',zona:'Este',   diasCredito:15, lat:-12.040,lng:-76.980, limCredit:15000},
-];
+let DB_clientes = [];
 
-const DB_productos = [
-  {cod:'KTX-001',nombre:'Estuco Fino Interior',    tipo:'Estuco',            pres:'Bolsa 20kg', pA:28.00,pB:31.50,pC:35.00,costo:16.00,stockPT:480},
-  {cod:'KTX-002',nombre:'Adhesivo Cerámico Plus',  tipo:'Adhesivo',          pres:'Bolsa 25kg', pA:22.50,pB:25.00,pC:28.00,costo:13.00,stockPT:620},
-  {cod:'KTX-003',nombre:'Impermeabilizante Flex',  tipo:'Impermeabilizante', pres:'Balde 20L',  pA:85.00,pB:92.00,pC:99.00,costo:48.00,stockPT:190},
-  {cod:'KTX-004',nombre:'Mortero Estructural',     tipo:'Mortero',           pres:'Bolsa 30kg', pA:32.00,pB:36.00,pC:40.00,costo:18.50,stockPT:340},
-  {cod:'KTX-005',nombre:'Sellador Multiusos',      tipo:'Sellador',          pres:'Galón 4L',   pA:45.00,pB:50.00,pC:56.00,costo:25.00,stockPT:210},
-  {cod:'KTX-006',nombre:'Estuco Exterior Renovado',tipo:'Estuco',            pres:'Bolsa 20kg', pA:31.00,pB:35.00,pC:39.00,costo:17.50,stockPT:280},
-  {cod:'KTX-007',nombre:'Pegamax Porcelanato',     tipo:'Adhesivo',          pres:'Bolsa 25kg', pA:26.00,pB:29.50,pC:33.00,costo:14.50,stockPT:390},
-  {cod:'KTX-008',nombre:'Hidrofugante Concentrado',tipo:'Impermeabilizante', pres:'Balde 5L',   pA:38.00,pB:43.00,pC:48.00,costo:21.00,stockPT:150},
-];
+let DB_productos = [];
 
-let DB_mp = [
-  {cod:'MP-001',nombre:'Cemento Portland Tipo I', icon:'🏗️', unidad:'bolsa',stock:850, min:200,max:1200,consumo:420,prov:'Cementos Lima SAC'},
-  {cod:'MP-002',nombre:'Arena Fina Lavada',        icon:'⛱️', unidad:'m³',  stock:48,  min:20, max:100, consumo:28, prov:'Áridos del Sur'},
-  {cod:'MP-003',nombre:'Resina Acrílica',           icon:'🧪', unidad:'kg',  stock:180, min:100,max:500, consumo:120,prov:'Química Industrial'},
-  {cod:'MP-004',nombre:'Carbonato de Calcio',       icon:'⚪', unidad:'kg',  stock:2400,min:800,max:4000,consumo:900,prov:'Minerales Andinos'},
-  {cod:'MP-005',nombre:'Polvo de Talco',             icon:'🌫️', unidad:'kg',  stock:90,  min:150,max:600, consumo:200,prov:'Minerales Andinos'},
-  {cod:'MP-006',nombre:'Pigmento Blanco TiO2',      icon:'🎨', unidad:'kg',  stock:65,  min:80, max:300, consumo:90, prov:'Colorquím SAC'},
-  {cod:'MP-007',nombre:'Fibra Poliéster',            icon:'🧵', unidad:'kg',  stock:320, min:100,max:600, consumo:80, prov:'Química Industrial'},
-  {cod:'MP-008',nombre:'Acelerante de Fraguado',     icon:'⚡', unidad:'kg',  stock:40,  min:60, max:200, consumo:55, prov:'Cementos Lima SAC'},
-];
+let DB_mp = [];
 
-let DB_pedidos = [
-  {id:'PED-0044',fecha:'2025-04-20',clienteId:'C001',items:3,total:4621,estadoPago:'al_dia',  estadoDesp:'entregado',  diasAnt:8},
-  {id:'PED-0045',fecha:'2025-04-22',clienteId:'C003',items:2,total:1890,estadoPago:'pendiente',estadoDesp:'despachado', diasAnt:6},
-  {id:'PED-0046',fecha:'2025-04-24',clienteId:'C002',items:5,total:8400,estadoPago:'al_dia',  estadoDesp:'preparacion',diasAnt:4},
-  {id:'PED-0047',fecha:'2025-04-25',clienteId:'C004',items:2,total:2100,estadoPago:'mora',    estadoDesp:'pendiente',  diasAnt:3},
-  {id:'PED-0048',fecha:'2025-04-26',clienteId:'C005',items:4,total:3240,estadoPago:'pendiente',estadoDesp:'pendiente', diasAnt:2},
-  {id:'PED-0049',fecha:'2025-04-27',clienteId:'C006',items:6,total:9800,estadoPago:'al_dia',  estadoDesp:'preparacion',diasAnt:1},
-  {id:'PED-0050',fecha:'2025-04-28',clienteId:'C001',items:3,total:5600,estadoPago:'pendiente',estadoDesp:'pendiente', diasAnt:0},
-];
+let DB_pedidos = [];
 
-const DB_facturas = [
-  {num:'F001-00218',clienteId:'C001',emision:'2025-03-01',venc:'2025-04-30',total:12800,pagado:12800,mora:0, estado:'pagada'},
-  {num:'F001-00224',clienteId:'C003',emision:'2025-03-15',venc:'2025-04-14',total:4200, pagado:0,    mora:14,estado:'mora'},
-  {num:'F001-00231',clienteId:'C002',emision:'2025-04-01',venc:'2025-05-16',total:18400,pagado:0,    mora:0, estado:'vigente'},
-  {num:'F001-00238',clienteId:'C004',emision:'2025-03-20',venc:'2025-04-04',total:6800, pagado:0,    mora:24,estado:'mora'},
-  {num:'F001-00244',clienteId:'C005',emision:'2025-04-10',venc:'2025-04-25',total:2100, pagado:0,    mora:3, estado:'mora'},
-  {num:'F001-00250',clienteId:'C006',emision:'2025-04-15',venc:'2025-06-14',total:24000,pagado:0,    mora:0, estado:'vigente'},
-  {num:'F001-00255',clienteId:'C007',emision:'2025-03-28',venc:'2025-04-27',total:9200, pagado:0,    mora:1, estado:'mora'},
-];
+let DB_facturas = [];
 
 const DB_traz = [
   {t:'g',ev:'Pedido entregado',    desc:'PED-0044 · Constructora Andina · $4,621',          time:'Hoy 14:30'},
@@ -1381,24 +1470,12 @@ const NAV = {
   'alertas':      {label:'Alertas',           icon:'🔔', group:'Sistema', badge:3},
 };
 
-function enterAs(role) {
-  currentRole = role;
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('appShell').style.display = 'flex';
-  const r = ROLES[role];
-  document.getElementById('sbAv').textContent   = r.av;
-  document.getElementById('sbName').textContent = r.label;
-  document.getElementById('sbRole').textContent = role;
-  buildNav(role);
-  populateSelects();
-  buildAllLines();
-  renderAll();
-  navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
-  startClock();
-}
+function enterAs(role) { quickLogin(role + '@koratex.com'); }
 function logout() {
+  TOKEN = ''; currentUser = null;
+  localStorage.removeItem('kx_token');
   document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('appShell').style.display    = 'none';
 }
 function buildNav(role) {
   const navEl = document.getElementById('sbNav');
@@ -1415,7 +1492,7 @@ function buildNav(role) {
 }
 
 /* ════════ NAVIGATION ════════ */
-function navigate(page) {
+async function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const pg = document.getElementById('page-' + page);
@@ -1425,6 +1502,7 @@ function navigate(page) {
   const item = NAV[page];
   document.getElementById('tbTitle').innerHTML = `<span>Koratex</span> · ${item ? item.label : page}`;
   closeSb();
+  if (TOKEN) { await loadData(); populateSelects(); renderAll(); }
 }
 function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
@@ -1616,7 +1694,7 @@ function onMcFacturaChange() {
 }
 
 /* ════════ RENDER ALL ════════ */
-function renderAll() {
+async function renderAll() {
   renderDashboard();
   renderCola();
   renderClientes();
@@ -1946,19 +2024,29 @@ function renderAlertas() {
 }
 
 /* ════════ ACTIONS ════════ */
-function confirmarPedido() {
+async function confirmarPedido() {
   const sel = document.getElementById('npCliente');
   if (!sel || !sel.value) { alert('Selecciona un cliente'); return; }
   const total = parseFloat(document.getElementById('npTotal').textContent.replace('$','')) || 0;
   if (total <= 0) { alert('Agrega al menos un producto'); return; }
   const cli = getCliente(sel.value);
-  const newId = 'PED-' + String(DB_pedidos.length + 51).padStart(4,'0');
-  DB_pedidos.unshift({id:newId,fecha:new Date().toISOString().split('T')[0],clienteId:sel.value,items:1,total:total,estadoPago:'pendiente',estadoDesp:'pendiente',diasAnt:0});
-  DB_traz.unshift({t:'o',ev:'Nuevo pedido registrado',desc:`${newId} · ${cli.nombre} · $${total.toFixed(2)}`,time:'Hace un momento'});
-  renderAll();
-  resetNP();
-  navigate('cola');
-  alert(`✅ Pedido ${newId} registrado correctamente.\nCliente: ${cli.nombre}\nTotal: $${total.toFixed(2)}`);
+  const items = [];
+  for (let i = 1; i <= 15; i++) {
+    const prodSel = document.getElementById('npLines_p_' + i);
+    const qEl     = document.getElementById('npLines_q_' + i);
+    const puEl    = document.getElementById('npLines_pu_' + i);
+    if (prodSel && prodSel.value && qEl && qEl.value) {
+      const p = DB_productos.find(function(x){ return x.cod === prodSel.value; });
+      if (p) items.push({ producto_id: p.id, cantidad: parseInt(qEl.value)||1, precio_unitario: parseFloat(puEl.value)||p.pA, descuento_pct: 0 });
+    }
+  }
+  try {
+    const ped = await api('/pedidos', { method: 'POST', body: JSON.stringify({ cliente_id: sel.value, lista_precios: cli ? cli.lista_precios : 'C', items: items }) });
+    DB_traz.unshift({t:'o',ev:'Nuevo pedido registrado',desc:(ped?ped.numero:'') + ' · ' + (cli?cli.nombre:'') + ' · $' + total.toFixed(2),time:'Hace un momento'});
+    await loadData(); populateSelects(); renderAll();
+    resetNP(); navigate('cola');
+    alert('Pedido ' + (ped?ped.numero:'') + ' registrado.\nCliente: ' + (cli?cli.nombre:'') + '\nTotal: $' + total.toFixed(2));
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 function resetNP() {
@@ -1968,34 +2056,42 @@ function resetNP() {
   buildLines('npLines','npTotal','npCount');
 }
 
-function savePedidoModal() {
+async function savePedidoModal() {
   const sel = document.getElementById('mpCliente');
   if (!sel || !sel.value) { alert('Selecciona un cliente'); return; }
-  const total = parseFloat(document.getElementById('mpTotal').textContent.replace('$',''))||0;
   const cli = getCliente(sel.value);
-  const newId = 'PED-' + String(DB_pedidos.length+51).padStart(4,'0');
-  DB_pedidos.unshift({id:newId,fecha:new Date().toISOString().split('T')[0],clienteId:sel.value,items:1,total:total,estadoPago:'pendiente',estadoDesp:'pendiente',diasAnt:0});
-  DB_traz.unshift({t:'o',ev:'Nuevo pedido (modal)',desc:`${newId} · ${cli.nombre} · $${total.toFixed(2)}`,time:'Hace un momento'});
-  renderAll();
-  closeModal('mPedido');
-  buildLines('mpLines','mpTotal','mpCount');
+  const items = [];
+  for (let i = 1; i <= 15; i++) {
+    const prodSel = document.getElementById('mpLines_p_' + i);
+    const qEl     = document.getElementById('mpLines_q_' + i);
+    const puEl    = document.getElementById('mpLines_pu_' + i);
+    if (prodSel && prodSel.value && qEl && qEl.value) {
+      const p = DB_productos.find(function(x){ return x.cod === prodSel.value; });
+      if (p) items.push({ producto_id: p.id, cantidad: parseInt(qEl.value)||1, precio_unitario: parseFloat(puEl.value)||p.pA, descuento_pct: 0 });
+    }
+  }
+  try {
+    const ped = await api('/pedidos', { method: 'POST', body: JSON.stringify({ cliente_id: sel.value, lista_precios: cli ? cli.lista_precios : 'C', items: items }) });
+    DB_traz.unshift({t:'o',ev:'Nuevo pedido (modal)',desc:(ped?ped.numero:'') + ' · ' + (cli?cli.nombre:''),time:'Hace un momento'});
+    await loadData(); populateSelects(); renderAll();
+    closeModal('mPedido'); buildLines('mpLines','mpTotal','mpCount');
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
-function registrarPago() {
-  const sel = document.getElementById('prFactura');
+async function registrarPago() {
+  const sel   = document.getElementById('prFactura');
   const monto = document.getElementById('prMonto');
+  const tipo  = document.getElementById('prTipo');
   if (!sel||!sel.value||!monto||!monto.value) { alert('Selecciona factura e ingresa monto'); return; }
-  const fac = DB_facturas.find(f => f.num === sel.value);
-  if (fac) {
-    fac.pagado += parseFloat(monto.value);
-    if (fac.pagado >= fac.total) { fac.estado = 'pagada'; fac.mora = 0; }
-    DB_traz.unshift({t:'g',ev:'Pago registrado',desc:`${fac.num} · $${parseFloat(monto.value).toLocaleString()} · ${document.getElementById('prTipo').value}`,time:'Hace un momento'});
-  }
-  populateSelects();
-  renderCobranza();
-  renderTrazabilidad();
-  monto.value=''; sel.value='';
-  alert('✅ Pago registrado correctamente');
+  const fac = DB_facturas.find(function(f){ return f.num === sel.value; });
+  if (!fac) { alert('Factura no encontrada'); return; }
+  try {
+    await api('/cobranza/' + fac.id + '/pagos', { method: 'POST', body: JSON.stringify({ monto: parseFloat(monto.value), tipo_pago: (tipo?tipo.value:null)||'efectivo', fecha_pago: new Date().toISOString().split('T')[0] }) });
+    DB_traz.unshift({t:'g',ev:'Pago registrado',desc:fac.num + ' · $' + parseFloat(monto.value).toLocaleString(),time:'Hace un momento'});
+    await loadData(); populateSelects(); renderCobranza(); renderTrazabilidad();
+    monto.value=''; sel.value='';
+    alert('Pago registrado correctamente');
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 function saveCobro() {
@@ -2003,33 +2099,34 @@ function saveCobro() {
   renderTrazabilidad(); renderCobranza(); closeModal('mCobro');
 }
 
-function registrarStock() {
-  const sel = document.getElementById('qrMaterial');
+async function registrarStock() {
+  const sel  = document.getElementById('qrMaterial');
   const cant = parseFloat(document.getElementById('qrCantidad').value)||0;
   const tipo = document.getElementById('qrTipo').value;
   if (!sel||!cant) { alert('Selecciona material e ingresa cantidad'); return; }
-  const mp = DB_mp.find(m => m.cod === sel.value);
-  if (mp) {
-    if (tipo === 'entrada') mp.stock += cant;
-    else if (tipo === 'salida') mp.stock = Math.max(0, mp.stock - cant);
-    else mp.stock = cant;
-    DB_traz.unshift({t:'g',ev:'Stock MP actualizado',desc:`${mp.nombre} · ${tipo} · ${cant} ${mp.unidad} · nuevo stock: ${mp.stock}`,time:'Hace un momento'});
-    renderMP(); renderTrazabilidad(); renderDashboard();
+  const mp = DB_mp.find(function(m){ return m.cod === sel.value; });
+  if (!mp) return;
+  const ajuste = tipo === 'entrada' ? cant : tipo === 'salida' ? -cant : (cant - mp.stock);
+  try {
+    await api('/inventario/materias-primas/' + mp.id, { method: 'PATCH', body: JSON.stringify({ ajuste: ajuste }) });
+    DB_traz.unshift({t:'g',ev:'Stock MP actualizado',desc:mp.nombre + ' · ' + tipo + ' · ' + cant + ' ' + mp.unidad,time:'Hace un momento'});
+    await loadData(); renderMP(); renderTrazabilidad(); renderDashboard();
     document.getElementById('qrCantidad').value='';
-    alert(`✅ Stock de ${mp.nombre} actualizado: ${mp.stock} ${mp.unidad}`);
-  }
+    alert('Stock actualizado correctamente');
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
-function saveCompra() {
-  const sel = document.getElementById('mcMP');
+async function saveCompra() {
+  const sel  = document.getElementById('mcMP');
   const cant = parseFloat(document.getElementById('mcCant').value)||0;
   if (!sel||!cant) { alert('Selecciona material e ingresa cantidad'); return; }
-  const mp = DB_mp.find(m => m.cod === sel.value);
-  if (mp) {
-    mp.stock = Math.min(mp.stock + cant, mp.max);
-    DB_traz.unshift({t:'g',ev:'Entrada MP recibida',desc:`${mp.nombre} · +${cant} ${mp.unidad} · stock: ${mp.stock}`,time:'Hace un momento'});
-    renderMP(); renderTrazabilidad(); renderDashboard();
-  }
+  const mp = DB_mp.find(function(m){ return m.cod === sel.value; });
+  if (!mp) { closeModal('mCompra'); return; }
+  try {
+    await api('/inventario/materias-primas/' + mp.id, { method: 'PATCH', body: JSON.stringify({ ajuste: cant }) });
+    DB_traz.unshift({t:'g',ev:'Entrada MP recibida',desc:mp.nombre + ' · +' + cant + ' ' + mp.unidad,time:'Hace un momento'});
+    await loadData(); renderMP(); renderTrazabilidad(); renderDashboard();
+  } catch(e) { alert('Error: ' + e.message); }
   closeModal('mCompra');
 }
 
@@ -2037,15 +2134,18 @@ function saveProd() { renderCatalogo(); closeModal('mProducto'); }
 function saveDespacho() { renderDespacho(); closeModal('mDespacho'); alert('✅ Ruta generada y optimizada por zonas'); }
 function reoptimizar() { alert('⚡ Rutas re-optimizadas con Nearest Neighbor.\nCamión A → Norte (2 paradas)\nCamión B → Sur + Este (2 paradas)\nFurgón C → Oeste + Centro (2 paradas)'); }
 
-function cambiarEstado(id) {
-  const p = DB_pedidos.find(x => x.id === id);
+async function cambiarEstado(id) {
+  const p = DB_pedidos.find(function(x){ return x.id === id; });
   if (!p) return;
   const estados = ['pendiente','preparacion','despachado','entregado'];
   const idx = estados.indexOf(p.estadoDesp);
   if (idx < estados.length - 1) {
-    p.estadoDesp = estados[idx + 1];
-    DB_traz.unshift({t:'o',ev:'Estado de despacho actualizado',desc:`${id} → ${p.estadoDesp}`,time:'Hace un momento'});
-    renderAll();
+    const nuevoEstado = estados[idx + 1];
+    try {
+      await api('/pedidos/' + p.dbId + '/estado', { method: 'PATCH', body: JSON.stringify({ estado_despacho: nuevoEstado }) });
+      DB_traz.unshift({t:'o',ev:'Estado actualizado',desc:id + ' to ' + nuevoEstado,time:'Hace un momento'});
+      await loadData(); renderAll();
+    } catch(e) { alert('Error: ' + e.message); }
   }
 }
 
@@ -2067,7 +2167,6 @@ function imprimirFormato() {
     '.firma{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}' +
     '.firma-line{border-top:1px solid #000;padding-top:6px;font-size:11px;}</style></head>' +
 
-```
 '<body>' +
 '<div class="head"><div><div class="logo">KORATEX</div>' +
 '<div class="sub">FORMATO DE CONTEO FÍSICO — MATERIA PRIMA</div></div>' +
@@ -2080,7 +2179,6 @@ function imprimirFormato() {
 '<div><div class="firma-line">Firma administrador / verificación</div></div></div>' +
 '<scri' + 'pt>window.onload=function(){window.print();}</' + 'script>' +
 '</body></html>';
-```
 
 w.document.write(html);
 w.document.close();
@@ -2094,14 +2192,6 @@ MÓDULO CLIENTES
 - Edición y vista de detalle
   ══════════════════════════════════════════ */
 
-// Extend DB_clientes with extra fields
-DB_clientes.forEach((c, i) => {
-if (!c.telefono) c.telefono = '+58 412-' + String(1000000 + i * 111111).slice(0,7);
-if (!c.email)    c.email    = c.nombre.split(' ')[0].toLowerCase() + '@empresa.com';
-if (!c.ciudad)   c.ciudad   = 'Caracas';
-if (!c.activo)   c.activo   = true;
-if (!c.descuento) c.descuento = c.tipo === 'oro' ? 5 : c.tipo === 'plata' ? 2 : 0;
-});
 
 let clienteEditId = null;
 
@@ -2255,59 +2345,37 @@ if (['cliNombre','cliRif','cliZona','cliLimite'].includes(e.target.id)) updatePr
 });
 
 /* ── Guardar cliente ── */
-function guardarCliente() {
+async function guardarCliente() {
 const nombre = document.getElementById('cliNombre')?.value?.trim();
 const tipo   = document.getElementById('cliTipoSelected')?.value;
-
 if (!nombre) { alert('El nombre del cliente es obligatorio'); return; }
 if (!tipo)   { alert('Selecciona el tipo de cliente (Oro / Plata / Bronce)'); return; }
-
-const codigo = document.getElementById('cliCodigo')?.value?.trim() ||
-'C' + String(DB_clientes.length + 1).padStart(3,'0');
-const dias   = tipo === 'oro' ? 60 : tipo === 'plata' ? 30 : 15;
-
+const tipoMap = {oro:1, plata:2, bronce:3};
+const zonaMap = {Norte:1, Sur:2, Este:3, Oeste:4, Centro:5, Cono:6};
+const zona = document.getElementById('cliZona')?.value || 'Centro';
+const payload = {
+  nombre,
+  ruc:           document.getElementById('cliRif')?.value || null,
+  tipo_id:       tipoMap[tipo] || 3,
+  zona_id:       zonaMap[zona] || 5,
+  direccion:     document.getElementById('cliDir')?.value || '',
+  telefono:      document.getElementById('cliTel')?.value || '',
+  email:         document.getElementById('cliEmail')?.value || '',
+  limite_credito: parseFloat(document.getElementById('cliLimite')?.value) || 0,
+};
 if (clienteEditId) {
-// Editar existente
-const idx = DB_clientes.findIndex(c => c.id === clienteEditId);
-if (idx >= 0) {
-DB_clientes[idx] = {
-...DB_clientes[idx],
-nombre,
-rif:        document.getElementById('cliRif')?.value || '',
-tipo,
-zona:       document.getElementById('cliZona')?.value || 'Centro',
-telefono:   document.getElementById('cliTel')?.value || '',
-email:      document.getElementById('cliEmail')?.value || '',
-limCredit:  parseFloat(document.getElementById('cliLimite')?.value) || 0,
-diasCredito: dias,
-descuento:  parseFloat(document.getElementById('cliDescuento')?.value) || 0,
-};
-}
-DB_traz.unshift({t:'o',ev:'Cliente actualizado',desc:`${nombre} · Tipo: ${tipo.toUpperCase()} · Lista ${tipo==='oro'?'A':tipo==='plata'?'B':'C'}`,time:'Hace un momento'});
+  try {
+    await api('/clientes/' + clienteEditId, { method: 'PUT', body: JSON.stringify({...payload, activo: true}) });
+    DB_traz.unshift({t:'o',ev:'Cliente actualizado',desc:nombre,time:'Hace un momento'});
+  } catch(e) { alert('Error al actualizar: ' + e.message); return; }
 } else {
-// Nuevo cliente
-const nuevo = {
-id:          codigo,
-codigo,
-nombre,
-rif:         document.getElementById('cliRif')?.value || '',
-tipo,
-zona:        document.getElementById('cliZona')?.value || 'Centro',
-telefono:    document.getElementById('cliTel')?.value || '',
-email:       document.getElementById('cliEmail')?.value || '',
-ciudad:      document.getElementById('cliCiudad')?.value || 'Caracas',
-limCredit:   parseFloat(document.getElementById('cliLimite')?.value) || 0,
-diasCredito: dias,
-descuento:   parseFloat(document.getElementById('cliDescuento')?.value) || 0,
-activo:      true,
-lat:         -12.05,
-lng:         -77.04,
-};
-DB_clientes.push(nuevo);
-DB_traz.unshift({t:'g',ev:'Nuevo cliente registrado',desc:`${nombre} · ${tipo.toUpperCase()} · Lista ${tipo==='oro'?'A':tipo==='plata'?'B':'C'}`,time:'Hace un momento'});
+  const codigo = document.getElementById('cliCodigo')?.value?.trim() || ('C' + String(Date.now()).slice(-4));
+  try {
+    await api('/clientes', { method: 'POST', body: JSON.stringify({...payload, codigo: codigo}) });
+    DB_traz.unshift({t:'g',ev:'Nuevo cliente registrado',desc:nombre + ' · ' + tipo.toUpperCase(),time:'Hace un momento'});
+  } catch(e) { alert('Error al crear cliente: ' + e.message); return; }
 }
-
-// Refresh selects in pedido forms
+await loadData();
 populateSelects();
 renderClientes();
 renderTrazabilidad();
@@ -2315,7 +2383,6 @@ closeModal('mCliente');
 resetFormCliente();
 }
 
-/* ── Ver detalle ── */
 function verCliente(id) {
 var c = DB_clientes.find(function(x){ return x.id === id; });
 if (!c) return;
@@ -2417,11 +2484,16 @@ openModal('mCliente');
 }
 
 /* ── Toggle activo/inactivo ── */
-function toggleCliente(id) {
+async function toggleCliente(id) {
 const c = DB_clientes.find(x => x.id === id);
 if (!c) return;
-c.activo = !c.activo;
-DB_traz.unshift({t: c.activo ? 'g' : 'r', ev: c.activo ? 'Cliente activado' : 'Cliente desactivado', desc: c.nombre, time:'Hace un momento'});
+const nuevoActivo = !c.activo;
+try {
+  await api('/clientes/' + id, { method: 'PUT', body: JSON.stringify({ nombre: c.nombre, ruc: c.rif||null, tipo_id: c.tipo==='oro'?1:c.tipo==='plata'?2:3, zona_id: 5, limite_credito: c.limCredit||0, activo: nuevoActivo }) });
+} catch(e) { alert('Error: ' + e.message); return; }
+c.activo = nuevoActivo;
+DB_traz.unshift({t: nuevoActivo ? 'g' : 'r', ev: nuevoActivo ? 'Cliente activado' : 'Cliente desactivado', desc: c.nombre, time:'Hace un momento'});
+await loadData();
 renderClientes();
 renderTrazabilidad();
 }
@@ -2442,6 +2514,18 @@ if (prev) prev.style.display = 'none';
 const title = document.getElementById('mClienteTitle');
 if (title) title.textContent = '👥 Nuevo Cliente';
 }
+
+/* ════════ AUTO-LOGIN ════════ */
+document.addEventListener('DOMContentLoaded', async function() {
+  const saved = localStorage.getItem('kx_token');
+  if (!saved) return;
+  TOKEN = saved;
+  try {
+    const me = await api('/auth/me');
+    if (me && me.id) { currentUser = me; await enterApp(); }
+    else { localStorage.removeItem('kx_token'); TOKEN = ''; }
+  } catch(e) { localStorage.removeItem('kx_token'); TOKEN = ''; }
+});
 
 function exportarClientes() {
 let csv = 'Codigo,Nombre,RIF,Tipo,Lista,Zona,Dias Credito,Limite Credito,Telefono,Email\n';
@@ -2469,7 +2553,6 @@ URL.revokeObjectURL(url);
     </div>
     <div class="modal-body">
 
-```
   <div class="fs">
     <div class="fs-title">Datos de la empresa</div>
     <div class="fg2">
@@ -2591,7 +2674,6 @@ URL.revokeObjectURL(url);
     <button class="btn btn-primary" onclick="guardarCliente()">💾 Guardar Cliente</button>
   </div>
 </div>
-```
 
   </div>
 </div>
