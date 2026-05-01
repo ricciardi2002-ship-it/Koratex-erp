@@ -271,8 +271,8 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 .kpi::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
 .kpi.ko::after { background:linear-gradient(90deg,var(--orange),transparent); }
 .kpi.kc::after { background:linear-gradient(90deg,#2d7a45,transparent); }
-.[kpi.kg](http://kpi.kg)::after { background:linear-gradient(90deg,var(--green),transparent); }
-.[kpi.kr](http://kpi.kr)::after { background:linear-gradient(90deg,var(--red),transparent); }
+.kpi.kg::after { background:linear-gradient(90deg,var(--green),transparent); }
+.kpi.kr::after { background:linear-gradient(90deg,var(--red),transparent); }
 .kpi.ka::after { background:linear-gradient(90deg,var(--amber),transparent); }
 .kpi.kv::after { background:linear-gradient(90deg,var(--violet),transparent); }
 .kpi-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--t3); }
@@ -346,7 +346,7 @@ tbody td { padding:11px 13px; font-size:12.5px; }
   background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
   z-index:600; align-items:center; justify-content:center; padding:16px;
 }
-.[modal-overlay.open](http://modal-overlay.open) { display:flex; }
+.modal-overlay.open { display:flex; }
 .modal {
   background:var(--bg2); border:1px solid var(--border2);
   border-radius:var(--rx); width:100%; max-width:700px; max-height:92vh; overflow-y:auto;
@@ -444,7 +444,7 @@ textarea { resize:vertical; min-height:65px; }
   content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
 }
 .cola-pedido.alta::before { background:var(--red); }
-.[cola-pedido.media](http://cola-pedido.media)::before { background:var(--amber); }
+.cola-pedido.media::before { background:var(--amber); }
 .cola-pedido.normal::before { background:var(--green); }
 .cola-pedido:hover { border-color:var(--border2); background:var(--bg2); }
 .cp-num { font-family:'DM Mono',monospace; font-size:11px; color:var(--orange); font-weight:500; flex-shrink:0; }
@@ -565,7 +565,7 @@ textarea { resize:vertical; min-height:65px; }
 
 /* SIDEBAR OVERLAY */
 .sb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:199; }
-.[sb-overlay.open](http://sb-overlay.open) { display:block; }
+.sb-overlay.open { display:block; }
 
 /* ALERTA BOX */
 .alert-box {
@@ -574,7 +574,7 @@ textarea { resize:vertical; min-height:65px; }
 }
 .alert-box.crit { background:var(--red-l); border:1px solid rgba(255,68,102,.2); }
 .alert-box.warn { background:var(--amber-l); border:1px solid rgba(255,179,64,.2); }
-.[alert-box.info](http://alert-box.info) { background:var(--cyan-l); border:1px solid rgba(0,212,255,.15); }
+.alert-box.info { background:var(--cyan-l); border:1px solid rgba(0,212,255,.15); }
 .alert-box.ok   { background:var(--green-l); border:1px solid rgba(0,229,160,.15); }
 .alert-ico { font-size:16px; flex-shrink:0; margin-top:1px; }
 .alert-title { font-size:12.5px; font-weight:700; }
@@ -584,7 +584,7 @@ textarea { resize:vertical; min-height:65px; }
 /* RESPONSIVE */
 @media(max-width:900px) {
   .sidebar { transform:translateX(-100%); }
-  .[sidebar.open](http://sidebar.open) { transform:translateX(0); }
+  .sidebar.open { transform:translateX(0); }
   .main { margin-left:0; }
   .g2,.g3,.g2x1,.fg2,.fg3 { grid-template-columns:1fr; }
   .kpi-grid { grid-template-columns:1fr 1fr; }
@@ -1394,7 +1394,7 @@ function buildNav(role) {
   let html = ''; let lastGroup = '';
   ROLES[role].nav.forEach(id => {
     const item = NAV[id]; if (!item) return;
-    if ([item.group](http://item.group) !== lastGroup) { html += `<div class="sb-section">${[item.group](http://item.group)}</div>`; lastGroup = [item.group](http://item.group); }
+    if (item.group !== lastGroup) { html += `<div class="sb-section">${item.group}</div>`; lastGroup = item.group; }
     html += `<div class="nav-item" id="nav-${id}" onclick="navigate('${id}')">
       <span class="nav-ic">${item.icon}</span>${item.label}
       ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
@@ -1419,7 +1419,7 @@ function openSb()  { document.getElementById('sidebar').classList.add('open'); d
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if ([e.target](http://e.target)===m) m.classList.remove('open'); }));
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target===m) m.classList.remove('open'); }));
 
 function startClock() {
   const tick = () => {
@@ -1430,9 +1430,9 @@ function startClock() {
 }
 
 /* ════════ HELPERS ════════ */
-function getCliente(id) { return DB_clientes.find(c => [c.id](http://c.id) === id); }
+function getCliente(id) { return DB_clientes.find(c => c.id === id); }
 function getPrecio(prod, tipo) {
-  return tipo === 'plata' ? prod.pB : tipo === 'bronce' ? prod.pC : [prod.pA](http://prod.pA);
+  return tipo === 'plata' ? prod.pB : tipo === 'bronce' ? prod.pC : prod.pA;
 }
 function diasChip(d) {
   if (d === 0) return `<span class="dias-chip dias-0">Hoy</span>`;
@@ -1458,18 +1458,18 @@ function populateSelects() {
   ['npCliente','mpCliente'].forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     el.innerHTML = '<option value="">— Seleccionar cliente —</option>' +
-      DB_[clientes.map](http://clientes.map)(c => `<option value="${[c.id](http://c.id)}">${c.nombre} · ${c.tipo.toUpperCase()}</option>`).join('');
+      DB_clientes.map(c => `<option value="${c.id}">${c.nombre} · ${c.tipo.toUpperCase()}</option>`).join('');
   });
   ['qrMaterial','mcMP'].forEach(id => {
     const el = document.getElementById(id); if (!el) return;
-    el.innerHTML = DB_[mp.map](http://mp.map)(m => `<option value="${m.cod}">${m.nombre} (${m.stock} ${m.unidad})</option>`).join('');
+    el.innerHTML = DB_mp.map(m => `<option value="${m.cod}">${m.nombre} (${m.stock} ${m.unidad})</option>`).join('');
   });
   const prF = document.getElementById('prFactura');
   if (prF) {
     prF.innerHTML = '<option value="">— Seleccionar factura —</option>' +
       DB_facturas.filter(f => f.estado !== 'pagada').map(f => {
         const c = getCliente(f.clienteId);
-        return `<option value="${f.num}" data-saldo="${[f.total](http://f.total)-f.pagado}">${f.num} · ${c?c.nombre:''} · $${([f.total](http://f.total)-f.pagado).toLocaleString()}</option>`;
+        return `<option value="${f.num}" data-saldo="${f.total-f.pagado}">${f.num} · ${c?c.nombre:''} · $${(f.total-f.pagado).toLocaleString()}</option>`;
       }).join('');
   }
 }
@@ -1481,12 +1481,12 @@ function buildLines(containerId, totalId, countId) {
   for (let i = 1; i <= 15; i++) {
     const d = document.createElement('div');
     d.className = 'oline' + (i > 1 ? ' empty' : '');
-    [d.id](http://d.id) = containerId + '_line_' + i;
+    d.id = containerId + '_line_' + i;
     d.innerHTML = `
       <div class="onum">${i}</div>
       <select id="${containerId}_p_${i}" onchange="onLineChange('${containerId}','${totalId}','${countId}',${i})">
         <option value="">—</option>
-        ${DB_[productos.map](http://productos.map)(p => `<option value="${p.cod}">${p.cod} · ${p.nombre}</option>`).join('')}
+        ${DB_productos.map(p => `<option value="${p.cod}">${p.cod} · ${p.nombre}</option>`).join('')}
       </select>
       <input type="text" id="${containerId}_pres_${i}" placeholder="—" readonly style="font-size:11px;color:var(--t3);">
       <input type="number" id="${containerId}_q_${i}" placeholder="0" min="1" onchange="onLineChange('${containerId}','${totalId}','${countId}',${i})">
@@ -1624,7 +1624,7 @@ function renderDashboard() {
   const vals = [42,38,55,61,48,70,67], lbls = ['S1','S2','S3','S4','S5','S6','S7'];
   const maxV = Math.max(...vals);
   const el = document.getElementById('bcDash');
-  if (el) el.innerHTML = [vals.map](http://vals.map)((v,i) => {
+  if (el) el.innerHTML = vals.map((v,i) => {
     const h = Math.round((v/maxV)*85);
     const clr = i >= 5 ? 'var(--orange)' : 'var(--wire)';
     return `<div class="bc-col"><div class="bc-val">$${v}k</div><div class="bc-bar" style="height:${h}%;background:${clr};"></div><div class="bc-label">${lbls[i]}</div></div>`;
@@ -1644,13 +1644,13 @@ function renderDashboard() {
   const dc = document.getElementById('dashCola');
   if (dc) {
     const pending = DB_pedidos.filter(p => p.estadoDesp !== 'entregado').slice(0,4);
-    dc.innerHTML = [pending.map](http://pending.map)(p => {
+    dc.innerHTML = pending.map(p => {
       const cli = getCliente(p.clienteId);
       const prio = p.diasAnt >= 3 ? 'alta' : p.diasAnt >= 1 ? 'media' : 'normal';
       return `<div class="cola-pedido ${prio}" onclick="navigate('cola')">
-        <div class="cp-num">${[p.id](http://p.id)}</div>
+        <div class="cp-num">${p.id}</div>
         <div class="cp-info"><div class="cp-cliente">${cli?cli.nombre:''}</div><div class="cp-detalle">${cli?cli.zona:''} · ${p.items} items · ${estadoDesp(p.estadoDesp).replace(/<[^>]*>/g,'')}</div></div>
-        <div class="cp-right"><div class="cp-total">$${[p.total](http://p.total).toLocaleString()}</div><div class="cp-dias">${diasChip(p.diasAnt)}</div></div>
+        <div class="cp-right"><div class="cp-total">$${p.total.toLocaleString()}</div><div class="cp-dias">${diasChip(p.diasAnt)}</div></div>
       </div>`;
     }).join('') || '<div style="color:var(--t3);font-size:13px;padding:16px 0;text-align:center;">No hay pedidos pendientes</div>';
   }
@@ -1659,7 +1659,7 @@ function renderDashboard() {
   const dm = document.getElementById('dashMP');
   if (dm) {
     const criticos = DB_mp.filter(m => m.stock <= m.min * 1.5);
-    dm.innerHTML = [criticos.map](http://criticos.map)(m => {
+    dm.innerHTML = criticos.map(m => {
       const pct = Math.min(Math.round((m.stock/m.max)*100),100);
       const cls = m.stock <= m.min ? 'var(--red)' : 'var(--amber)';
       const sem = m.stock <= m.min ? 'sem-crit' : 'sem-warn';
@@ -1692,24 +1692,24 @@ function renderCola() {
   // Filtros de zona
   const zf = document.getElementById('zonaFiltros');
   if (zf) {
-    const zonas = [...new Set(DB_[clientes.map](http://clientes.map)(c => c.zona))];
+    const zonas = [...new Set(DB_clientes.map(c => c.zona))];
     zf.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="renderCola()">Todas</button>` +
-      [zonas.map](http://zonas.map)(z => `<button class="btn btn-ghost btn-sm" onclick="">${z}</button>`).join('');
+      zonas.map(z => `<button class="btn btn-ghost btn-sm" onclick="">${z}</button>`).join('');
   }
 
-  t.innerHTML = DB_[pedidos.map](http://pedidos.map)(p => {
+  t.innerHTML = DB_pedidos.map(p => {
     const cli = getCliente(p.clienteId);
     return `<tr>
-      <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${[p.id](http://p.id)}</strong></td>
+      <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
       <td><div style="font-weight:600;">${cli?cli.nombre:''}</div><div style="font-size:10px;color:var(--t3);">${cli?cli.zona:''}</div></td>
       <td><span class="badge bb">${cli?cli.zona:''}</span></td>
       <td style="color:var(--t2);">${p.items} items</td>
-      <td style="font-family:'DM Mono',monospace;font-weight:500;">$${[p.total](http://p.total).toLocaleString()}</td>
+      <td style="font-family:'DM Mono',monospace;font-weight:500;">$${p.total.toLocaleString()}</td>
       <td>${diasChip(p.diasAnt)}</td>
       <td>${estadoDesp(p.estadoDesp)}</td>
       <td>${estadoPago(p.estadoPago)}</td>
       <td>
-        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${[p.id](http://p.id)}')">✏️</button>
+        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">✏️</button>
       </td>
     </tr>`;
   }).join('');
@@ -1726,7 +1726,7 @@ const ZONAS_DATA = [
 
 function renderDespacho() {
   const zg = document.getElementById('zonasDespacho');
-  if (zg) zg.innerHTML = ZONAS_[DATA.map](http://DATA.map)(z => `
+  if (zg) zg.innerHTML = ZONAS_DATA.map(z => `
     <div class="zona-card">
       <div class="zona-header">
         <div>
@@ -1735,8 +1735,8 @@ function renderDespacho() {
         </div>
         <div class="zona-count" style="color:${z.color}">${z.pedidos.length}</div>
       </div>
-      ${[z.pedidos.map](http://z.pedidos.map)(pid => {
-        const p = DB_pedidos.find(x => [x.id](http://x.id) === pid);
+      ${z.pedidos.map(pid => {
+        const p = DB_pedidos.find(x => x.id === pid);
         const cli = p ? getCliente(p.clienteId) : null;
         return p ? `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;">
           <div><span style="color:var(--t3);font-family:'DM Mono',monospace;">${pid}</span><br><span style="font-weight:600;">${cli?cli.nombre:''}</span></div>
@@ -1757,12 +1757,12 @@ function renderDespacho() {
   const dt = document.getElementById('despachoTable');
   if (dt) {
     const pending = DB_pedidos.filter(p => ['pendiente','preparacion'].includes(p.estadoDesp));
-    dt.innerHTML = [pending.map](http://pending.map)(p => {
+    dt.innerHTML = pending.map(p => {
       const cli = getCliente(p.clienteId);
-      const zona = ZONAS_DATA.find(z => z.pedidos.includes([p.id](http://p.id)));
+      const zona = ZONAS_DATA.find(z => z.pedidos.includes(p.id));
       const prio = p.diasAnt >= 3 ? '<span class="badge br">ALTA</span>' : p.diasAnt >= 1 ? '<span class="badge ba">MEDIA</span>' : '<span class="badge bg">NORMAL</span>';
       return `<tr>
-        <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${[p.id](http://p.id)}</strong></td>
+        <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
         <td style="font-weight:600;">${cli?cli.nombre:''}</td>
         <td><span class="badge bb">${cli?cli.zona:''}</span></td>
         <td style="font-size:11px;color:var(--t2);">${cli?cli.zona+' sector':''}</td>
@@ -1795,7 +1795,7 @@ function renderMP() {
   `).join('');
 
   const mt = document.getElementById('mpTable');
-  if (mt) mt.innerHTML = DB_[mp.map](http://mp.map)(m => {
+  if (mt) mt.innerHTML = DB_mp.map(m => {
     const pct = Math.min(Math.round((m.stock/m.max)*100),100);
     const sem = m.stock <= m.min ? 'sem-crit' : m.stock <= m.min*1.5 ? 'sem-warn' : 'sem-ok';
     const semL = m.stock <= m.min ? 'CRÍTICO' : m.stock <= m.min*1.5 ? 'ADVERTENCIA' : 'OK';
@@ -1820,10 +1820,10 @@ function renderCobranza() {
   // Urgentes
   const cu = document.getElementById('cobrosUrgentes');
   if (cu) {
-    const urgentes = DB_facturas.filter(f => f.estado !== 'pagada' && (f.mora > 0 || [f.total](http://f.total) - f.pagado > 0));
-    cu.innerHTML = [urgentes.map](http://urgentes.map)(f => {
+    const urgentes = DB_facturas.filter(f => f.estado !== 'pagada' && (f.mora > 0 || f.total - f.pagado > 0));
+    cu.innerHTML = urgentes.map(f => {
       const cli = getCliente(f.clienteId);
-      const saldo = [f.total](http://f.total) - f.pagado;
+      const saldo = f.total - f.pagado;
       const cls = f.mora > 15 ? 'cobro-mora' : f.mora > 0 ? 'cobro-mora' : 'cobro-vence';
       return `<div class="cobro-card ${cls}">
         <div class="cobro-info">
@@ -1845,16 +1845,16 @@ function renderCobranza() {
   const filtro = document.getElementById('filtroCobranza');
   const f = filtro ? filtro.value : '';
   const facturas = f ? DB_facturas.filter(x => x.estado === f) : DB_facturas;
-  ct.innerHTML = [facturas.map](http://facturas.map)(f => {
+  ct.innerHTML = facturas.map(f => {
     const cli = getCliente(f.clienteId);
-    const saldo = [f.total](http://f.total) - f.pagado;
+    const saldo = f.total - f.pagado;
     const moraSem = f.mora > 15 ? 'sem-crit' : f.mora > 0 ? 'sem-warn' : 'sem-ok';
     const estBadge = f.estado === 'pagada' ? 'bg' : f.mora > 0 ? 'br' : 'ba';
     const estLabel = f.estado === 'pagada' ? 'Pagada' : f.mora > 0 ? 'En mora' : 'Vigente';
     return `<tr>
       <td style="font-family:'DM Mono',monospace;color:var(--cyan);">${f.num}</td>
       <td style="font-weight:600;">${cli?cli.nombre:''} ${tipoBadge(cli?cli.tipo:'')}</td>
-      <td style="font-family:'DM Mono',monospace;">$${[f.total](http://f.total).toLocaleString()}</td>
+      <td style="font-family:'DM Mono',monospace;">$${f.total.toLocaleString()}</td>
       <td style="font-family:'DM Mono',monospace;color:${saldo>0?'var(--red)':'var(--green)'};">$${saldo.toLocaleString()}</td>
       <td style="color:var(--t2);">${f.venc}</td>
       <td>${f.mora > 0 ? `<span class="sem ${moraSem}"><span class="sem-dot"></span>${f.mora}d</span>` : '<span style="color:var(--t3);">—</span>'}</td>
@@ -1867,15 +1867,15 @@ function renderCobranza() {
 function renderCatalogo() {
   const ct = document.getElementById('catTable');
   if (!ct) return;
-  ct.innerHTML = DB_[productos.map](http://productos.map)(p => {
-    const margen = Math.round(([p.pA](http://p.pA) - p.costo) / [p.pA](http://p.pA) * 100);
+  ct.innerHTML = DB_productos.map(p => {
+    const margen = Math.round((p.pA - p.costo) / p.pA * 100);
     const sc = p.stockPT > 200 ? 'bg' : p.stockPT > 100 ? 'ba' : 'br';
     return `<tr>
       <td style="font-family:'DM Mono',monospace;color:var(--cyan);">${p.cod}</td>
       <td style="font-weight:600;">${p.nombre}</td>
       <td><span class="badge bs">${p.tipo}</span></td>
       <td style="color:var(--t2);">${p.pres}</td>
-      <td style="color:var(--orange);font-weight:700;font-family:'DM Mono',monospace;">$${[p.pA](http://p.pA).toFixed(2)}</td>
+      <td style="color:var(--orange);font-weight:700;font-family:'DM Mono',monospace;">$${p.pA.toFixed(2)}</td>
       <td style="color:var(--cyan);font-family:'DM Mono',monospace;">$${p.pB.toFixed(2)}</td>
       <td style="color:var(--t2);font-family:'DM Mono',monospace;">$${p.pC.toFixed(2)}</td>
       <td><span class="badge ${sc}">${p.stockPT} u.</span></td>
@@ -1889,10 +1889,10 @@ function renderCatalogo() {
 function renderFinanzas() {
   const mc = document.getElementById('marginChart');
   if (mc) {
-    const tipos = [...new Set(DB_[productos.map](http://productos.map)(p => p.tipo))];
-    mc.innerHTML = [tipos.map](http://tipos.map)(t => {
+    const tipos = [...new Set(DB_productos.map(p => p.tipo))];
+    mc.innerHTML = tipos.map(t => {
       const prods = DB_productos.filter(p => p.tipo === t);
-      const avg = Math.round(prods.reduce((s,p) => s + ([p.pA](http://p.pA) - p.costo)/[p.pA](http://p.pA)*100, 0) / prods.length);
+      const avg = Math.round(prods.reduce((s,p) => s + (p.pA - p.costo)/p.pA*100, 0) / prods.length);
       return `<div class="prog">
         <div class="prog-label"><span style="font-size:12px;">${t}</span><span style="font-size:12px;font-weight:700;color:var(--green);">${avg}%</span></div>
         <div class="prog-bar"><div class="prog-fill" style="width:${avg}%;background:var(--green);"></div></div>
@@ -1901,7 +1901,7 @@ function renderFinanzas() {
   }
 
   const cxp = document.getElementById('cxpList');
-  if (cxp) cxp.innerHTML = DB_[cxp.map](http://cxp.map)(c => `
+  if (cxp) cxp.innerHTML = DB_cxp.map(c => `
     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;">
       <div><div style="font-weight:600;">${c.prov}</div><div style="font-size:10px;color:var(--t3);">Vence: ${c.vence}</div></div>
       <span style="font-family:'DM Mono',monospace;font-weight:500;color:var(--red);">$${c.monto.toLocaleString()}</span>
@@ -1913,7 +1913,7 @@ function renderFinanzas() {
 function renderTrazabilidad() {
   const tl = document.getElementById('trazTl');
   if (!tl) return;
-  tl.innerHTML = DB_[traz.map](http://traz.map)(t => `
+  tl.innerHTML = DB_traz.map(t => `
     <div class="tl-item">
       <div class="tl-dot tl-${t.t}">${t.t==='g'?'✓':t.t==='o'?'◎':t.t==='r'?'!':'○'}</div>
       <div><div class="tl-title">${t.ev}</div><div class="tl-desc">${t.desc}</div><div class="tl-time">${t.time}</div></div>
@@ -1925,7 +1925,7 @@ function renderTrazabilidad() {
 function renderAlertas() {
   const aa = document.getElementById('allAlerts');
   if (!aa) return;
-  aa.innerHTML = [ALERTAS.map](http://ALERTAS.map)(a => `
+  aa.innerHTML = ALERTAS.map(a => `
     <div class="alert-box ${a.tipo==='crit'?'crit':a.tipo==='warn'?'warn':'info'}" style="margin-bottom:8px;">
       <div class="alert-ico">${a.ico}</div>
       <div style="flex:1;"><div class="alert-title">${a.titulo}</div><div class="alert-desc">${a.desc}</div></div>
@@ -1977,7 +1977,7 @@ function registrarPago() {
   const fac = DB_facturas.find(f => f.num === sel.value);
   if (fac) {
     fac.pagado += parseFloat(monto.value);
-    if (fac.pagado >= [fac.total](http://fac.total)) { fac.estado = 'pagada'; fac.mora = 0; }
+    if (fac.pagado >= fac.total) { fac.estado = 'pagada'; fac.mora = 0; }
     DB_traz.unshift({t:'g',ev:'Pago registrado',desc:`${fac.num} · $${parseFloat(monto.value).toLocaleString()} · ${document.getElementById('prTipo').value}`,time:'Hace un momento'});
   }
   populateSelects();
@@ -2027,7 +2027,7 @@ function saveDespacho() { renderDespacho(); closeModal('mDespacho'); alert('✅ 
 function reoptimizar() { alert('⚡ Rutas re-optimizadas con Nearest Neighbor.\nCamión A → Norte (2 paradas)\nCamión B → Sur + Este (2 paradas)\nFurgón C → Oeste + Centro (2 paradas)'); }
 
 function cambiarEstado(id) {
-  const p = DB_pedidos.find(x => [x.id](http://x.id) === id);
+  const p = DB_pedidos.find(x => x.id === id);
   if (!p) return;
   const estados = ['pendiente','preparacion','despachado','entregado'];
   const idx = estados.indexOf(p.estadoDesp);
@@ -2039,8 +2039,8 @@ function cambiarEstado(id) {
 }
 
 function imprimirFormato() {
-  var w = [window.open](http://window.open)('','_blank');
-  var rows = DB_[mp.map](http://mp.map)(function(m) {
+  var w = window.open('','_blank');
+  var rows = DB_mp.map(function(m) {
     return '<tr><td>' + m.cod + '</td><td>' + m.nombre + '</td><td>' + m.unidad +
       '</td><td>' + m.stock + '</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>' +
       '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>' +
@@ -2082,7 +2082,7 @@ function imprimirFormato() {
 // Extend DB_clientes with extra fields
 DB_clientes.forEach((c, i) => {
   if (!c.telefono) c.telefono = '+58 412-' + String(1000000 + i * 111111).slice(0,7);
-  if (![c.email](http://c.email))    [c.email](http://c.email)    = c.nombre.split(' ')[0].toLowerCase() + '@[empresa.com](http://empresa.com)';
+  if (!c.email)    c.email    = c.nombre.split(' ')[0].toLowerCase() + '@empresa.com';
   if (!c.ciudad)   c.ciudad   = 'Caracas';
   if (!c.activo)   c.activo   = true;
   if (!c.descuento) c.descuento = c.tipo === 'oro' ? 5 : c.tipo === 'plata' ? 2 : 0;
@@ -2142,7 +2142,7 @@ function filtrarClientes() {
     return;
   }
 
-  tb.innerHTML = [lista.map](http://lista.map)(function(c) {
+  tb.innerHTML = lista.map(function(c) {
     var badge  = getTipoBadge(c.tipo);
     var icon   = getTipoIcon(c.tipo);
     var lshort = c.tipo === 'oro' ? 'Lista A' : c.tipo === 'plata' ? 'Lista B' : 'Lista C';
@@ -2152,14 +2152,14 @@ function filtrarClientes() {
       ? '<span class="badge bg">Activo</span>'
       : '<span class="badge br">Inactivo</span>';
     var acciones =
-      '<button class="btn btn-ghost btn-xs" onclick="verCliente(\'' + [c.id](http://c.id) + '\')">👁️</button>' +
-      '<button class="btn btn-ghost btn-xs" onclick="editarCliente(\'' + [c.id](http://c.id) + '\')">✏️</button>' +
-      '<button class="btn btn-ghost btn-xs" onclick="toggleCliente(\'' + [c.id](http://c.id) + '\')">' +
+      '<button class="btn btn-ghost btn-xs" onclick="verCliente(\'' + c.id + '\')">👁️</button>' +
+      '<button class="btn btn-ghost btn-xs" onclick="editarCliente(\'' + c.id + '\')">✏️</button>' +
+      '<button class="btn btn-ghost btn-xs" onclick="toggleCliente(\'' + c.id + '\')">' +
         (c.activo ? '🔴' : '🟢') + '</button>';
     return '<tr>' +
-      '<td style="font-family:monospace;color:var(--t2);font-size:11px;">' + [c.id](http://c.id) + '</td>' +
+      '<td style="font-family:monospace;color:var(--t2);font-size:11px;">' + c.id + '</td>' +
       '<td><div style="font-weight:600;">' + c.nombre + '</div>' +
-        '<div style="font-size:10px;color:var(--t3);">' + ([c.email](http://c.email) || '—') + '</div></td>' +
+        '<div style="font-size:10px;color:var(--t3);">' + (c.email || '—') + '</div></td>' +
       '<td style="font-family:monospace;font-size:11px;color:var(--t2);">' + (c.rif || '—') + '</td>' +
       '<td><span class="badge ' + badge + '">' + icon + ' ' + c.tipo.toUpperCase() + '</span></td>' +
       '<td><span class="badge ' + badge + '">' + lshort + '</span></td>' +
@@ -2184,16 +2184,16 @@ function selTipo(tipo) {
   ['Oro','Plata','Bronce'].forEach(t => {
     const el = document.getElementById('tipo' + t);
     if (!el) return;
-    [el.style](http://el.style).transform = '';
-    [el.style](http://el.style).boxShadow = '';
+    el.style.transform = '';
+    el.style.boxShadow = '';
   });
 
   // Highlight selected
   const map = {oro:'Oro', plata:'Plata', bronce:'Bronce'};
   const selEl = document.getElementById('tipo' + map[tipo]);
   if (selEl) {
-    [selEl.style](http://selEl.style).transform = 'translateY(-3px)';
-    [selEl.style](http://selEl.style).boxShadow = tipo === 'oro'
+    selEl.style.transform = 'translateY(-3px)';
+    selEl.style.boxShadow = tipo === 'oro'
       ? '0 6px 20px rgba(232,32,10,.3)'
       : tipo === 'plata'
       ? '0 6px 20px rgba(45,122,69,.3)'
@@ -2218,8 +2218,8 @@ function updatePreview() {
   const limite = document.getElementById('cliLimite')?.value || '0';
   const prev   = document.getElementById('cliPreview');
 
-  if (!nombre && !tipo) { if (prev) [prev.style](http://prev.style).display = 'none'; return; }
-  if (prev) [prev.style](http://prev.style).display = 'block';
+  if (!nombre && !tipo) { if (prev) prev.style.display = 'none'; return; }
+  if (prev) prev.style.display = 'block';
 
   const ico    = tipo === 'oro' ? '🥇' : tipo === 'plata' ? '🥈' : '🥉';
   const lista  = tipo === 'oro' ? 'Lista A — Oro' : tipo === 'plata' ? 'Lista B — Plata' : tipo === 'bronce' ? 'Lista C — Bronce' : '—';
@@ -2229,7 +2229,7 @@ function updatePreview() {
   const pn = document.getElementById('cliPreviewNombre');  if (pn) pn.textContent = nombre || '(sin nombre)';
   const pd = document.getElementById('cliPreviewDetalle'); if (pd) pd.textContent = (rif ? rif + ' · ' : '') + zona;
   const pl = document.getElementById('cliPreviewLista');
-  if (pl) { pl.textContent = lista; [pl.style](http://pl.style).color = color; }
+  if (pl) { pl.textContent = lista; pl.style.color = color; }
   const pc = document.getElementById('cliPreviewCredito');
   if (pc) pc.textContent = dias + (limite > 0 ? ' · Límite $' + parseInt(limite).toLocaleString() : '');
   const pi = document.getElementById('cliPreviewIcon');    if (pi) pi.textContent = ico;
@@ -2237,7 +2237,7 @@ function updatePreview() {
 
 // Live preview on input
 document.addEventListener('input', e => {
-  if (['cliNombre','cliRif','cliZona','cliLimite'].includes([e.target.id](http://e.target.id))) updatePreview();
+  if (['cliNombre','cliRif','cliZona','cliLimite'].includes(e.target.id)) updatePreview();
 });
 
 /* ── Guardar cliente ── */
@@ -2254,7 +2254,7 @@ function guardarCliente() {
 
   if (clienteEditId) {
     // Editar existente
-    const idx = DB_clientes.findIndex(c => [c.id](http://c.id) === clienteEditId);
+    const idx = DB_clientes.findIndex(c => c.id === clienteEditId);
     if (idx >= 0) {
       DB_clientes[idx] = {
         ...DB_clientes[idx],
@@ -2303,7 +2303,7 @@ function guardarCliente() {
 
 /* ── Ver detalle ── */
 function verCliente(id) {
-  var c = DB_clientes.find(function(x){ return [x.id](http://x.id) === id; });
+  var c = DB_clientes.find(function(x){ return x.id === id; });
   if (!c) return;
 
   var ico    = getTipoIcon(c.tipo);
@@ -2311,15 +2311,15 @@ function verCliente(id) {
   var lista  = getLista(c.tipo);
   var dias   = getDias(c.tipo);
   var color  = getTipoColor(c.tipo);
-  var peds   = DB_pedidos.filter(function(p){ return p.clienteId === [c.id](http://c.id); });
-  var total  = peds.reduce(function(s,p){ return s + [p.total](http://p.total); }, 0);
+  var peds   = DB_pedidos.filter(function(p){ return p.clienteId === c.id; });
+  var total  = peds.reduce(function(s,p){ return s + p.total; }, 0);
   var ticket = peds.length ? '$' + Math.round(total/peds.length).toLocaleString() : '—';
   var nombre = c.nombre || '';
   var rif    = c.rif || '—';
   var ciudad = c.ciudad || 'Caracas';
   var zona   = c.zona || '';
   var tel    = c.telefono || '—';
-  var email  = [c.email](http://c.email) || '—';
+  var email  = c.email || '—';
   var lim    = c.limCredit ? '$' + c.limCredit.toLocaleString() : 'Sin límite';
   var desc   = (c.descuento || 0) + '%';
   var activo = c.activo
@@ -2381,16 +2381,16 @@ function verCliente(id) {
 
 /* ── Editar cliente ── */
 function editarCliente(id) {
-  const c = DB_clientes.find(x => [x.id](http://x.id) === id);
+  const c = DB_clientes.find(x => x.id === id);
   if (!c) return;
   clienteEditId = id;
 
   document.getElementById('mClienteTitle').textContent = '✏️ Editar Cliente';
   document.getElementById('cliNombre').value  = c.nombre || '';
   document.getElementById('cliRif').value     = c.rif || '';
-  document.getElementById('cliCodigo').value  = [c.id](http://c.id) || '';
+  document.getElementById('cliCodigo').value  = c.id || '';
   document.getElementById('cliTel').value     = c.telefono || '';
-  document.getElementById('cliEmail').value   = [c.email](http://c.email) || '';
+  document.getElementById('cliEmail').value   = c.email || '';
   document.getElementById('cliDir').value     = c.direccion || '';
   document.getElementById('cliCiudad').value  = c.ciudad || '';
   document.getElementById('cliZona').value    = c.zona || 'Centro';
@@ -2404,7 +2404,7 @@ function editarCliente(id) {
 
 /* ── Toggle activo/inactivo ── */
 function toggleCliente(id) {
-  const c = DB_clientes.find(x => [x.id](http://x.id) === id);
+  const c = DB_clientes.find(x => x.id === id);
   if (!c) return;
   c.activo = !c.activo;
   DB_traz.unshift({t: c.activo ? 'g' : 'r', ev: c.activo ? 'Cliente activado' : 'Cliente desactivado', desc: c.nombre, time:'Hace un momento'});
@@ -2421,10 +2421,10 @@ function resetFormCliente() {
   document.getElementById('cliTipoSelected').value = '';
   ['Oro','Plata','Bronce'].forEach(t => {
     const el = document.getElementById('tipo'+t);
-    if (el) { [el.style](http://el.style).transform=''; [el.style](http://el.style).boxShadow=''; }
+    if (el) { el.style.transform=''; el.style.boxShadow=''; }
   });
   const prev = document.getElementById('cliPreview');
-  if (prev) [prev.style](http://prev.style).display = 'none';
+  if (prev) prev.style.display = 'none';
   const title = document.getElementById('mClienteTitle');
   if (title) title.textContent = '👥 Nuevo Cliente';
 }
@@ -2434,12 +2434,12 @@ function exportarClientes() {
   DB_clientes.forEach(c => {
     const lista = c.tipo === 'oro' ? 'A' : c.tipo === 'plata' ? 'B' : 'C';
     const dias  = c.tipo === 'oro' ? 60  : c.tipo === 'plata' ? 30  : 15;
-    csv += `${[c.id](http://c.id)},"${c.nombre}",${c.rif||''},${c.tipo},${lista},${c.zona},${dias},${c.limCredit||0},${c.telefono||''},${[c.email](http://c.email)||''}\n`;
+    csv += `${c.id},"${c.nombre}",${c.rif||''},${c.tipo},${lista},${c.zona},${dias},${c.limCredit||0},${c.telefono||''},${c.email||''}\n`;
   });
   const blob = new Blob([csv], {type:'text/csv'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; [a.download](http://a.download) = 'clientes_koratex.csv'; [a.click](http://a.click)();
+  a.href = url; a.download = 'clientes_koratex.csv'; a.click();
   URL.revokeObjectURL(url);
 }
 
