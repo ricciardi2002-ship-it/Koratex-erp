@@ -1396,8 +1396,8 @@ async function enterApp() {
   renderAll();
   navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
   startClock();
-  loadData().then(function(){ populateSelects(); renderAll(); }).catch(function(e){ console.warn('loadData inicial:', e); });
-  setInterval(function(){ loadData().then(function(){ populateSelects(); renderAll(); }).catch(function(){}); }, 60000);
+  loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(e){ console.warn('loadData inicial:', e); });
+  setInterval(function(){ loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(){}); }, 60000);
 }
 
 /* ════════════════════════════════════
@@ -1497,7 +1497,7 @@ function navigate(page) {
   const item = NAV[page];
   document.getElementById('tbTitle').innerHTML = `<span>Koratex</span> · ${item ? item.label : page}`;
   closeSb();
-  if (TOKEN) { loadData().then(function(){ populateSelects(); renderAll(); }).catch(function(e){ console.warn('loadData:', e); renderAll(); }); }
+  if (TOKEN) { loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(e){ console.warn('loadData:', e); }); }
 }
 function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
