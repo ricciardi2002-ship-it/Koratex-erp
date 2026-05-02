@@ -2047,9 +2047,7 @@ async function confirmarPedido() {
       time:'Hace un momento'});
     await loadData(); populateSelects(); renderAll();
     resetNP(); navigate('cola');
-    alert('Pedido ' + (ped.numero||'') + ' registrado.
-Cliente: ' + (cli?cli.nombre:'') + '
-Total: S/.' + total.toFixed(2));
+    alert('Pedido ' + (ped.numero||'') + ' registrado. Cliente: ' + (cli?cli.nombre:'') + ' Total: S/.' + total.toFixed(2));
   } catch(e) { alert('Error al registrar pedido: ' + e.message); }
 }
 
