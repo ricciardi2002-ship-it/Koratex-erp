@@ -1390,14 +1390,14 @@ async function enterApp() {
   document.getElementById('sbAv').textContent   = initials;
   document.getElementById('sbName').textContent = currentUser.nombre;
   document.getElementById('sbRole').textContent = r.label;
-  await loadData();
   buildNav(role);
   populateSelects();
   buildAllLines();
   renderAll();
   navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
   startClock();
-  setInterval(async function(){ await loadData(); renderAll(); }, 60000);
+  loadData().then(function(){ populateSelects(); renderAll(); }).catch(function(e){ console.warn('loadData inicial:', e); });
+  setInterval(function(){ loadData().then(function(){ populateSelects(); renderAll(); }).catch(function(){}); }, 60000);
 }
 
 /* ════════════════════════════════════
@@ -1487,7 +1487,7 @@ function buildNav(role) {
 }
 
 /* ════════ NAVIGATION ════════ */
-async function navigate(page) {
+function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const pg = document.getElementById('page-' + page);
@@ -1497,7 +1497,7 @@ async function navigate(page) {
   const item = NAV[page];
   document.getElementById('tbTitle').innerHTML = `<span>Koratex</span> · ${item ? item.label : page}`;
   closeSb();
-  if (TOKEN) { await loadData(); populateSelects(); renderAll(); }
+  if (TOKEN) { loadData().then(function(){ populateSelects(); renderAll(); }).catch(function(e){ console.warn('loadData:', e); renderAll(); }); }
 }
 function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
