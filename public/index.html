@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -22,42 +21,42 @@
   --border:   #2a2a2a;
   --border2:  #383838;
 
-/* Rojo Koratex principal */
---orange:   #e8200a;
---orange2:  #ff2d12;
---orange-l: rgba(232,32,10,.1);
---orange-b: rgba(232,32,10,.16);
+  /* Rojo Koratex principal */
+  --orange:   #e8200a;
+  --orange2:  #ff2d12;
+  --orange-l: rgba(232,32,10,.1);
+  --orange-b: rgba(232,32,10,.16);
 
-/* Verde Koratex secundario */
---cyan:     #2d7a45;
---cyan-l:   rgba(45,122,69,.12);
+  /* Verde Koratex secundario */
+  --cyan:     #2d7a45;
+  --cyan-l:   rgba(45,122,69,.12);
 
-/* Verde claro éxito */
---green:    #3db870;
---green-l:  rgba(61,184,112,.1);
+  /* Verde claro éxito */
+  --green:    #3db870;
+  --green-l:  rgba(61,184,112,.1);
 
-/* Alerta rojo */
---red:      #e8200a;
---red-l:    rgba(232,32,10,.1);
+  /* Alerta rojo */
+  --red:      #e8200a;
+  --red-l:    rgba(232,32,10,.1);
 
-/* Advertencia ámbar */
---amber:    #f5a623;
---amber-l:  rgba(245,166,35,.1);
+  /* Advertencia ámbar */
+  --amber:    #f5a623;
+  --amber-l:  rgba(245,166,35,.1);
 
---violet:   #a78bfa;
---violet-l: rgba(167,139,250,.1);
+  --violet:   #a78bfa;
+  --violet-l: rgba(167,139,250,.1);
 
-/* Texto sobre fondo negro */
---t1: #f0f0f0;
---t2: #888888;
---t3: #505050;
---t4: #2e2e2e;
+  /* Texto sobre fondo negro */
+  --t1: #f0f0f0;
+  --t2: #888888;
+  --t3: #505050;
+  --t4: #2e2e2e;
 
---r:  10px;
---rl: 16px;
---rx: 22px;
---sh: 0 4px 24px rgba(0,0,0,.5);
---shl: 0 12px 48px rgba(0,0,0,.6);
+  --r:  10px;
+  --rl: 16px;
+  --rx: 22px;
+  --sh: 0 4px 24px rgba(0,0,0,.5);
+  --shl: 0 12px 48px rgba(0,0,0,.6);
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -68,44 +67,44 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 ::-webkit-scrollbar-thumb { background:var(--wire); border-radius:2px; }
 
 /* ══════════════════════════
-LOGIN
+   LOGIN
 ══════════════════════════ */
 #loginScreen {
-min-height:100vh;
-display:flex; align-items:center; justify-content:center;
-background: radial-gradient(ellipse at 50% 40%, rgba(232,32,10,.08) 0%, transparent 60%),
-radial-gradient(ellipse at 20% 80%, rgba(45,122,69,.05) 0%, transparent 50%),
-repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,.006) 60px, rgba(255,255,255,.006) 61px),
-repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,.006) 60px, rgba(255,255,255,.006) 61px),
-var(--bg);
-padding:20px;
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  background: radial-gradient(ellipse at 50% 40%, rgba(232,32,10,.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(45,122,69,.05) 0%, transparent 50%),
+              repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,.006) 60px, rgba(255,255,255,.006) 61px),
+              repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,.006) 60px, rgba(255,255,255,.006) 61px),
+              var(--bg);
+  padding:20px;
 }
 .login-box {
-background:var(--bg2);
-border:1px solid var(--border);
-border-radius:var(--rx);
-padding:44px 40px;
-width:100%; max-width:420px;
-box-shadow:var(--shl);
-position:relative;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:var(--rx);
+  padding:44px 40px;
+  width:100%; max-width:420px;
+  box-shadow:var(--shl);
+  position:relative;
 }
 .login-box::before {
-content:'';
-position:absolute; top:0; left:30px; right:30px; height:2px;
-background:linear-gradient(90deg, transparent, #e8200a, #2d7a45, transparent);
-border-radius:0 0 2px 2px;
+  content:'';
+  position:absolute; top:0; left:30px; right:30px; height:2px;
+  background:linear-gradient(90deg, transparent, #e8200a, #2d7a45, transparent);
+  border-radius:0 0 2px 2px;
 }
 .login-box::after {
-content:'';
-position:absolute; bottom:0; left:30px; right:30px; height:1px;
-background:linear-gradient(90deg, transparent, #2d7a45, transparent);
-border-radius:2px 2px 0 0;
+  content:'';
+  position:absolute; bottom:0; left:30px; right:30px; height:1px;
+  background:linear-gradient(90deg, transparent, #2d7a45, transparent);
+  border-radius:2px 2px 0 0;
 }
 .login-brand { display:flex; align-items:center; gap:13px; margin-bottom:6px; }
 .login-logo {
-width:48px; height:48px; border-radius:13px;
-background:transparent;
-display:flex; align-items:center; justify-content:center;
+  width:48px; height:48px; border-radius:13px;
+  background:transparent;
+  display:flex; align-items:center; justify-content:center;
 }
 .login-name { font-size:28px; font-weight:800; letter-spacing:2px; text-transform:uppercase; }
 .login-sub { font-size:11px; color:var(--t3); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:30px; }
@@ -113,10 +112,10 @@ display:flex; align-items:center; justify-content:center;
 .login-label { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--t3); margin-bottom:12px; }
 .role-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
 .role-btn {
-background:var(--bg3); border:1px solid var(--border);
-border-radius:11px; padding:14px 10px;
-cursor:pointer; transition:all .2s;
-text-align:center; display:flex; flex-direction:column; align-items:center; gap:5px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:11px; padding:14px 10px;
+  cursor:pointer; transition:all .2s;
+  text-align:center; display:flex; flex-direction:column; align-items:center; gap:5px;
 }
 .role-btn:hover { border-color:#e8200a; background:rgba(232,32,10,.1); transform:translateY(-2px); box-shadow:0 6px 20px rgba(232,32,10,.25); }
 .role-btn .ri { font-size:20px; }
@@ -124,36 +123,36 @@ text-align:center; display:flex; flex-direction:column; align-items:center; gap:
 .role-btn .rd { font-size:10px; color:var(--t3); }
 
 /* ══════════════════════════
-APP LAYOUT
+   APP LAYOUT
 ══════════════════════════ */
 .app { display:flex; min-height:100vh; }
 
 /* KORATEX brand accent line on sidebar top */
 /* SIDEBAR */
 .sidebar {
-width:220px; min-height:100vh;
-background:var(--bg2);
-border-right:1px solid var(--border);
-display:flex; flex-direction:column;
-position:fixed; top:0; left:0; z-index:200;
-transition:transform .3s cubic-bezier(.4,0,.2,1);
+  width:220px; min-height:100vh;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  position:fixed; top:0; left:0; z-index:200;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
 .sb-brand {
-padding:18px 16px 14px;
-border-bottom:1px solid var(--border);
-display:flex; align-items:center; gap:9px;
-position:relative;
+  padding:18px 16px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:9px;
+  position:relative;
 }
 .sb-brand::before {
-content:'';
-position:absolute; top:0; left:0; right:0; height:2px;
-background:linear-gradient(90deg, #e8200a, #2d7a45);
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, #e8200a, #2d7a45);
 }
 .sb-logo {
-width:34px; height:34px; border-radius:0;
-background:transparent;
-display:flex; align-items:center; justify-content:center;
-flex-shrink:0;
+  width:34px; height:34px; border-radius:0;
+  background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
 }
 .sb-title { font-size:17px; font-weight:800; letter-spacing:2px; text-transform:uppercase; line-height:1; }
 .sb-title small { display:block; font-size:8px; color:var(--t3); letter-spacing:1.5px; font-weight:400; margin-top:2px; }
@@ -161,40 +160,40 @@ flex-shrink:0;
 .sb-nav { flex:1; padding:6px 7px; overflow-y:auto; }
 .sb-section { font-size:8.5px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--t4); padding:13px 9px 4px; }
 .nav-item {
-display:flex; align-items:center; gap:9px;
-padding:8px 11px; border-radius:8px;
-cursor:pointer; transition:all .15s;
-font-size:12.5px; font-weight:500; color:var(--t2);
-margin-bottom:1px; position:relative;
+  display:flex; align-items:center; gap:9px;
+  padding:8px 11px; border-radius:8px;
+  cursor:pointer; transition:all .15s;
+  font-size:12.5px; font-weight:500; color:var(--t2);
+  margin-bottom:1px; position:relative;
 }
 .nav-item:hover { background:var(--bg3); color:var(--t1); }
 .nav-item.active { background:var(--orange-b); color:var(--orange); font-weight:600; }
 .nav-item.active::before {
-content:''; position:absolute; left:0; top:7px; bottom:7px;
-width:3px; background:var(--orange); border-radius:0 2px 2px 0;
+  content:''; position:absolute; left:0; top:7px; bottom:7px;
+  width:3px; background:var(--orange); border-radius:0 2px 2px 0;
 }
 .nav-ic { font-size:14px; width:16px; text-align:center; flex-shrink:0; }
 .nav-badge {
-margin-left:auto; background:var(--red); color:#fff;
-font-size:9px; font-weight:700; padding:1px 5px;
-border-radius:8px; font-family:'DM Mono',monospace;
+  margin-left:auto; background:var(--red); color:#fff;
+  font-size:9px; font-weight:700; padding:1px 5px;
+  border-radius:8px; font-family:'DM Mono',monospace;
 }
 
 .sb-user {
-padding:11px 13px; border-top:1px solid var(--border);
-display:flex; align-items:center; gap:9px;
+  padding:11px 13px; border-top:1px solid var(--border);
+  display:flex; align-items:center; gap:9px;
 }
 .sb-av {
-width:32px; height:32px; border-radius:8px;
-background:linear-gradient(135deg,var(--orange),var(--cyan));
-display:flex; align-items:center; justify-content:center;
-font-size:11px; font-weight:800; color:var(--bg); flex-shrink:0;
+  width:32px; height:32px; border-radius:8px;
+  background:linear-gradient(135deg,var(--orange),var(--cyan));
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:800; color:var(--bg); flex-shrink:0;
 }
 .sb-uname { font-size:12px; font-weight:600; color:var(--t1); }
 .sb-urole { font-size:10px; color:var(--t3); }
 .sb-out {
-margin-left:auto; background:none; border:none; color:var(--t3);
-cursor:pointer; font-size:15px; padding:3px; border-radius:5px; transition:all .15s;
+  margin-left:auto; background:none; border:none; color:var(--t3);
+  cursor:pointer; font-size:15px; padding:3px; border-radius:5px; transition:all .15s;
 }
 .sb-out:hover { background:var(--red-l); color:var(--red); }
 
@@ -203,10 +202,10 @@ cursor:pointer; font-size:15px; padding:3px; border-radius:5px; transition:all .
 
 /* TOPBAR */
 .topbar {
-height:52px; background:var(--bg2); border-bottom:1px solid var(--border);
-display:flex; align-items:center; justify-content:space-between;
-padding:0 22px; position:sticky; top:0; z-index:100;
-box-shadow:0 1px 0 rgba(232,32,10,.15);
+  height:52px; background:var(--bg2); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 22px; position:sticky; top:0; z-index:100;
+  box-shadow:0 1px 0 rgba(232,32,10,.15);
 }
 .tb-left { display:flex; align-items:center; gap:10px; }
 .menu-btn { display:none; background:none; border:none; color:var(--t2); font-size:20px; cursor:pointer; }
@@ -215,16 +214,16 @@ box-shadow:0 1px 0 rgba(232,32,10,.15);
 .tb-right { display:flex; align-items:center; gap:8px; }
 .tb-clock { font-family:'DM Mono',monospace; font-size:11px; color:var(--t3); }
 .tb-alert {
-position:relative; width:32px; height:32px;
-background:var(--bg3); border:1px solid var(--border);
-border-radius:7px; display:flex; align-items:center; justify-content:center;
-cursor:pointer; font-size:14px; transition:all .15s;
+  position:relative; width:32px; height:32px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:7px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:14px; transition:all .15s;
 }
 .tb-alert:hover { border-color:var(--orange); }
 .tb-alert-dot {
-position:absolute; top:5px; right:6px;
-width:6px; height:6px; background:var(--red);
-border-radius:50%; border:1.5px solid var(--bg2);
+  position:absolute; top:5px; right:6px;
+  width:6px; height:6px; background:var(--red);
+  border-radius:50%; border:1.5px solid var(--bg2);
 }
 
 /* PAGES */
@@ -239,13 +238,13 @@ border-radius:50%; border:1.5px solid var(--bg2);
 .ph-actions { display:flex; gap:7px; flex-wrap:wrap; }
 
 /* ══════════════════════════
-BUTTONS
+   BUTTONS
 ══════════════════════════ */
 .btn {
-display:inline-flex; align-items:center; gap:5px;
-padding:8px 15px; border-radius:8px; font-size:12.5px;
-font-weight:600; cursor:pointer; border:none;
-font-family:'Inter',sans-serif; transition:all .15s;
+  display:inline-flex; align-items:center; gap:5px;
+  padding:8px 15px; border-radius:8px; font-size:12.5px;
+  font-weight:600; cursor:pointer; border:none;
+  font-family:'Inter',sans-serif; transition:all .15s;
 }
 .btn-primary { background:var(--orange); color:var(--bg); box-shadow:0 3px 12px rgba(255,107,43,.3); }
 .btn-primary:hover { background:var(--orange2); transform:translateY(-1px); }
@@ -260,13 +259,13 @@ font-family:'Inter',sans-serif; transition:all .15s;
 .btn-block { width:100%; justify-content:center; padding:12px; font-size:14px; }
 
 /* ══════════════════════════
-KPI CARDS
+   KPI CARDS
 ══════════════════════════ */
 .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:20px; }
 .kpi {
-background:var(--bg2); border:1px solid var(--border);
-border-radius:var(--rl); padding:16px;
-transition:transform .2s, box-shadow .2s; position:relative; overflow:hidden;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--rl); padding:16px;
+  transition:transform .2s, box-shadow .2s; position:relative; overflow:hidden;
 }
 .kpi:hover { transform:translateY(-2px); box-shadow:var(--sh); }
 .kpi::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
@@ -284,30 +283,30 @@ transition:transform .2s, box-shadow .2s; position:relative; overflow:hidden;
 .kpi-nt { color:var(--amber); font-weight:700; }
 
 /* ══════════════════════════
-CARDS
+   CARDS
 ══════════════════════════ */
 .card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--rl); padding:18px; }
 .card-title {
-font-size:13px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
-display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
+  font-size:13px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
 }
 .g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
 .g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:14px; }
 .g2x1 { display:grid; grid-template-columns:2fr 1fr; gap:14px; margin-bottom:14px; }
 
 /* ══════════════════════════
-TABLES
+   TABLES
 ══════════════════════════ */
 .tw { background:var(--bg2); border:1px solid var(--border); border-radius:var(--rl); overflow:hidden; }
 .tw-toolbar {
-padding:12px 16px; border-bottom:1px solid var(--border);
-display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
 }
 .tw-title { font-size:12px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; }
 .search-box {
-display:flex; align-items:center; gap:6px;
-background:var(--bg3); border:1px solid var(--border);
-border-radius:7px; padding:5px 10px;
+  display:flex; align-items:center; gap:6px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:7px; padding:5px 10px;
 }
 .search-box input { background:none; border:none; outline:none; font-size:12px; color:var(--t1); font-family:'Inter',sans-serif; width:130px; }
 .search-box input::placeholder { color:var(--t3); }
@@ -318,7 +317,7 @@ tbody tr:hover { background:rgba(255,255,255,.018); }
 tbody td { padding:11px 13px; font-size:12.5px; }
 
 /* ══════════════════════════
-BADGES & SEMÁFOROS
+   BADGES & SEMÁFOROS
 ══════════════════════════ */
 .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:5px; font-size:10.5px; font-weight:700; }
 .bg { background:var(--green-l); color:var(--green); }
@@ -340,39 +339,39 @@ BADGES & SEMÁFOROS
 .sem-crit { color:var(--red); }
 
 /* ══════════════════════════
-MODAL
+   MODAL
 ══════════════════════════ */
 .modal-overlay {
-display:none; position:fixed; inset:0;
-background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
-z-index:600; align-items:center; justify-content:center; padding:16px;
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
+  z-index:600; align-items:center; justify-content:center; padding:16px;
 }
 .modal-overlay.open { display:flex; }
 .modal {
-background:var(--bg2); border:1px solid var(--border2);
-border-radius:var(--rx); width:100%; max-width:700px; max-height:92vh; overflow-y:auto;
-box-shadow:0 32px 80px rgba(0,0,0,.7);
-animation:mIn .2s cubic-bezier(.4,0,.2,1);
+  background:var(--bg2); border:1px solid var(--border2);
+  border-radius:var(--rx); width:100%; max-width:700px; max-height:92vh; overflow-y:auto;
+  box-shadow:0 32px 80px rgba(0,0,0,.7);
+  animation:mIn .2s cubic-bezier(.4,0,.2,1);
 }
 .modal.modal-lg { max-width:900px; }
 .modal.modal-sm { max-width:480px; }
 @keyframes mIn { from { opacity:0; transform:scale(.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
 .modal-header {
-padding:18px 22px 14px; border-bottom:1px solid var(--border);
-display:flex; align-items:center; justify-content:space-between;
-position:sticky; top:0; background:var(--bg2); z-index:5;
+  padding:18px 22px 14px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; background:var(--bg2); z-index:5;
 }
 .modal-header h3 { font-size:16px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; }
 .modal-close {
-width:28px; height:28px; background:var(--bg3); border:1px solid var(--border);
-border-radius:6px; color:var(--t2); font-size:15px; cursor:pointer;
-display:flex; align-items:center; justify-content:center; transition:all .15s;
+  width:28px; height:28px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:6px; color:var(--t2); font-size:15px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:all .15s;
 }
 .modal-close:hover { background:var(--red-l); color:var(--red); }
 .modal-body { padding:22px; }
 
 /* ══════════════════════════
-FORMS
+   FORMS
 ══════════════════════════ */
 .fs { margin-bottom:18px; }
 .fs-title { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--t3); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--border); }
@@ -382,26 +381,26 @@ FORMS
 .fg.full { grid-column:1/-1; }
 label { font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--t3); }
 input,select,textarea {
-background:var(--bg3); border:1px solid var(--border); border-radius:7px;
-color:var(--t1); padding:8px 11px; font-size:13px;
-font-family:'Inter',sans-serif; outline:none; transition:all .15s; width:100%;
+  background:var(--bg3); border:1px solid var(--border); border-radius:7px;
+  color:var(--t1); padding:8px 11px; font-size:13px;
+  font-family:'Inter',sans-serif; outline:none; transition:all .15s; width:100%;
 }
 input:focus,select:focus,textarea:focus { border-color:var(--orange); background:var(--bg2); box-shadow:0 0 0 3px rgba(255,107,43,.1); }
 textarea { resize:vertical; min-height:65px; }
 .form-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
 
 /* ══════════════════════════
-PEDIDO LINES
+   PEDIDO LINES
 ══════════════════════════ */
 .lines-head {
-display:grid; grid-template-columns:26px 1fr 110px 75px 90px 90px 30px;
-gap:5px; padding:6px 8px; background:var(--bg3); border-radius:6px;
-font-size:9.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--t3); margin-bottom:4px;
+  display:grid; grid-template-columns:26px 1fr 110px 75px 90px 90px 30px;
+  gap:5px; padding:6px 8px; background:var(--bg3); border-radius:6px;
+  font-size:9.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--t3); margin-bottom:4px;
 }
 .oline {
-display:grid; grid-template-columns:26px 1fr 110px 75px 90px 90px 30px;
-gap:5px; align-items:center; padding:4px 7px; border-radius:6px;
-border:1px solid var(--border); background:var(--bg3); margin-bottom:4px; transition:border-color .15s;
+  display:grid; grid-template-columns:26px 1fr 110px 75px 90px 90px 30px;
+  gap:5px; align-items:center; padding:4px 7px; border-radius:6px;
+  border:1px solid var(--border); background:var(--bg3); margin-bottom:4px; transition:border-color .15s;
 }
 .oline:hover { border-color:var(--orange); }
 .oline.empty { opacity:.3; }
@@ -410,21 +409,21 @@ border:1px solid var(--border); background:var(--bg3); margin-bottom:4px; transi
 .onum { font-size:10px; color:var(--t3); font-weight:700; text-align:center; font-family:'DM Mono',monospace; }
 .osub { font-size:12px; font-weight:700; color:var(--orange); text-align:right; font-family:'DM Mono',monospace; }
 .oclear {
-width:24px; height:24px; background:none; border:1px solid var(--border);
-border-radius:5px; color:var(--t3); cursor:pointer; font-size:12px;
-display:flex; align-items:center; justify-content:center; transition:all .15s;
+  width:24px; height:24px; background:none; border:1px solid var(--border);
+  border-radius:5px; color:var(--t3); cursor:pointer; font-size:12px;
+  display:flex; align-items:center; justify-content:center; transition:all .15s;
 }
 .oclear:hover { background:var(--red-l); color:var(--red); border-color:transparent; }
 .ototal {
-background:var(--orange-b); border:1px solid rgba(255,107,43,.2);
-border-radius:9px; padding:11px 14px;
-display:flex; align-items:center; justify-content:space-between; margin-top:10px;
+  background:var(--orange-b); border:1px solid rgba(255,107,43,.2);
+  border-radius:9px; padding:11px 14px;
+  display:flex; align-items:center; justify-content:space-between; margin-top:10px;
 }
 .ototal-label { font-size:11px; color:var(--orange); font-weight:600; }
 .ototal-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--orange); }
 
 /* ══════════════════════════
-PROGRESS BARS
+   PROGRESS BARS
 ══════════════════════════ */
 .prog { margin-bottom:10px; }
 .prog-label { display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; }
@@ -432,17 +431,17 @@ PROGRESS BARS
 .prog-fill { height:100%; border-radius:3px; transition:width .6s ease; }
 
 /* ══════════════════════════
-COLA DE PEDIDOS (Problema 1 & 2)
+   COLA DE PEDIDOS (Problema 1 & 2)
 ══════════════════════════ */
 .cola-pedido {
-background:var(--bg3); border:1px solid var(--border);
-border-radius:var(--r); padding:13px 15px;
-display:flex; align-items:center; gap:12px;
-margin-bottom:8px; transition:all .2s; cursor:pointer;
-position:relative; overflow:hidden;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r); padding:13px 15px;
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:8px; transition:all .2s; cursor:pointer;
+  position:relative; overflow:hidden;
 }
 .cola-pedido::before {
-content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
 }
 .cola-pedido.alta::before { background:var(--red); }
 .cola-pedido.media::before { background:var(--amber); }
@@ -457,20 +456,20 @@ content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
 .cp-dias { font-size:10px; margin-top:3px; }
 
 /* ══════════════════════════
-DESPACHO POR ZONA
+   DESPACHO POR ZONA
 ══════════════════════════ */
 .zona-card {
-background:var(--bg3); border:1px solid var(--border);
-border-radius:var(--r); padding:14px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r); padding:14px;
 }
 .zona-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
 .zona-name { font-size:13px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
 .zona-count { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--cyan); }
 .zona-km { font-size:10px; color:var(--t3); }
 .camion-asignado {
-background:var(--bg2); border:1px solid var(--border);
-border-radius:7px; padding:8px 10px; margin-top:8px;
-display:flex; align-items:center; gap:8px; font-size:11px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:7px; padding:8px 10px; margin-top:8px;
+  display:flex; align-items:center; gap:8px; font-size:11px;
 }
 .camion-ic { font-size:16px; }
 .camion-info { flex:1; }
@@ -478,12 +477,12 @@ display:flex; align-items:center; gap:8px; font-size:11px;
 .camion-cap { color:var(--t3); font-size:10px; }
 
 /* ══════════════════════════
-INVENTARIO RÁPIDO (Problema 3)
+   INVENTARIO RÁPIDO (Problema 3)
 ══════════════════════════ */
 .inv-card {
-background:var(--bg3); border:1px solid var(--border);
-border-radius:var(--r); padding:13px; margin-bottom:8px;
-display:flex; align-items:center; gap:12px; transition:all .15s;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r); padding:13px; margin-bottom:8px;
+  display:flex; align-items:center; gap:12px; transition:all .15s;
 }
 .inv-card:hover { border-color:var(--border2); }
 .inv-icon { font-size:22px; flex-shrink:0; }
@@ -497,8 +496,8 @@ display:flex; align-items:center; gap:12px; transition:all .15s;
 
 /* FORMULARIO RÁPIDO INVENTARIO */
 .quick-form {
-background:var(--bg3); border:1px solid var(--border);
-border-radius:var(--r); padding:14px; margin-bottom:10px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r); padding:14px; margin-bottom:10px;
 }
 .quick-form-title { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--t3); margin-bottom:10px; }
 .quick-row { display:flex; gap:8px; align-items:flex-end; }
@@ -506,23 +505,23 @@ border-radius:var(--r); padding:14px; margin-bottom:10px;
 
 /* FORMATO IMPRIMIBLE */
 .print-format {
-background:white; color:#000; border-radius:var(--r);
-padding:24px; max-width:480px; margin:0 auto;
-font-family:'Inter',sans-serif;
+  background:white; color:#000; border-radius:var(--r);
+  padding:24px; max-width:480px; margin:0 auto;
+  font-family:'Inter',sans-serif;
 }
 @media print {
-body * { visibility:hidden; }
-.print-format, .print-format * { visibility:visible; }
-.print-format { position:fixed; top:0; left:0; width:100%; }
+  body * { visibility:hidden; }
+  .print-format, .print-format * { visibility:visible; }
+  .print-format { position:fixed; top:0; left:0; width:100%; }
 }
 
 /* ══════════════════════════
-COBRANZA RÁPIDA (Problema 4)
+   COBRANZA RÁPIDA (Problema 4)
 ══════════════════════════ */
 .cobro-card {
-background:var(--bg3); border:1px solid var(--border);
-border-radius:var(--r); padding:13px 15px; margin-bottom:8px;
-display:flex; align-items:center; gap:12px; transition:all .15s;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r); padding:13px 15px; margin-bottom:8px;
+  display:flex; align-items:center; gap:12px; transition:all .15s;
 }
 .cobro-card:hover { border-color:var(--border2); }
 .cobro-mora { border-left:3px solid var(--red); }
@@ -537,13 +536,13 @@ display:flex; align-items:center; gap:12px; transition:all .15s;
 
 /* REGISTRO PAGO RÁPIDO */
 .pago-rapido {
-background:var(--green-l); border:1px solid rgba(0,229,160,.2);
-border-radius:var(--r); padding:14px;
+  background:var(--green-l); border:1px solid rgba(0,229,160,.2);
+  border-radius:var(--r); padding:14px;
 }
 .pago-rapido-title { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--green); margin-bottom:10px; }
 
 /* ══════════════════════════
-TIMELINE
+   TIMELINE
 ══════════════════════════ */
 .tl { display:flex; flex-direction:column; }
 .tl-item { display:flex; gap:10px; padding:8px 0; position:relative; }
@@ -570,8 +569,8 @@ TIMELINE
 
 /* ALERTA BOX */
 .alert-box {
-display:flex; align-items:flex-start; gap:10px;
-padding:11px 14px; border-radius:8px; margin-bottom:8px;
+  display:flex; align-items:flex-start; gap:10px;
+  padding:11px 14px; border-radius:8px; margin-bottom:8px;
 }
 .alert-box.crit { background:var(--red-l); border:1px solid rgba(255,68,102,.2); }
 .alert-box.warn { background:var(--amber-l); border:1px solid rgba(255,179,64,.2); }
@@ -584,38 +583,36 @@ padding:11px 14px; border-radius:8px; margin-bottom:8px;
 
 /* RESPONSIVE */
 @media(max-width:900px) {
-.sidebar { transform:translateX(-100%); }
-.sidebar.open { transform:translateX(0); }
-.main { margin-left:0; }
-.g2,.g3,.g2x1,.fg2,.fg3 { grid-template-columns:1fr; }
-.kpi-grid { grid-template-columns:1fr 1fr; }
-.menu-btn { display:flex !important; }
-.page { padding:14px; }
-.lines-head,.oline { grid-template-columns:22px 1fr 80px 60px 75px 75px 26px; }
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; }
+  .g2,.g3,.g2x1,.fg2,.fg3 { grid-template-columns:1fr; }
+  .kpi-grid { grid-template-columns:1fr 1fr; }
+  .menu-btn { display:flex !important; }
+  .page { padding:14px; }
+  .lines-head,.oline { grid-template-columns:22px 1fr 80px 60px 75px 75px 26px; }
 }
 
 /* INFO PILL */
 .info-pill {
-display:inline-flex; align-items:center; gap:6px;
-background:var(--orange-b); border:1px solid rgba(255,107,43,.25);
-border-radius:20px; padding:4px 12px; font-size:11px; color:var(--orange); font-weight:600;
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--orange-b); border:1px solid rgba(255,107,43,.25);
+  border-radius:20px; padding:4px 12px; font-size:11px; color:var(--orange); font-weight:600;
 }
 
 /* DIAS CHIP */
 .dias-chip {
-display:inline-block; padding:2px 7px; border-radius:4px;
-font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
+  display:inline-block; padding:2px 7px; border-radius:4px;
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 }
 .dias-0 { background:var(--green-l); color:var(--green); }
 .dias-1 { background:var(--amber-l); color:var(--amber); }
 .dias-2 { background:var(--red-l); color:var(--red); }
 </style>
-
 </head>
 <body>
 
 <!-- ════════════ LOGIN ════════════ -->
-
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-brand">
@@ -623,25 +620,22 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
       <div class="login-name" style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;color:#f0f0f0;">KORATEX</div>
     </div>
     <div class="login-sub" style="font-size:10px;letter-spacing:2px;color:#555;">MORTERO SECO, C.A. &nbsp;·&nbsp; J-30805882-3 &nbsp;·&nbsp; SISTEMA ERP</div>
-    <form onsubmit="event.preventDefault();doLogin();" style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
-      <div class="fg"><label>Usuario</label><input id="loginEmail" type="email" value="admin@koratex.com" placeholder="usuario@koratex.com" required></div>
-      <div class="fg"><label>Contraseña</label><input id="loginPass" type="password" value="koratex2025" required></div>
-      <div id="loginError" style="color:var(--red);font-size:12px;text-align:center;min-height:16px;"></div>
-      <button type="submit" id="loginBtn" class="btn btn-primary" style="padding:12px;font-size:14px;letter-spacing:1px;">Entrar al sistema</button>
-    </form>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+      <div class="fg"><label>Usuario</label><input type="email" value="[admin@koratex.com](mailto:admin@koratex.com)" placeholder="[usuario@koratex.com](mailto:usuario@koratex.com)"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" value="••••••••"></div>
+    </div>
     <div class="login-sep"></div>
-    <div class="login-label">Acceso rápido</div>
+    <div class="login-label">Acceso rápido por rol</div>
     <div class="role-grid">
-      <button class="role-btn" onclick="quickLogin('admin@koratex.com')"><div class="ri">⚙️</div><div class="rn">Admin</div><div class="rd">Acceso total</div></button>
-      <button class="role-btn" onclick="quickLogin('comercial@koratex.com')"><div class="ri">📊</div><div class="rn">Comercial</div><div class="rd">Pedidos</div></button>
-      <button class="role-btn" onclick="quickLogin('logistica@koratex.com')"><div class="ri">🚚</div><div class="rn">Logística</div><div class="rd">Despacho</div></button>
-      <button class="role-btn" onclick="quickLogin('finanzas@koratex.com')"><div class="ri">💰</div><div class="rn">Finanzas</div><div class="rd">Cobranza</div></button>
+      <button class="role-btn" onclick="enterAs('admin')"><div class="ri">⚙️</div><div class="rn">Admin</div><div class="rd">Acceso total</div></button>
+      <button class="role-btn" onclick="enterAs('comercial')"><div class="ri">📊</div><div class="rn">Comercial</div><div class="rd">Yine · Pedidos</div></button>
+      <button class="role-btn" onclick="enterAs('logistica')"><div class="ri">🚚</div><div class="rn">Logística</div><div class="rd">Despacho</div></button>
+      <button class="role-btn" onclick="enterAs('finanzas')"><div class="ri">💰</div><div class="rn">Finanzas</div><div class="rd">Cobranza</div></button>
     </div>
   </div>
 </div>
 
 <!-- ════════════ APP ════════════ -->
-
 <div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
 
 <div class="app" id="appShell" style="display:none;">
@@ -670,483 +664,482 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
       </div>
     </div>
 
-<!-- ══ DASHBOARD ══ -->
-<div class="page active" id="page-dashboard">
-  <div class="ph">
-    <div class="ph-text"><h2>Dashboard General</h2><p>Vista ejecutiva · Koratex ERP v2</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-primary" onclick="openModal('mPedido')">＋ Nuevo Pedido</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-label">Ventas del Mes</div><div class="kpi-val">$342,800</div><div class="kpi-sub"><span class="kpi-up">↑8.4%</span> vs mes anterior</div></div>
-    <div class="kpi kr"><div class="kpi-label">Pedidos sin despachar</div><div class="kpi-val">14</div><div class="kpi-sub"><span class="kpi-dn">3 con +3 días</span></div></div>
-    <div class="kpi kg"><div class="kpi-label">Cobranza efectiva</div><div class="kpi-val">78.3%</div><div class="kpi-sub"><span class="kpi-up">↑3.1%</span> este mes</div></div>
-    <div class="kpi kr"><div class="kpi-label">MP Stock Crítico</div><div class="kpi-val">3 items</div><div class="kpi-sub"><span class="kpi-dn">Requieren OC urgente</span></div></div>
-    <div class="kpi ka"><div class="kpi-label">CxC Vencidas</div><div class="kpi-val">$48,200</div><div class="kpi-sub"><span class="kpi-dn">12 facturas en mora</span></div></div>
-  </div>
-  <div class="g2x1">
-    <div class="card">
-      <div class="card-title">Ventas Semanales</div>
-      <div class="bc" id="bcDash"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Alertas Activas</div>
-      <div id="dashAlerts"></div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Cola de Pedidos Pendientes</div>
-      <div id="dashCola"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">MP Stock Crítico</div>
-      <div id="dashMP"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ REGISTRAR PEDIDO (Problema 1 — Yine) ══ -->
-<div class="page" id="page-nuevo-pedido">
-  <div class="ph">
-    <div class="ph-text"><h2>Registrar Pedido</h2><p>Formulario simplificado · Rápido y sin errores</p></div>
-  </div>
-  <!-- INFO BOX -->
-  <div class="alert-box info" style="margin-bottom:16px;">
-    <div class="alert-ico">💡</div>
-    <div>
-      <div class="alert-title">Flujo de registro</div>
-      <div class="alert-desc">Selecciona cliente → el precio se asigna automáticamente según su tipo → agrega productos → confirma. El pedido entra a la cola de despacho al instante.</div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Datos del Pedido</div>
-      <div class="fs">
-        <div class="fg2">
-          <div class="fg full">
-            <label>Cliente</label>
-            <select id="npCliente" onchange="onClienteChange2()">
-              <option value="">— Seleccionar cliente —</option>
-            </select>
-          </div>
-          <div class="fg">
-            <label>Tipo de cliente</label>
-            <input type="text" id="npTipo" readonly placeholder="Auto">
-          </div>
-          <div class="fg">
-            <label>Lista de precios</label>
-            <input type="text" id="npLista" readonly placeholder="Auto">
-          </div>
-          <div class="fg">
-            <label>Fecha de entrega</label>
-            <input type="date" id="npFecha">
-          </div>
-          <div class="fg">
-            <label>Zona de entrega</label>
-            <input type="text" id="npZona" readonly placeholder="Auto">
-          </div>
-          <div class="fg full">
-            <label>Observaciones</label>
-            <textarea id="npObs" placeholder="Instrucciones especiales, horario, etc."></textarea>
-          </div>
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph">
+        <div class="ph-text"><h2>Dashboard General</h2><p>Vista ejecutiva · Koratex ERP v2</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" onclick="openModal('mPedido')">＋ Nuevo Pedido</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-label">Ventas del Mes</div><div class="kpi-val">$342,800</div><div class="kpi-sub"><span class="kpi-up">↑8.4%</span> vs mes anterior</div></div>
+        <div class="kpi kr"><div class="kpi-label">Pedidos sin despachar</div><div class="kpi-val">14</div><div class="kpi-sub"><span class="kpi-dn">3 con +3 días</span></div></div>
+        <div class="kpi kg"><div class="kpi-label">Cobranza efectiva</div><div class="kpi-val">78.3%</div><div class="kpi-sub"><span class="kpi-up">↑3.1%</span> este mes</div></div>
+        <div class="kpi kr"><div class="kpi-label">MP Stock Crítico</div><div class="kpi-val">3 items</div><div class="kpi-sub"><span class="kpi-dn">Requieren OC urgente</span></div></div>
+        <div class="kpi ka"><div class="kpi-label">CxC Vencidas</div><div class="kpi-val">$48,200</div><div class="kpi-sub"><span class="kpi-dn">12 facturas en mora</span></div></div>
+      </div>
+      <div class="g2x1">
+        <div class="card">
+          <div class="card-title">Ventas Semanales</div>
+          <div class="bc" id="bcDash"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Alertas Activas</div>
+          <div id="dashAlerts"></div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Cola de Pedidos Pendientes</div>
+          <div id="dashCola"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">MP Stock Crítico</div>
+          <div id="dashMP"></div>
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Resumen</div>
-      <div id="npResumen" style="font-size:13px;color:var(--t3);padding:20px 0;text-align:center;">
-        Selecciona un cliente para ver el resumen
+
+    <!-- ══ REGISTRAR PEDIDO (Problema 1 — Yine) ══ -->
+    <div class="page" id="page-nuevo-pedido">
+      <div class="ph">
+        <div class="ph-text"><h2>Registrar Pedido</h2><p>Formulario simplificado · Rápido y sin errores</p></div>
       </div>
-    </div>
-  </div>
-  <div class="card" style="margin-bottom:14px;">
-    <div class="card-title">Productos del Pedido <span style="font-size:10px;color:var(--t3);text-transform:none;font-weight:400;">(máx. 15 líneas)</span></div>
-    <div class="lines-head">
-      <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio unit.</div><div>Subtotal</div><div></div>
-    </div>
-    <div id="npLines"></div>
-    <div class="ototal">
-      <div>
-        <div class="ototal-label">Total del pedido (+ IGV 18%)</div>
-        <div id="npCount" style="font-size:10px;color:var(--orange);opacity:.7;">0 ítems</div>
+      <!-- INFO BOX -->
+      <div class="alert-box info" style="margin-bottom:16px;">
+        <div class="alert-ico">💡</div>
+        <div>
+          <div class="alert-title">Flujo de registro</div>
+          <div class="alert-desc">Selecciona cliente → el precio se asigna automáticamente según su tipo → agrega productos → confirma. El pedido entra a la cola de despacho al instante.</div>
+        </div>
       </div>
-      <div class="ototal-val" id="npTotal">$0.00</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:8px;justify-content:flex-end;">
-    <button class="btn btn-ghost" onclick="resetNP()">Limpiar</button>
-    <button class="btn btn-primary" style="padding:10px 28px;" onclick="confirmarPedido()">✅ Confirmar Pedido</button>
-  </div>
-</div>
-
-<!-- ══ COLA DE PEDIDOS (Admin — Problema 1&2) ══ -->
-<div class="page" id="page-cola">
-  <div class="ph">
-    <div class="ph-text"><h2>Cola de Pedidos</h2><p>Todos los pedidos centralizados · Ordenados por zona y antigüedad</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm">📥 Exportar</button>
-      <button class="btn btn-primary" onclick="navigate('nuevo-pedido')">＋ Nuevo Pedido</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-label">Total pedidos</div><div class="kpi-val" id="colaKpi1">0</div><div class="kpi-sub">Este mes</div></div>
-    <div class="kpi kr"><div class="kpi-label">Sin despachar</div><div class="kpi-val" id="colaKpi2">0</div><div class="kpi-sub">En cola</div></div>
-    <div class="kpi ka"><div class="kpi-label">Con +3 días</div><div class="kpi-val" id="colaKpi3">0</div><div class="kpi-sub">Urgentes</div></div>
-    <div class="kpi kg"><div class="kpi-label">Entregados hoy</div><div class="kpi-val" id="colaKpi4">0</div><div class="kpi-sub">Completados</div></div>
-  </div>
-  <!-- Filtros por zona -->
-  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;" id="zonaFiltros"></div>
-  <div class="tw">
-    <div class="tw-toolbar">
-      <div class="tw-title">Pedidos Pendientes</div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;">
-        <div class="search-box">🔍<input type="text" placeholder="Buscar..."></div>
-        <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;"><option>Todos los estados</option><option>Pendiente</option><option>Preparación</option><option>Despachado</option><option>Entregado</option></select>
-      </div>
-    </div>
-    <table>
-      <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Productos</th><th>Total</th><th>Antigüedad</th><th>Despacho</th><th>Pago</th><th></th></tr></thead>
-      <tbody id="colaTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ══ DESPACHO OPTIMIZADO (Problema 2) ══ -->
-<div class="page" id="page-despacho">
-  <div class="ph">
-    <div class="ph-text"><h2>Planificación de Despacho</h2><p>Agrupación por zona · Camión recomendado · Sin cruces innecesarios</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-cyan" onclick="reoptimizar()">⚡ Re-optimizar</button>
-      <button class="btn btn-primary" onclick="openModal('mDespacho')">＋ Programar Ruta</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi kc"><div class="kpi-label">Pedidos por despachar</div><div class="kpi-val" id="dKpi1">14</div><div class="kpi-sub">Listos para ruta</div></div>
-    <div class="kpi ko"><div class="kpi-label">Camiones activos</div><div class="kpi-val">3</div><div class="kpi-sub">2 en ruta · 1 en base</div></div>
-    <div class="kpi kg"><div class="kpi-label">Entregas hoy</div><div class="kpi-val">8/11</div><div class="kpi-sub"><span class="kpi-up">72.7%</span> cumplimiento</div></div>
-    <div class="kpi ka"><div class="kpi-label">Ahorro rutas</div><div class="kpi-val">~18%</div><div class="kpi-sub">Vs despacho manual</div></div>
-  </div>
-  <div class="alert-box info" style="margin-bottom:16px;">
-    <div class="alert-ico">🧠</div>
-    <div>
-      <div class="alert-title">Lógica de optimización activa</div>
-      <div class="alert-desc">Los pedidos se agrupan por zona geográfica. Dentro de cada zona el sistema ordena las paradas por proximidad (Nearest Neighbor). Resultado: menos kilómetros, menos combustible, más entregas por camión.</div>
-    </div>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:14px;" id="zonasDespacho"></div>
-  <div class="tw">
-    <div class="tw-toolbar">
-      <div class="tw-title">Pedidos pendientes de despacho</div>
-    </div>
-    <table>
-      <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Dirección</th><th>Bultos</th><th>Prioridad</th><th>Camión rec.</th><th>Estado</th></tr></thead>
-      <tbody id="despachoTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ══ INVENTARIO MP (Problema 3) ══ -->
-<div class="page" id="page-inventario">
-  <div class="ph">
-    <div class="ph-text"><h2>Inventario Materia Prima</h2><p>Control de stock · Alertas automáticas · Registro rápido</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm" onclick="imprimirFormato()">🖨️ Imprimir Formato</button>
-      <button class="btn btn-primary" onclick="openModal('mCompra')">＋ Registrar Entrada</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-label">Total MP en stock</div><div class="kpi-val">28 ítems</div><div class="kpi-sub">Valuación $124,800</div></div>
-    <div class="kpi kr"><div class="kpi-label">Stock crítico</div><div class="kpi-val" id="invKpiCrit">3</div><div class="kpi-sub"><span class="kpi-dn">Compra urgente</span></div></div>
-    <div class="kpi ka"><div class="kpi-label">Advertencia</div><div class="kpi-val" id="invKpiWarn">5</div><div class="kpi-sub">Cerca del límite</div></div>
-    <div class="kpi kg"><div class="kpi-label">OC en tránsito</div><div class="kpi-val">4</div><div class="kpi-sub">$38,600 pendiente</div></div>
-  </div>
-
-  <!-- ALERTA CRÍTICOS -->
-  <div id="invAlertas" style="margin-bottom:14px;"></div>
-
-  <!-- REGISTRO RÁPIDO -->
-  <div class="card" style="margin-bottom:14px;">
-    <div class="card-title">⚡ Registro Rápido de Stock</div>
-    <div class="alert-box info" style="margin-bottom:12px;">
-      <div class="alert-ico">📋</div>
-      <div><div class="alert-title">Para la persona de inventario</div><div class="alert-desc">Selecciona el material, escribe la cantidad que hay físicamente y guarda. Simple y rápido.</div></div>
-    </div>
-    <div class="quick-row">
-      <div class="fg" style="flex:2;">
-        <label>Material</label>
-        <select id="qrMaterial"></select>
-      </div>
-      <div class="fg" style="flex:1;">
-        <label>Cantidad física actual</label>
-        <input type="number" id="qrCantidad" placeholder="0" min="0">
-      </div>
-      <div class="fg" style="flex:1;">
-        <label>Tipo de movimiento</label>
-        <select id="qrTipo"><option value="ajuste">Ajuste de inventario</option><option value="entrada">Entrada (compra)</option><option value="salida">Salida (consumo)</option></select>
-      </div>
-      <button class="btn btn-green" style="align-self:flex-end;white-space:nowrap;" onclick="registrarStock()">✅ Guardar</button>
-    </div>
-  </div>
-
-  <!-- TABLA MP -->
-  <div class="tw">
-    <div class="tw-toolbar">
-      <div class="tw-title">Materias Primas</div>
-      <div class="search-box">🔍<input type="text" placeholder="Buscar material..."></div>
-    </div>
-    <table>
-      <thead><tr><th>Código</th><th>Material</th><th>Stock Actual</th><th>Mínimo</th><th>Cobertura</th><th>Proveedor</th><th>Estado</th><th></th></tr></thead>
-      <tbody id="mpTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ══ COBRANZA (Problema 4) ══ -->
-<div class="page" id="page-cobranza">
-  <div class="ph">
-    <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Registro en 2 toques · Alertas automáticas · Sin olvidar pagos</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-primary" onclick="openModal('mCobro')">💳 Registrar Pago</button>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-label">Total por cobrar</div><div class="kpi-val">$186,400</div><div class="kpi-sub">Corriente + vencido</div></div>
-    <div class="kpi kr"><div class="kpi-label">Facturas en mora</div><div class="kpi-val">$48,200</div><div class="kpi-sub"><span class="kpi-dn">12 facturas vencidas</span></div></div>
-    <div class="kpi kg"><div class="kpi-label">Cobrado este mes</div><div class="kpi-val">$138,200</div><div class="kpi-sub"><span class="kpi-up">78.3% efectividad</span></div></div>
-    <div class="kpi ka"><div class="kpi-label">Vence esta semana</div><div class="kpi-val">$31,400</div><div class="kpi-sub">Gestionar ahora</div></div>
-  </div>
-
-  <div class="g2">
-    <div>
-      <!-- REGISTRAR PAGO RÁPIDO -->
-      <div class="pago-rapido" style="margin-bottom:14px;">
-        <div class="pago-rapido-title">💳 Pago rápido — 2 toques</div>
-        <div class="fg2" style="margin-bottom:10px;">
-          <div class="fg">
-            <label>Factura / Cliente</label>
-            <select id="prFactura" onchange="onFacturaChange()">
-              <option value="">— Seleccionar factura —</option>
-            </select>
-          </div>
-          <div class="fg">
-            <label>Saldo pendiente</label>
-            <input type="text" id="prSaldo" readonly placeholder="Auto">
-          </div>
-          <div class="fg">
-            <label>Monto a pagar</label>
-            <input type="number" id="prMonto" placeholder="0.00" step="0.01">
-          </div>
-          <div class="fg">
-            <label>Tipo de pago</label>
-            <select id="prTipo"><option>Transferencia</option><option>Efectivo</option><option>Cheque</option><option>Yape</option></select>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Datos del Pedido</div>
+          <div class="fs">
+            <div class="fg2">
+              <div class="fg full">
+                <label>Cliente</label>
+                <select id="npCliente" onchange="onClienteChange2()">
+                  <option value="">— Seleccionar cliente —</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Tipo de cliente</label>
+                <input type="text" id="npTipo" readonly placeholder="Auto">
+              </div>
+              <div class="fg">
+                <label>Lista de precios</label>
+                <input type="text" id="npLista" readonly placeholder="Auto">
+              </div>
+              <div class="fg">
+                <label>Fecha de entrega</label>
+                <input type="date" id="npFecha">
+              </div>
+              <div class="fg">
+                <label>Zona de entrega</label>
+                <input type="text" id="npZona" readonly placeholder="Auto">
+              </div>
+              <div class="fg full">
+                <label>Observaciones</label>
+                <textarea id="npObs" placeholder="Instrucciones especiales, horario, etc."></textarea>
+              </div>
+            </div>
           </div>
         </div>
-        <button class="btn btn-green btn-block" onclick="registrarPago()">✅ Registrar Pago Ahora</button>
+        <div class="card">
+          <div class="card-title">Resumen</div>
+          <div id="npResumen" style="font-size:13px;color:var(--t3);padding:20px 0;text-align:center;">
+            Selecciona un cliente para ver el resumen
+          </div>
+        </div>
       </div>
-
-      <!-- FACTURAS URGENTES -->
-      <div class="card">
-        <div class="card-title">🚨 Urgentes — Mora y próximas a vencer</div>
-        <div id="cobrosUrgentes"></div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Productos del Pedido <span style="font-size:10px;color:var(--t3);text-transform:none;font-weight:400;">(máx. 15 líneas)</span></div>
+        <div class="lines-head">
+          <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio unit.</div><div>Subtotal</div><div></div>
+        </div>
+        <div id="npLines"></div>
+        <div class="ototal">
+          <div>
+            <div class="ototal-label">Total del pedido (+ IGV 18%)</div>
+            <div id="npCount" style="font-size:10px;color:var(--orange);opacity:.7;">0 ítems</div>
+          </div>
+          <div class="ototal-val" id="npTotal">$0.00</div>
+        </div>
       </div>
-    </div>
-
-    <div class="tw">
-      <div class="tw-toolbar">
-        <div class="tw-title">Todas las Facturas</div>
-        <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" id="filtroCobranza" onchange="renderCobranza()">
-          <option value="">Todas</option>
-          <option value="mora">En mora</option>
-          <option value="vigente">Vigentes</option>
-          <option value="pagada">Pagadas</option>
-        </select>
-      </div>
-      <table>
-        <thead><tr><th>Factura</th><th>Cliente</th><th>Monto</th><th>Saldo</th><th>Vence</th><th>Mora</th><th>Estado</th></tr></thead>
-        <tbody id="cobranzaTable"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-
-<!-- ══ CLIENTES ══ -->
-<div class="page" id="page-clientes">
-  <div class="ph">
-    <div class="ph-text"><h2>Registro de Clientes</h2><p>Base de clientes · Tipo · Lista de precios asignada</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm" onclick="exportarClientes()">📥 Exportar</button>
-      <button class="btn btn-primary" onclick="openModal('mCliente')">＋ Nuevo Cliente</button>
-    </div>
-  </div>
-
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi ko">
-      <div class="kpi-label">Total Clientes</div>
-      <div class="kpi-val" id="cliKpi1">0</div>
-      <div class="kpi-sub">Activos en el sistema</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid var(--orange);">
-      <div class="kpi-label">🥇 Clientes Oro</div>
-      <div class="kpi-val" id="cliKpiOro">0</div>
-      <div class="kpi-sub">Lista A · 60 días crédito</div>
-    </div>
-    <div class="kpi kc">
-      <div class="kpi-label">🥈 Clientes Plata</div>
-      <div class="kpi-val" id="cliKpiPlata">0</div>
-      <div class="kpi-sub">Lista B · 30 días crédito</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid var(--t3);">
-      <div class="kpi-label">🥉 Clientes Bronce</div>
-      <div class="kpi-val" id="cliKpiBronce">0</div>
-      <div class="kpi-sub">Lista C · 15 días crédito</div>
-    </div>
-  </div>
-
-  <!-- Info de listas -->
-  <div class="g3" style="margin-bottom:16px;">
-    <div style="background:rgba(232,32,10,.08);border:1px solid rgba(232,32,10,.2);border-radius:var(--r);padding:14px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:18px;">🥇</span>
-        <span style="font-size:13px;font-weight:700;color:var(--orange);">LISTA A — ORO</span>
-      </div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.6;">
-        Mejor precio disponible<br>
-        60 días de crédito<br>
-        Descuento máx. 10%<br>
-        <span style="color:var(--orange);font-weight:600;">Clientes estratégicos</span>
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn btn-ghost" onclick="resetNP()">Limpiar</button>
+        <button class="btn btn-primary" style="padding:10px 28px;" onclick="confirmarPedido()">✅ Confirmar Pedido</button>
       </div>
     </div>
-    <div style="background:rgba(45,122,69,.08);border:1px solid rgba(45,122,69,.2);border-radius:var(--r);padding:14px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:18px;">🥈</span>
-        <span style="font-size:13px;font-weight:700;color:var(--cyan);">LISTA B — PLATA</span>
-      </div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.6;">
-        Precio estándar<br>
-        30 días de crédito<br>
-        Descuento máx. 5%<br>
-        <span style="color:var(--cyan);font-weight:600;">Clientes frecuentes</span>
-      </div>
-    </div>
-    <div style="background:rgba(80,80,80,.08);border:1px solid rgba(80,80,80,.2);border-radius:var(--r);padding:14px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:18px;">🥉</span>
-        <span style="font-size:13px;font-weight:700;color:var(--t2);">LISTA C — BRONCE</span>
-      </div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.6;">
-        Precio base<br>
-        15 días de crédito<br>
-        Sin descuento<br>
-        <span style="color:var(--t2);font-weight:600;">Clientes nuevos / spot</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- Búsqueda y filtros -->
-  <div class="tw">
-    <div class="tw-toolbar">
-      <div class="tw-title">Directorio de Clientes</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <div class="search-box">🔍<input type="text" id="cliSearch" placeholder="Buscar cliente, RIF..." oninput="filtrarClientes()"></div>
-        <select id="cliTipoFiltro" style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" onchange="filtrarClientes()">
-          <option value="">Todos los tipos</option>
-          <option value="oro">Oro</option>
-          <option value="plata">Plata</option>
-          <option value="bronce">Bronce</option>
-        </select>
-        <select id="cliZonaFiltro" style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" onchange="filtrarClientes()">
-          <option value="">Todas las zonas</option>
-          <option value="Norte">Norte</option>
-          <option value="Sur">Sur</option>
-          <option value="Este">Este</option>
-          <option value="Oeste">Oeste</option>
-          <option value="Centro">Centro</option>
-        </select>
+    <!-- ══ COLA DE PEDIDOS (Admin — Problema 1&2) ══ -->
+    <div class="page" id="page-cola">
+      <div class="ph">
+        <div class="ph-text"><h2>Cola de Pedidos</h2><p>Todos los pedidos centralizados · Ordenados por zona y antigüedad</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm">📥 Exportar</button>
+          <button class="btn btn-primary" onclick="navigate('nuevo-pedido')">＋ Nuevo Pedido</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-label">Total pedidos</div><div class="kpi-val" id="colaKpi1">0</div><div class="kpi-sub">Este mes</div></div>
+        <div class="kpi kr"><div class="kpi-label">Sin despachar</div><div class="kpi-val" id="colaKpi2">0</div><div class="kpi-sub">En cola</div></div>
+        <div class="kpi ka"><div class="kpi-label">Con +3 días</div><div class="kpi-val" id="colaKpi3">0</div><div class="kpi-sub">Urgentes</div></div>
+        <div class="kpi kg"><div class="kpi-label">Entregados hoy</div><div class="kpi-val" id="colaKpi4">0</div><div class="kpi-sub">Completados</div></div>
+      </div>
+      <!-- Filtros por zona -->
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;" id="zonaFiltros"></div>
+      <div class="tw">
+        <div class="tw-toolbar">
+          <div class="tw-title">Pedidos Pendientes</div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;">
+            <div class="search-box">🔍<input type="text" placeholder="Buscar..."></div>
+            <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;"><option>Todos los estados</option><option>Pendiente</option><option>Preparación</option><option>Despachado</option><option>Entregado</option></select>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Productos</th><th>Total</th><th>Antigüedad</th><th>Despacho</th><th>Pago</th><th></th></tr></thead>
+          <tbody id="colaTable"></tbody>
+        </table>
       </div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Cliente</th>
-          <th>RIF / RUC</th>
-          <th>Tipo</th>
-          <th>Lista de Precios</th>
-          <th>Zona</th>
-          <th>Crédito (días)</th>
-          <th>Límite Crédito</th>
-          <th>Teléfono</th>
-          <th>Estado</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="clientesTable"></tbody>
-    </table>
-  </div>
-</div>
 
-<!-- ══ CATÁLOGO ══ -->
-<div class="page" id="page-catalogo">
-  <div class="ph">
-    <div class="ph-text"><h2>Catálogo de Productos</h2><p>Koratex · Productos para la Construcción</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-primary" id="btnAddProd" onclick="openModal('mProducto')">＋ Agregar Producto</button>
+    <!-- ══ DESPACHO OPTIMIZADO (Problema 2) ══ -->
+    <div class="page" id="page-despacho">
+      <div class="ph">
+        <div class="ph-text"><h2>Planificación de Despacho</h2><p>Agrupación por zona · Camión recomendado · Sin cruces innecesarios</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-cyan" onclick="reoptimizar()">⚡ Re-optimizar</button>
+          <button class="btn btn-primary" onclick="openModal('mDespacho')">＋ Programar Ruta</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi kc"><div class="kpi-label">Pedidos por despachar</div><div class="kpi-val" id="dKpi1">14</div><div class="kpi-sub">Listos para ruta</div></div>
+        <div class="kpi ko"><div class="kpi-label">Camiones activos</div><div class="kpi-val">3</div><div class="kpi-sub">2 en ruta · 1 en base</div></div>
+        <div class="kpi kg"><div class="kpi-label">Entregas hoy</div><div class="kpi-val">8/11</div><div class="kpi-sub"><span class="kpi-up">72.7%</span> cumplimiento</div></div>
+        <div class="kpi ka"><div class="kpi-label">Ahorro rutas</div><div class="kpi-val">~18%</div><div class="kpi-sub">Vs despacho manual</div></div>
+      </div>
+      <div class="alert-box info" style="margin-bottom:16px;">
+        <div class="alert-ico">🧠</div>
+        <div>
+          <div class="alert-title">Lógica de optimización activa</div>
+          <div class="alert-desc">Los pedidos se agrupan por zona geográfica. Dentro de cada zona el sistema ordena las paradas por proximidad (Nearest Neighbor). Resultado: menos kilómetros, menos combustible, más entregas por camión.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:14px;" id="zonasDespacho"></div>
+      <div class="tw">
+        <div class="tw-toolbar">
+          <div class="tw-title">Pedidos pendientes de despacho</div>
+        </div>
+        <table>
+          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Dirección</th><th>Bultos</th><th>Prioridad</th><th>Camión rec.</th><th>Estado</th></tr></thead>
+          <tbody id="despachoTable"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <div class="tw">
-    <div class="tw-toolbar">
-      <div class="tw-title">Productos Registrados</div>
-      <div class="search-box">🔍<input type="text" placeholder="Buscar..."></div>
-    </div>
-    <table>
-      <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Presentación</th><th>Lista A (Oro)</th><th>Lista B (Plata)</th><th>Lista C (Bronce)</th><th>Stock PT</th><th>Margen</th><th></th></tr></thead>
-      <tbody id="catTable"></tbody>
-    </table>
-  </div>
-</div>
 
-<!-- ══ FINANZAS ══ -->
-<div class="page" id="page-finanzas">
-  <div class="ph"><div class="ph-text"><h2>Módulo Financiero</h2><p>Flujo de caja · CxP · Márgenes</p></div></div>
-  <div class="kpi-grid">
-    <div class="kpi ko"><div class="kpi-label">Flujo proyectado</div><div class="kpi-val">$94,600</div><div class="kpi-sub"><span class="kpi-up">Próximos 30 días</span></div></div>
-    <div class="kpi kr"><div class="kpi-label">CxP pendientes</div><div class="kpi-val">$67,400</div><div class="kpi-sub">8 proveedores</div></div>
-    <div class="kpi kg"><div class="kpi-label">Margen bruto</div><div class="kpi-val">38.2%</div><div class="kpi-sub"><span class="kpi-up">↑2.4pp</span> este mes</div></div>
-    <div class="kpi kc"><div class="kpi-label">CCE</div><div class="kpi-val">42 días</div><div class="kpi-sub"><span class="kpi-nt">Estable</span></div></div>
-  </div>
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Margen por tipo de producto</div>
-      <div id="marginChart"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Cuentas por Pagar</div>
-      <div id="cxpList"></div>
-    </div>
-  </div>
-</div>
+    <!-- ══ INVENTARIO MP (Problema 3) ══ -->
+    <div class="page" id="page-inventario">
+      <div class="ph">
+        <div class="ph-text"><h2>Inventario Materia Prima</h2><p>Control de stock · Alertas automáticas · Registro rápido</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm" onclick="imprimirFormato()">🖨️ Imprimir Formato</button>
+          <button class="btn btn-primary" onclick="openModal('mCompra')">＋ Registrar Entrada</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-label">Total MP en stock</div><div class="kpi-val">28 ítems</div><div class="kpi-sub">Valuación $124,800</div></div>
+        <div class="kpi kr"><div class="kpi-label">Stock crítico</div><div class="kpi-val" id="invKpiCrit">3</div><div class="kpi-sub"><span class="kpi-dn">Compra urgente</span></div></div>
+        <div class="kpi ka"><div class="kpi-label">Advertencia</div><div class="kpi-val" id="invKpiWarn">5</div><div class="kpi-sub">Cerca del límite</div></div>
+        <div class="kpi kg"><div class="kpi-label">OC en tránsito</div><div class="kpi-val">4</div><div class="kpi-sub">$38,600 pendiente</div></div>
+      </div>
 
-<!-- ══ ALERTAS ══ -->
-<div class="page" id="page-alertas">
-  <div class="ph"><div class="ph-text"><h2>Centro de Alertas</h2><p>Notificaciones críticas del sistema</p></div></div>
-  <div id="allAlerts"></div>
-</div>
+      <!-- ALERTA CRÍTICOS -->
+      <div id="invAlertas" style="margin-bottom:14px;"></div>
 
-<!-- ══ TRAZABILIDAD ══ -->
-<div class="page" id="page-trazabilidad">
-  <div class="ph"><div class="ph-text"><h2>Trazabilidad</h2><p>Log de movimientos del sistema</p></div></div>
-  <div class="card"><div class="card-title">Historial de movimientos</div><div class="tl" id="trazTl"></div></div>
-</div>
+      <!-- REGISTRO RÁPIDO -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">⚡ Registro Rápido de Stock</div>
+        <div class="alert-box info" style="margin-bottom:12px;">
+          <div class="alert-ico">📋</div>
+          <div><div class="alert-title">Para la persona de inventario</div><div class="alert-desc">Selecciona el material, escribe la cantidad que hay físicamente y guarda. Simple y rápido.</div></div>
+        </div>
+        <div class="quick-row">
+          <div class="fg" style="flex:2;">
+            <label>Material</label>
+            <select id="qrMaterial"></select>
+          </div>
+          <div class="fg" style="flex:1;">
+            <label>Cantidad física actual</label>
+            <input type="number" id="qrCantidad" placeholder="0" min="0">
+          </div>
+          <div class="fg" style="flex:1;">
+            <label>Tipo de movimiento</label>
+            <select id="qrTipo"><option value="ajuste">Ajuste de inventario</option><option value="entrada">Entrada (compra)</option><option value="salida">Salida (consumo)</option></select>
+          </div>
+          <button class="btn btn-green" style="align-self:flex-end;white-space:nowrap;" onclick="registrarStock()">✅ Guardar</button>
+        </div>
+      </div>
+
+      <!-- TABLA MP -->
+      <div class="tw">
+        <div class="tw-toolbar">
+          <div class="tw-title">Materias Primas</div>
+          <div class="search-box">🔍<input type="text" placeholder="Buscar material..."></div>
+        </div>
+        <table>
+          <thead><tr><th>Código</th><th>Material</th><th>Stock Actual</th><th>Mínimo</th><th>Cobertura</th><th>Proveedor</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="mpTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ COBRANZA (Problema 4) ══ -->
+    <div class="page" id="page-cobranza">
+      <div class="ph">
+        <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Registro en 2 toques · Alertas automáticas · Sin olvidar pagos</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" onclick="openModal('mCobro')">💳 Registrar Pago</button>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-label">Total por cobrar</div><div class="kpi-val">$186,400</div><div class="kpi-sub">Corriente + vencido</div></div>
+        <div class="kpi kr"><div class="kpi-label">Facturas en mora</div><div class="kpi-val">$48,200</div><div class="kpi-sub"><span class="kpi-dn">12 facturas vencidas</span></div></div>
+        <div class="kpi kg"><div class="kpi-label">Cobrado este mes</div><div class="kpi-val">$138,200</div><div class="kpi-sub"><span class="kpi-up">78.3% efectividad</span></div></div>
+        <div class="kpi ka"><div class="kpi-label">Vence esta semana</div><div class="kpi-val">$31,400</div><div class="kpi-sub">Gestionar ahora</div></div>
+      </div>
+
+      <div class="g2">
+        <div>
+          <!-- REGISTRAR PAGO RÁPIDO -->
+          <div class="pago-rapido" style="margin-bottom:14px;">
+            <div class="pago-rapido-title">💳 Pago rápido — 2 toques</div>
+            <div class="fg2" style="margin-bottom:10px;">
+              <div class="fg">
+                <label>Factura / Cliente</label>
+                <select id="prFactura" onchange="onFacturaChange()">
+                  <option value="">— Seleccionar factura —</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Saldo pendiente</label>
+                <input type="text" id="prSaldo" readonly placeholder="Auto">
+              </div>
+              <div class="fg">
+                <label>Monto a pagar</label>
+                <input type="number" id="prMonto" placeholder="0.00" step="0.01">
+              </div>
+              <div class="fg">
+                <label>Tipo de pago</label>
+                <select id="prTipo"><option>Transferencia</option><option>Efectivo</option><option>Cheque</option><option>Yape</option></select>
+              </div>
+            </div>
+            <button class="btn btn-green btn-block" onclick="registrarPago()">✅ Registrar Pago Ahora</button>
+          </div>
+
+          <!-- FACTURAS URGENTES -->
+          <div class="card">
+            <div class="card-title">🚨 Urgentes — Mora y próximas a vencer</div>
+            <div id="cobrosUrgentes"></div>
+          </div>
+        </div>
+
+        <div class="tw">
+          <div class="tw-toolbar">
+            <div class="tw-title">Todas las Facturas</div>
+            <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" id="filtroCobranza" onchange="renderCobranza()">
+              <option value="">Todas</option>
+              <option value="mora">En mora</option>
+              <option value="vigente">Vigentes</option>
+              <option value="pagada">Pagadas</option>
+            </select>
+          </div>
+          <table>
+            <thead><tr><th>Factura</th><th>Cliente</th><th>Monto</th><th>Saldo</th><th>Vence</th><th>Mora</th><th>Estado</th></tr></thead>
+            <tbody id="cobranzaTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ══ CLIENTES ══ -->
+    <div class="page" id="page-clientes">
+      <div class="ph">
+        <div class="ph-text"><h2>Registro de Clientes</h2><p>Base de clientes · Tipo · Lista de precios asignada</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm" onclick="exportarClientes()">📥 Exportar</button>
+          <button class="btn btn-primary" onclick="openModal('mCliente')">＋ Nuevo Cliente</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi ko">
+          <div class="kpi-label">Total Clientes</div>
+          <div class="kpi-val" id="cliKpi1">0</div>
+          <div class="kpi-sub">Activos en el sistema</div>
+        </div>
+        <div class="kpi" style="border-top:2px solid var(--orange);">
+          <div class="kpi-label">🥇 Clientes Oro</div>
+          <div class="kpi-val" id="cliKpiOro">0</div>
+          <div class="kpi-sub">Lista A · 60 días crédito</div>
+        </div>
+        <div class="kpi kc">
+          <div class="kpi-label">🥈 Clientes Plata</div>
+          <div class="kpi-val" id="cliKpiPlata">0</div>
+          <div class="kpi-sub">Lista B · 30 días crédito</div>
+        </div>
+        <div class="kpi" style="border-top:2px solid var(--t3);">
+          <div class="kpi-label">🥉 Clientes Bronce</div>
+          <div class="kpi-val" id="cliKpiBronce">0</div>
+          <div class="kpi-sub">Lista C · 15 días crédito</div>
+        </div>
+      </div>
+
+      <!-- Info de listas -->
+      <div class="g3" style="margin-bottom:16px;">
+        <div style="background:rgba(232,32,10,.08);border:1px solid rgba(232,32,10,.2);border-radius:var(--r);padding:14px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:18px;">🥇</span>
+            <span style="font-size:13px;font-weight:700;color:var(--orange);">LISTA A — ORO</span>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6;">
+            Mejor precio disponible<br>
+            60 días de crédito<br>
+            Descuento máx. 10%<br>
+            <span style="color:var(--orange);font-weight:600;">Clientes estratégicos</span>
+          </div>
+        </div>
+        <div style="background:rgba(45,122,69,.08);border:1px solid rgba(45,122,69,.2);border-radius:var(--r);padding:14px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:18px;">🥈</span>
+            <span style="font-size:13px;font-weight:700;color:var(--cyan);">LISTA B — PLATA</span>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6;">
+            Precio estándar<br>
+            30 días de crédito<br>
+            Descuento máx. 5%<br>
+            <span style="color:var(--cyan);font-weight:600;">Clientes frecuentes</span>
+          </div>
+        </div>
+        <div style="background:rgba(80,80,80,.08);border:1px solid rgba(80,80,80,.2);border-radius:var(--r);padding:14px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:18px;">🥉</span>
+            <span style="font-size:13px;font-weight:700;color:var(--t2);">LISTA C — BRONCE</span>
+          </div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6;">
+            Precio base<br>
+            15 días de crédito<br>
+            Sin descuento<br>
+            <span style="color:var(--t2);font-weight:600;">Clientes nuevos / spot</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Búsqueda y filtros -->
+      <div class="tw">
+        <div class="tw-toolbar">
+          <div class="tw-title">Directorio de Clientes</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <div class="search-box">🔍<input type="text" id="cliSearch" placeholder="Buscar cliente, RIF..." oninput="filtrarClientes()"></div>
+            <select id="cliTipoFiltro" style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" onchange="filtrarClientes()">
+              <option value="">Todos los tipos</option>
+              <option value="oro">Oro</option>
+              <option value="plata">Plata</option>
+              <option value="bronce">Bronce</option>
+            </select>
+            <select id="cliZonaFiltro" style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" onchange="filtrarClientes()">
+              <option value="">Todas las zonas</option>
+              <option value="Norte">Norte</option>
+              <option value="Sur">Sur</option>
+              <option value="Este">Este</option>
+              <option value="Oeste">Oeste</option>
+              <option value="Centro">Centro</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Cliente</th>
+              <th>RIF / RUC</th>
+              <th>Tipo</th>
+              <th>Lista de Precios</th>
+              <th>Zona</th>
+              <th>Crédito (días)</th>
+              <th>Límite Crédito</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="clientesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ CATÁLOGO ══ -->
+    <div class="page" id="page-catalogo">
+      <div class="ph">
+        <div class="ph-text"><h2>Catálogo de Productos</h2><p>Koratex · Productos para la Construcción</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" id="btnAddProd" onclick="openModal('mProducto')">＋ Agregar Producto</button>
+        </div>
+      </div>
+      <div class="tw">
+        <div class="tw-toolbar">
+          <div class="tw-title">Productos Registrados</div>
+          <div class="search-box">🔍<input type="text" placeholder="Buscar..."></div>
+        </div>
+        <table>
+          <thead><tr><th>Código</th><th>Producto</th><th>Tipo</th><th>Presentación</th><th>Lista A (Oro)</th><th>Lista B (Plata)</th><th>Lista C (Bronce)</th><th>Stock PT</th><th>Margen</th><th></th></tr></thead>
+          <tbody id="catTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ FINANZAS ══ -->
+    <div class="page" id="page-finanzas">
+      <div class="ph"><div class="ph-text"><h2>Módulo Financiero</h2><p>Flujo de caja · CxP · Márgenes</p></div></div>
+      <div class="kpi-grid">
+        <div class="kpi ko"><div class="kpi-label">Flujo proyectado</div><div class="kpi-val">$94,600</div><div class="kpi-sub"><span class="kpi-up">Próximos 30 días</span></div></div>
+        <div class="kpi kr"><div class="kpi-label">CxP pendientes</div><div class="kpi-val">$67,400</div><div class="kpi-sub">8 proveedores</div></div>
+        <div class="kpi kg"><div class="kpi-label">Margen bruto</div><div class="kpi-val">38.2%</div><div class="kpi-sub"><span class="kpi-up">↑2.4pp</span> este mes</div></div>
+        <div class="kpi kc"><div class="kpi-label">CCE</div><div class="kpi-val">42 días</div><div class="kpi-sub"><span class="kpi-nt">Estable</span></div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Margen por tipo de producto</div>
+          <div id="marginChart"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Cuentas por Pagar</div>
+          <div id="cxpList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ALERTAS ══ -->
+    <div class="page" id="page-alertas">
+      <div class="ph"><div class="ph-text"><h2>Centro de Alertas</h2><p>Notificaciones críticas del sistema</p></div></div>
+      <div id="allAlerts"></div>
+    </div>
+
+    <!-- ══ TRAZABILIDAD ══ -->
+    <div class="page" id="page-trazabilidad">
+      <div class="ph"><div class="ph-text"><h2>Trazabilidad</h2><p>Log de movimientos del sistema</p></div></div>
+      <div class="card"><div class="card-title">Historial de movimientos</div><div class="tl" id="trazTl"></div></div>
+    </div>
 
   </div><!-- /main -->
 </div><!-- /app -->
 
 <!-- ════ MODAL: PEDIDO ════ -->
-
 <div class="modal-overlay" id="mPedido">
   <div class="modal modal-lg">
     <div class="modal-header"><h3>📝 Nuevo Pedido</h3><button class="modal-close" onclick="closeModal('mPedido')">✕</button></div>
@@ -1179,7 +1172,6 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 </div>
 
 <!-- ════ MODAL: COBRO ════ -->
-
 <div class="modal-overlay" id="mCobro">
   <div class="modal modal-sm">
     <div class="modal-header"><h3>💳 Registrar Pago</h3><button class="modal-close" onclick="closeModal('mCobro')">✕</button></div>
@@ -1202,7 +1194,6 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 </div>
 
 <!-- ════ MODAL: COMPRA MP ════ -->
-
 <div class="modal-overlay" id="mCompra">
   <div class="modal modal-sm">
     <div class="modal-header"><h3>🛒 Registrar Entrada MP</h3><button class="modal-close" onclick="closeModal('mCompra')">✕</button></div>
@@ -1227,7 +1218,6 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 </div>
 
 <!-- ════ MODAL: PRODUCTO ════ -->
-
 <div class="modal-overlay" id="mProducto">
   <div class="modal modal-sm">
     <div class="modal-header"><h3>📦 Agregar Producto</h3><button class="modal-close" onclick="closeModal('mProducto')">✕</button></div>
@@ -1251,13 +1241,12 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 </div>
 
 <!-- ════ MODAL: DESPACHO ════ -->
-
 <div class="modal-overlay" id="mDespacho">
   <div class="modal modal-sm">
     <div class="modal-header"><h3>🚚 Programar Despacho</h3><button class="modal-close" onclick="closeModal('mDespacho')">✕</button></div>
     <div class="modal-body">
       <div class="fg2">
-        <div class="fg"><label>Camión</label><select><option>Camión A -- ABC-123</option><option>Camión B -- DEF-456</option><option>Furgón C -- GHI-789</option></select></div>
+        <div class="fg"><label>Camión</label><select><option>Camión A – ABC-123</option><option>Camión B – DEF-456</option><option>Furgón C – GHI-789</option></select></div>
         <div class="fg"><label>Zona</label><select><option>Norte</option><option>Sur</option><option>Este</option><option>Oeste</option><option>Centro</option></select></div>
         <div class="fg"><label>Fecha salida</label><input type="date"></div>
         <div class="fg"><label>Hora salida</label><input type="time" value="08:00"></div>
@@ -1273,153 +1262,64 @@ font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
 </div>
 
 <script>
-
-/* ════════ API LAYER ════════ */
-let TOKEN = localStorage.getItem('kx_token') || '';
-let currentUser = null;
-
-async function api(path, opts) {
-  opts = opts || {};
-  const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN };
-  if (opts.headers) Object.assign(headers, opts.headers);
-  const r = await fetch('/api' + path, Object.assign({}, opts, { headers: headers }));
-  if (r.status === 401) { logout(); return null; }
-  if (!r.ok) { const e = await r.json().catch(function(){ return {}; }); throw new Error(e.error || r.statusText); }
-  return r.json();
-}
-
-async function loadData() {
-  if (!TOKEN) return;
-  try {
-    const results = await Promise.all([
-      api('/clientes'),
-      api('/productos'),
-      api('/pedidos'),
-      api('/cobranza'),
-      api('/inventario/materias-primas'),
-    ]);
-    const clientes = results[0] || [], productos = results[1] || [],
-          pedidos  = results[2] || [], facturas  = results[3] || [],
-          mp       = results[4] || [];
-
-    DB_clientes = clientes.map(function(c) {
-      return { id: c.id, codigo: c.codigo, nombre: c.nombre,
-        tipo: (c.tipo_nombre || 'bronce').toLowerCase(),
-        zona: c.zona_nombre || 'Centro',
-        diasCredito: parseInt(c.dias_credito) || 15,
-        limCredit: parseFloat(c.limite_credito) || 0,
-        telefono: c.telefono || '', email: c.email || '',
-        rif: c.ruc || '', ciudad: 'Caracas',
-        activo: c.activo !== false,
-        descuento: c.tipo_nombre === 'oro' ? 5 : c.tipo_nombre === 'plata' ? 2 : 0,
-        lista_precios: c.lista_precios || 'C', direccion: c.direccion || '',
-      };
-    });
-
-    DB_productos = productos.map(function(p) {
-      return { id: p.id, cod: p.codigo, nombre: p.nombre, tipo: p.tipo || '',
-        pres: p.presentacion, pA: parseFloat(p.precio_lista_a) || 0,
-        pB: parseFloat(p.precio_lista_b) || 0, pC: parseFloat(p.precio_lista_c) || 0,
-        costo: parseFloat(p.costo_produccion) || 0,
-        stockPT: parseInt(p.stock_total) || 0,
-      };
-    });
-
-    DB_pedidos = pedidos.map(function(p) {
-      var dias = p.fecha_pedido ? Math.floor((Date.now() - new Date(p.fecha_pedido).getTime()) / 86400000) : 0;
-      return { id: p.numero, dbId: p.id, fecha: p.fecha_pedido,
-        clienteId: p.cliente_id, clienteNombre: p.cliente_nombre,
-        items: 0, total: parseFloat(p.total) || 0,
-        estadoPago: p.estado_pago || 'pendiente',
-        estadoDesp: p.estado_despacho || 'pendiente', diasAnt: dias,
-      };
-    });
-
-    DB_facturas = facturas.map(function(f) {
-      var venc = f.fecha_vencimiento ? f.fecha_vencimiento.split('T')[0] : '';
-      var mora = venc && new Date(venc) < new Date() && f.estado !== 'pagada'
-        ? Math.floor((Date.now() - new Date(venc).getTime()) / 86400000) : 0;
-      return { id: f.id, num: f.numero, clienteId: f.cliente_id,
-        clienteNombre: f.cliente_nombre,
-        total: parseFloat(f.monto_total) || 0, pagado: parseFloat(f.monto_pagado) || 0,
-        estado: f.estado === 'pagada' ? 'pagada' : 'pendiente',
-        venc: venc, mora: mora,
-      };
-    });
-
-    DB_mp = mp.map(function(m) {
-      return { id: m.id, cod: m.codigo, nombre: m.nombre, unidad: m.unidad,
-        stock: parseFloat(m.stock_actual) || 0, min: parseFloat(m.stock_minimo) || 0,
-        max: parseFloat(m.stock_maximo) || 0, consumo: parseFloat(m.consumo_mensual) || 1,
-        prov: m.proveedor_nombre || '', icon: '📦',
-      };
-    });
-  } catch(e) { console.error('loadData error:', e); }
-}
-
-/* ════════ AUTH ════════ */
-async function doLogin() {
-  var email = document.getElementById('loginEmail').value;
-  var pass  = document.getElementById('loginPass').value;
-  var errEl = document.getElementById('loginError');
-  var btn   = document.getElementById('loginBtn');
-  errEl.textContent = '';
-  btn.disabled = true; btn.textContent = 'Entrando...';
-  try {
-    var r = await fetch('/api/auth/login', { method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, password: pass }) });
-    var data = await r.json();
-    if (data.token) {
-      TOKEN = data.token; currentUser = data.user;
-      localStorage.setItem('kx_token', TOKEN);
-      await enterApp();
-    } else { errEl.textContent = data.error || 'Credenciales inválidas'; }
-  } catch(e) { errEl.textContent = 'Error de conexión con el servidor'; }
-  btn.disabled = false; btn.textContent = 'Entrar al sistema';
-}
-
-function quickLogin(email) {
-  document.getElementById('loginEmail').value = email;
-  document.getElementById('loginPass').value  = 'koratex2025';
-  doLogin();
-}
-
-async function enterApp() {
-  var role = currentUser.rol;
-  currentRole = role;
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('appShell').style.display    = 'flex';
-  var r = ROLES[role] || ROLES['admin'];
-  var initials = (currentUser.nombre || 'U').split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
-  document.getElementById('sbAv').textContent   = initials;
-  document.getElementById('sbName').textContent = currentUser.nombre;
-  document.getElementById('sbRole').textContent = r.label;
-  await loadData();
-  buildNav(role);
-  populateSelects();
-  buildAllLines();
-  renderAll();
-  navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
-  startClock();
-  setInterval(async function(){ await loadData(); renderAll(); }, 60000);
-}
-
 /* ════════════════════════════════════
    KORATEX ERP v2 — DATA & LOGIC
    Optimizado para los 4 problemas reales
 ════════════════════════════════════ */
 
 // ─── DATA ───
-let DB_clientes = [];
+const DB_clientes = [
+  {id:'C001',nombre:'Constructora Andina SAC',  tipo:'oro',   zona:'Norte',  diasCredito:60, lat:-12.020,lng:-77.050, limCredit:100000},
+  {id:'C002',nombre:'Obras Civiles Perú SRL',   tipo:'oro',   zona:'Sur',    diasCredito:60, lat:-12.120,lng:-77.020, limCredit:80000},
+  {id:'C003',nombre:'Ferretería Central',        tipo:'plata', zona:'Centro', diasCredito:30, lat:-12.060,lng:-77.040, limCredit:40000},
+  {id:'C004',nombre:'Distribuidora Roca Fuerte', tipo:'plata', zona:'Este',   diasCredito:30, lat:-12.050,lng:-76.970, limCredit:35000},
+  {id:'C005',nombre:'Maderas y Ferreterías SRL', tipo:'bronce',zona:'Oeste',  diasCredito:15, lat:-12.080,lng:-77.090, limCredit:20000},
+  {id:'C006',nombre:'Acabados Premier',          tipo:'oro',   zona:'Norte',  diasCredito:60, lat:-12.010,lng:-77.060, limCredit:90000},
+  {id:'C007',nombre:'Grupo Constructor Lima',    tipo:'plata', zona:'Sur',    diasCredito:30, lat:-12.130,lng:-77.010, limCredit:45000},
+  {id:'C008',nombre:'Ferretería El Maestro',     tipo:'bronce',zona:'Este',   diasCredito:15, lat:-12.040,lng:-76.980, limCredit:15000},
+];
 
-let DB_productos = [];
+const DB_productos = [
+  {cod:'KTX-001',nombre:'Estuco Fino Interior',    tipo:'Estuco',            pres:'Bolsa 20kg', pA:28.00,pB:31.50,pC:35.00,costo:16.00,stockPT:480},
+  {cod:'KTX-002',nombre:'Adhesivo Cerámico Plus',  tipo:'Adhesivo',          pres:'Bolsa 25kg', pA:22.50,pB:25.00,pC:28.00,costo:13.00,stockPT:620},
+  {cod:'KTX-003',nombre:'Impermeabilizante Flex',  tipo:'Impermeabilizante', pres:'Balde 20L',  pA:85.00,pB:92.00,pC:99.00,costo:48.00,stockPT:190},
+  {cod:'KTX-004',nombre:'Mortero Estructural',     tipo:'Mortero',           pres:'Bolsa 30kg', pA:32.00,pB:36.00,pC:40.00,costo:18.50,stockPT:340},
+  {cod:'KTX-005',nombre:'Sellador Multiusos',      tipo:'Sellador',          pres:'Galón 4L',   pA:45.00,pB:50.00,pC:56.00,costo:25.00,stockPT:210},
+  {cod:'KTX-006',nombre:'Estuco Exterior Renovado',tipo:'Estuco',            pres:'Bolsa 20kg', pA:31.00,pB:35.00,pC:39.00,costo:17.50,stockPT:280},
+  {cod:'KTX-007',nombre:'Pegamax Porcelanato',     tipo:'Adhesivo',          pres:'Bolsa 25kg', pA:26.00,pB:29.50,pC:33.00,costo:14.50,stockPT:390},
+  {cod:'KTX-008',nombre:'Hidrofugante Concentrado',tipo:'Impermeabilizante', pres:'Balde 5L',   pA:38.00,pB:43.00,pC:48.00,costo:21.00,stockPT:150},
+];
 
-let DB_mp = [];
+let DB_mp = [
+  {cod:'MP-001',nombre:'Cemento Portland Tipo I', icon:'🏗️', unidad:'bolsa',stock:850, min:200,max:1200,consumo:420,prov:'Cementos Lima SAC'},
+  {cod:'MP-002',nombre:'Arena Fina Lavada',        icon:'⛱️', unidad:'m³',  stock:48,  min:20, max:100, consumo:28, prov:'Áridos del Sur'},
+  {cod:'MP-003',nombre:'Resina Acrílica',           icon:'🧪', unidad:'kg',  stock:180, min:100,max:500, consumo:120,prov:'Química Industrial'},
+  {cod:'MP-004',nombre:'Carbonato de Calcio',       icon:'⚪', unidad:'kg',  stock:2400,min:800,max:4000,consumo:900,prov:'Minerales Andinos'},
+  {cod:'MP-005',nombre:'Polvo de Talco',             icon:'🌫️', unidad:'kg',  stock:90,  min:150,max:600, consumo:200,prov:'Minerales Andinos'},
+  {cod:'MP-006',nombre:'Pigmento Blanco TiO2',      icon:'🎨', unidad:'kg',  stock:65,  min:80, max:300, consumo:90, prov:'Colorquím SAC'},
+  {cod:'MP-007',nombre:'Fibra Poliéster',            icon:'🧵', unidad:'kg',  stock:320, min:100,max:600, consumo:80, prov:'Química Industrial'},
+  {cod:'MP-008',nombre:'Acelerante de Fraguado',     icon:'⚡', unidad:'kg',  stock:40,  min:60, max:200, consumo:55, prov:'Cementos Lima SAC'},
+];
 
-let DB_pedidos = [];
+let DB_pedidos = [
+  {id:'PED-0044',fecha:'2025-04-20',clienteId:'C001',items:3,total:4621,estadoPago:'al_dia',  estadoDesp:'entregado',  diasAnt:8},
+  {id:'PED-0045',fecha:'2025-04-22',clienteId:'C003',items:2,total:1890,estadoPago:'pendiente',estadoDesp:'despachado', diasAnt:6},
+  {id:'PED-0046',fecha:'2025-04-24',clienteId:'C002',items:5,total:8400,estadoPago:'al_dia',  estadoDesp:'preparacion',diasAnt:4},
+  {id:'PED-0047',fecha:'2025-04-25',clienteId:'C004',items:2,total:2100,estadoPago:'mora',    estadoDesp:'pendiente',  diasAnt:3},
+  {id:'PED-0048',fecha:'2025-04-26',clienteId:'C005',items:4,total:3240,estadoPago:'pendiente',estadoDesp:'pendiente', diasAnt:2},
+  {id:'PED-0049',fecha:'2025-04-27',clienteId:'C006',items:6,total:9800,estadoPago:'al_dia',  estadoDesp:'preparacion',diasAnt:1},
+  {id:'PED-0050',fecha:'2025-04-28',clienteId:'C001',items:3,total:5600,estadoPago:'pendiente',estadoDesp:'pendiente', diasAnt:0},
+];
 
-let DB_facturas = [];
+const DB_facturas = [
+  {num:'F001-00218',clienteId:'C001',emision:'2025-03-01',venc:'2025-04-30',total:12800,pagado:12800,mora:0, estado:'pagada'},
+  {num:'F001-00224',clienteId:'C003',emision:'2025-03-15',venc:'2025-04-14',total:4200, pagado:0,    mora:14,estado:'mora'},
+  {num:'F001-00231',clienteId:'C002',emision:'2025-04-01',venc:'2025-05-16',total:18400,pagado:0,    mora:0, estado:'vigente'},
+  {num:'F001-00238',clienteId:'C004',emision:'2025-03-20',venc:'2025-04-04',total:6800, pagado:0,    mora:24,estado:'mora'},
+  {num:'F001-00244',clienteId:'C005',emision:'2025-04-10',venc:'2025-04-25',total:2100, pagado:0,    mora:3, estado:'mora'},
+  {num:'F001-00250',clienteId:'C006',emision:'2025-04-15',venc:'2025-06-14',total:24000,pagado:0,    mora:0, estado:'vigente'},
+  {num:'F001-00255',clienteId:'C007',emision:'2025-03-28',venc:'2025-04-27',total:9200, pagado:0,    mora:1, estado:'mora'},
+];
 
 const DB_traz = [
   {t:'g',ev:'Pedido entregado',    desc:'PED-0044 · Constructora Andina · $4,621',          time:'Hoy 14:30'},
@@ -1470,12 +1370,24 @@ const NAV = {
   'alertas':      {label:'Alertas',           icon:'🔔', group:'Sistema', badge:3},
 };
 
-function enterAs(role) { quickLogin(role + '@koratex.com'); }
+function enterAs(role) {
+  currentRole = role;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  const r = ROLES[role];
+  document.getElementById('sbAv').textContent   = r.av;
+  document.getElementById('sbName').textContent = r.label;
+  document.getElementById('sbRole').textContent = role;
+  buildNav(role);
+  populateSelects();
+  buildAllLines();
+  renderAll();
+  navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
+  startClock();
+}
 function logout() {
-  TOKEN = ''; currentUser = null;
-  localStorage.removeItem('kx_token');
   document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('appShell').style.display    = 'none';
+  document.getElementById('appShell').style.display = 'none';
 }
 function buildNav(role) {
   const navEl = document.getElementById('sbNav');
@@ -1492,7 +1404,7 @@ function buildNav(role) {
 }
 
 /* ════════ NAVIGATION ════════ */
-async function navigate(page) {
+function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const pg = document.getElementById('page-' + page);
@@ -1502,7 +1414,6 @@ async function navigate(page) {
   const item = NAV[page];
   document.getElementById('tbTitle').innerHTML = `<span>Koratex</span> · ${item ? item.label : page}`;
   closeSb();
-  if (TOKEN) { await loadData(); populateSelects(); renderAll(); }
 }
 function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
@@ -1694,7 +1605,7 @@ function onMcFacturaChange() {
 }
 
 /* ════════ RENDER ALL ════════ */
-async function renderAll() {
+function renderAll() {
   renderDashboard();
   renderCola();
   renderClientes();
@@ -2024,29 +1935,19 @@ function renderAlertas() {
 }
 
 /* ════════ ACTIONS ════════ */
-async function confirmarPedido() {
+function confirmarPedido() {
   const sel = document.getElementById('npCliente');
   if (!sel || !sel.value) { alert('Selecciona un cliente'); return; }
   const total = parseFloat(document.getElementById('npTotal').textContent.replace('$','')) || 0;
   if (total <= 0) { alert('Agrega al menos un producto'); return; }
   const cli = getCliente(sel.value);
-  const items = [];
-  for (let i = 1; i <= 15; i++) {
-    const prodSel = document.getElementById('npLines_p_' + i);
-    const qEl     = document.getElementById('npLines_q_' + i);
-    const puEl    = document.getElementById('npLines_pu_' + i);
-    if (prodSel && prodSel.value && qEl && qEl.value) {
-      const p = DB_productos.find(function(x){ return x.cod === prodSel.value; });
-      if (p) items.push({ producto_id: p.id, cantidad: parseInt(qEl.value)||1, precio_unitario: parseFloat(puEl.value)||p.pA, descuento_pct: 0 });
-    }
-  }
-  try {
-    const ped = await api('/pedidos', { method: 'POST', body: JSON.stringify({ cliente_id: sel.value, lista_precios: cli ? cli.lista_precios : 'C', items: items }) });
-    DB_traz.unshift({t:'o',ev:'Nuevo pedido registrado',desc:(ped?ped.numero:'') + ' · ' + (cli?cli.nombre:'') + ' · $' + total.toFixed(2),time:'Hace un momento'});
-    await loadData(); populateSelects(); renderAll();
-    resetNP(); navigate('cola');
-    alert('Pedido ' + (ped?ped.numero:'') + ' registrado.\nCliente: ' + (cli?cli.nombre:'') + '\nTotal: $' + total.toFixed(2));
-  } catch(e) { alert('Error: ' + e.message); }
+  const newId = 'PED-' + String(DB_pedidos.length + 51).padStart(4,'0');
+  DB_pedidos.unshift({id:newId,fecha:new Date().toISOString().split('T')[0],clienteId:sel.value,items:1,total:total,estadoPago:'pendiente',estadoDesp:'pendiente',diasAnt:0});
+  DB_traz.unshift({t:'o',ev:'Nuevo pedido registrado',desc:`${newId} · ${cli.nombre} · $${total.toFixed(2)}`,time:'Hace un momento'});
+  renderAll();
+  resetNP();
+  navigate('cola');
+  alert(`✅ Pedido ${newId} registrado correctamente.\nCliente: ${cli.nombre}\nTotal: $${total.toFixed(2)}`);
 }
 
 function resetNP() {
@@ -2056,42 +1957,34 @@ function resetNP() {
   buildLines('npLines','npTotal','npCount');
 }
 
-async function savePedidoModal() {
+function savePedidoModal() {
   const sel = document.getElementById('mpCliente');
   if (!sel || !sel.value) { alert('Selecciona un cliente'); return; }
+  const total = parseFloat(document.getElementById('mpTotal').textContent.replace('$',''))||0;
   const cli = getCliente(sel.value);
-  const items = [];
-  for (let i = 1; i <= 15; i++) {
-    const prodSel = document.getElementById('mpLines_p_' + i);
-    const qEl     = document.getElementById('mpLines_q_' + i);
-    const puEl    = document.getElementById('mpLines_pu_' + i);
-    if (prodSel && prodSel.value && qEl && qEl.value) {
-      const p = DB_productos.find(function(x){ return x.cod === prodSel.value; });
-      if (p) items.push({ producto_id: p.id, cantidad: parseInt(qEl.value)||1, precio_unitario: parseFloat(puEl.value)||p.pA, descuento_pct: 0 });
-    }
-  }
-  try {
-    const ped = await api('/pedidos', { method: 'POST', body: JSON.stringify({ cliente_id: sel.value, lista_precios: cli ? cli.lista_precios : 'C', items: items }) });
-    DB_traz.unshift({t:'o',ev:'Nuevo pedido (modal)',desc:(ped?ped.numero:'') + ' · ' + (cli?cli.nombre:''),time:'Hace un momento'});
-    await loadData(); populateSelects(); renderAll();
-    closeModal('mPedido'); buildLines('mpLines','mpTotal','mpCount');
-  } catch(e) { alert('Error: ' + e.message); }
+  const newId = 'PED-' + String(DB_pedidos.length+51).padStart(4,'0');
+  DB_pedidos.unshift({id:newId,fecha:new Date().toISOString().split('T')[0],clienteId:sel.value,items:1,total:total,estadoPago:'pendiente',estadoDesp:'pendiente',diasAnt:0});
+  DB_traz.unshift({t:'o',ev:'Nuevo pedido (modal)',desc:`${newId} · ${cli.nombre} · $${total.toFixed(2)}`,time:'Hace un momento'});
+  renderAll();
+  closeModal('mPedido');
+  buildLines('mpLines','mpTotal','mpCount');
 }
 
-async function registrarPago() {
-  const sel   = document.getElementById('prFactura');
+function registrarPago() {
+  const sel = document.getElementById('prFactura');
   const monto = document.getElementById('prMonto');
-  const tipo  = document.getElementById('prTipo');
   if (!sel||!sel.value||!monto||!monto.value) { alert('Selecciona factura e ingresa monto'); return; }
-  const fac = DB_facturas.find(function(f){ return f.num === sel.value; });
-  if (!fac) { alert('Factura no encontrada'); return; }
-  try {
-    await api('/cobranza/' + fac.id + '/pagos', { method: 'POST', body: JSON.stringify({ monto: parseFloat(monto.value), tipo_pago: (tipo?tipo.value:null)||'efectivo', fecha_pago: new Date().toISOString().split('T')[0] }) });
-    DB_traz.unshift({t:'g',ev:'Pago registrado',desc:fac.num + ' · $' + parseFloat(monto.value).toLocaleString(),time:'Hace un momento'});
-    await loadData(); populateSelects(); renderCobranza(); renderTrazabilidad();
-    monto.value=''; sel.value='';
-    alert('Pago registrado correctamente');
-  } catch(e) { alert('Error: ' + e.message); }
+  const fac = DB_facturas.find(f => f.num === sel.value);
+  if (fac) {
+    fac.pagado += parseFloat(monto.value);
+    if (fac.pagado >= fac.total) { fac.estado = 'pagada'; fac.mora = 0; }
+    DB_traz.unshift({t:'g',ev:'Pago registrado',desc:`${fac.num} · $${parseFloat(monto.value).toLocaleString()} · ${document.getElementById('prTipo').value}`,time:'Hace un momento'});
+  }
+  populateSelects();
+  renderCobranza();
+  renderTrazabilidad();
+  monto.value=''; sel.value='';
+  alert('✅ Pago registrado correctamente');
 }
 
 function saveCobro() {
@@ -2099,34 +1992,33 @@ function saveCobro() {
   renderTrazabilidad(); renderCobranza(); closeModal('mCobro');
 }
 
-async function registrarStock() {
-  const sel  = document.getElementById('qrMaterial');
+function registrarStock() {
+  const sel = document.getElementById('qrMaterial');
   const cant = parseFloat(document.getElementById('qrCantidad').value)||0;
   const tipo = document.getElementById('qrTipo').value;
   if (!sel||!cant) { alert('Selecciona material e ingresa cantidad'); return; }
-  const mp = DB_mp.find(function(m){ return m.cod === sel.value; });
-  if (!mp) return;
-  const ajuste = tipo === 'entrada' ? cant : tipo === 'salida' ? -cant : (cant - mp.stock);
-  try {
-    await api('/inventario/materias-primas/' + mp.id, { method: 'PATCH', body: JSON.stringify({ ajuste: ajuste }) });
-    DB_traz.unshift({t:'g',ev:'Stock MP actualizado',desc:mp.nombre + ' · ' + tipo + ' · ' + cant + ' ' + mp.unidad,time:'Hace un momento'});
-    await loadData(); renderMP(); renderTrazabilidad(); renderDashboard();
+  const mp = DB_mp.find(m => m.cod === sel.value);
+  if (mp) {
+    if (tipo === 'entrada') mp.stock += cant;
+    else if (tipo === 'salida') mp.stock = Math.max(0, mp.stock - cant);
+    else mp.stock = cant;
+    DB_traz.unshift({t:'g',ev:'Stock MP actualizado',desc:`${mp.nombre} · ${tipo} · ${cant} ${mp.unidad} · nuevo stock: ${mp.stock}`,time:'Hace un momento'});
+    renderMP(); renderTrazabilidad(); renderDashboard();
     document.getElementById('qrCantidad').value='';
-    alert('Stock actualizado correctamente');
-  } catch(e) { alert('Error: ' + e.message); }
+    alert(`✅ Stock de ${mp.nombre} actualizado: ${mp.stock} ${mp.unidad}`);
+  }
 }
 
-async function saveCompra() {
-  const sel  = document.getElementById('mcMP');
+function saveCompra() {
+  const sel = document.getElementById('mcMP');
   const cant = parseFloat(document.getElementById('mcCant').value)||0;
   if (!sel||!cant) { alert('Selecciona material e ingresa cantidad'); return; }
-  const mp = DB_mp.find(function(m){ return m.cod === sel.value; });
-  if (!mp) { closeModal('mCompra'); return; }
-  try {
-    await api('/inventario/materias-primas/' + mp.id, { method: 'PATCH', body: JSON.stringify({ ajuste: cant }) });
-    DB_traz.unshift({t:'g',ev:'Entrada MP recibida',desc:mp.nombre + ' · +' + cant + ' ' + mp.unidad,time:'Hace un momento'});
-    await loadData(); renderMP(); renderTrazabilidad(); renderDashboard();
-  } catch(e) { alert('Error: ' + e.message); }
+  const mp = DB_mp.find(m => m.cod === sel.value);
+  if (mp) {
+    mp.stock = Math.min(mp.stock + cant, mp.max);
+    DB_traz.unshift({t:'g',ev:'Entrada MP recibida',desc:`${mp.nombre} · +${cant} ${mp.unidad} · stock: ${mp.stock}`,time:'Hace un momento'});
+    renderMP(); renderTrazabilidad(); renderDashboard();
+  }
   closeModal('mCompra');
 }
 
@@ -2134,18 +2026,15 @@ function saveProd() { renderCatalogo(); closeModal('mProducto'); }
 function saveDespacho() { renderDespacho(); closeModal('mDespacho'); alert('✅ Ruta generada y optimizada por zonas'); }
 function reoptimizar() { alert('⚡ Rutas re-optimizadas con Nearest Neighbor.\nCamión A → Norte (2 paradas)\nCamión B → Sur + Este (2 paradas)\nFurgón C → Oeste + Centro (2 paradas)'); }
 
-async function cambiarEstado(id) {
-  const p = DB_pedidos.find(function(x){ return x.id === id; });
+function cambiarEstado(id) {
+  const p = DB_pedidos.find(x => x.id === id);
   if (!p) return;
   const estados = ['pendiente','preparacion','despachado','entregado'];
   const idx = estados.indexOf(p.estadoDesp);
   if (idx < estados.length - 1) {
-    const nuevoEstado = estados[idx + 1];
-    try {
-      await api('/pedidos/' + p.dbId + '/estado', { method: 'PATCH', body: JSON.stringify({ estado_despacho: nuevoEstado }) });
-      DB_traz.unshift({t:'o',ev:'Estado actualizado',desc:id + ' to ' + nuevoEstado,time:'Hace un momento'});
-      await loadData(); renderAll();
-    } catch(e) { alert('Error: ' + e.message); }
+    p.estadoDesp = estados[idx + 1];
+    DB_traz.unshift({t:'o',ev:'Estado de despacho actualizado',desc:`${id} → ${p.estadoDesp}`,time:'Hace un momento'});
+    renderAll();
   }
 }
 
@@ -2166,385 +2055,397 @@ function imprimirFormato() {
     '.sub{font-size:12px;color:#666;}.logo{font-size:20px;font-weight:900;letter-spacing:2px;}' +
     '.firma{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}' +
     '.firma-line{border-top:1px solid #000;padding-top:6px;font-size:11px;}</style></head>' +
-
-'<body>' +
-'<div class="head"><div><div class="logo">KORATEX</div>' +
-'<div class="sub">FORMATO DE CONTEO FÍSICO — MATERIA PRIMA</div></div>' +
-'<div style="text-align:right;font-size:12px;"><div>Fecha: ___/___/______</div>' +
-'<div style="margin-top:4px;">Responsable: ________________</div></div></div>' +
-'<table><thead><tr><th>Código</th><th>Material</th><th>Unidad</th>' +
-'<th>Stock Sistema</th><th>Conteo Físico</th><th>Diferencia</th><th>Observaciones</th></tr></thead>' +
-'<tbody>' + rows + '</tbody></table>' +
-'<div class="firma"><div><div class="firma-line">Firma responsable de inventario</div></div>' +
-'<div><div class="firma-line">Firma administrador / verificación</div></div></div>' +
-'<scri' + 'pt>window.onload=function(){window.print();}</' + 'script>' +
-'</body></html>';
-
-w.document.write(html);
-w.document.close();
+    '<body>' +
+    '<div class="head"><div><div class="logo">KORATEX</div>' +
+    '<div class="sub">FORMATO DE CONTEO FÍSICO — MATERIA PRIMA</div></div>' +
+    '<div style="text-align:right;font-size:12px;"><div>Fecha: ___/___/______</div>' +
+    '<div style="margin-top:4px;">Responsable: ________________</div></div></div>' +
+    '<table><thead><tr><th>Código</th><th>Material</th><th>Unidad</th>' +
+    '<th>Stock Sistema</th><th>Conteo Físico</th><th>Diferencia</th><th>Observaciones</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table>' +
+    '<div class="firma"><div><div class="firma-line">Firma responsable de inventario</div></div>' +
+    '<div><div class="firma-line">Firma administrador / verificación</div></div></div>' +
+    '<scri' + 'pt>window.onload=function(){window.print();}</' + 'script>' +
+    '</body></html>';
+  w.document.write(html);
+  w.document.close();
 }
 
+
 /* ══════════════════════════════════════════
-MÓDULO CLIENTES
+   MÓDULO CLIENTES
+   - Registro completo con tipo y lista
+   - Filtros por tipo y zona
+   - Edición y vista de detalle
+══════════════════════════════════════════ */
 
-- Registro completo con tipo y lista
-- Filtros por tipo y zona
-- Edición y vista de detalle
-  ══════════════════════════════════════════ */
-
+// Extend DB_clientes with extra fields
+DB_clientes.forEach((c, i) => {
+  if (!c.telefono) c.telefono = '+58 412-' + String(1000000 + i * 111111).slice(0,7);
+  if (!c.email)    c.email    = c.nombre.split(' ')[0].toLowerCase() + '@empresa.com';
+  if (!c.ciudad)   c.ciudad   = 'Caracas';
+  if (!c.activo)   c.activo   = true;
+  if (!c.descuento) c.descuento = c.tipo === 'oro' ? 5 : c.tipo === 'plata' ? 2 : 0;
+});
 
 let clienteEditId = null;
 
+
 function getTipoBadge(tipo) {
-return tipo === 'oro' ? 'bo' : tipo === 'plata' ? 'bb' : 'bs';
+  return tipo === 'oro' ? 'bo' : tipo === 'plata' ? 'bb' : 'bs';
 }
 function getTipoIcon(tipo) {
-return tipo === 'oro' ? '🥇' : tipo === 'plata' ? '🥈' : '🥉';
+  return tipo === 'oro' ? '🥇' : tipo === 'plata' ? '🥈' : '🥉';
 }
 function getLista(tipo) {
-return tipo === 'oro' ? 'Lista A — Precio Oro' : tipo === 'plata' ? 'Lista B — Precio Plata' : 'Lista C — Precio Base';
+  return tipo === 'oro' ? 'Lista A — Precio Oro' : tipo === 'plata' ? 'Lista B — Precio Plata' : 'Lista C — Precio Base';
 }
 function getDias(tipo) {
-return tipo === 'oro' ? 60 : tipo === 'plata' ? 30 : 15;
+  return tipo === 'oro' ? 60 : tipo === 'plata' ? 30 : 15;
 }
 function getTipoColor(tipo) {
-return tipo === 'oro' ? 'var(--orange)' : tipo === 'plata' ? 'var(--cyan)' : 'var(--t2)';
+  return tipo === 'oro' ? 'var(--orange)' : tipo === 'plata' ? 'var(--cyan)' : 'var(--t2)';
 }
 
 function renderClientes() {
-// KPIs
-const total   = DB_clientes.filter(c => c.activo).length;
-const oro     = DB_clientes.filter(c => c.tipo === 'oro'    && c.activo).length;
-const plata   = DB_clientes.filter(c => c.tipo === 'plata'  && c.activo).length;
-const bronce  = DB_clientes.filter(c => c.tipo === 'bronce' && c.activo).length;
+  // KPIs
+  const total   = DB_clientes.filter(c => c.activo).length;
+  const oro     = DB_clientes.filter(c => c.tipo === 'oro'    && c.activo).length;
+  const plata   = DB_clientes.filter(c => c.tipo === 'plata'  && c.activo).length;
+  const bronce  = DB_clientes.filter(c => c.tipo === 'bronce' && c.activo).length;
 
-const k1 = document.getElementById('cliKpi1');    if(k1) k1.textContent = total;
-const ko = document.getElementById('cliKpiOro');  if(ko) ko.textContent = oro;
-const kp = document.getElementById('cliKpiPlata');if(kp) kp.textContent = plata;
-const kb = document.getElementById('cliKpiBronce');if(kb) kb.textContent = bronce;
+  const k1 = document.getElementById('cliKpi1');    if(k1) k1.textContent = total;
+  const ko = document.getElementById('cliKpiOro');  if(ko) ko.textContent = oro;
+  const kp = document.getElementById('cliKpiPlata');if(kp) kp.textContent = plata;
+  const kb = document.getElementById('cliKpiBronce');if(kb) kb.textContent = bronce;
 
-filtrarClientes();
+  filtrarClientes();
 }
 
 function filtrarClientes() {
-const busq  = (document.getElementById('cliSearch')?.value || '').toLowerCase();
-const tipo  = document.getElementById('cliTipoFiltro')?.value || '';
-const zona  = document.getElementById('cliZonaFiltro')?.value || '';
+  const busq  = (document.getElementById('cliSearch')?.value || '').toLowerCase();
+  const tipo  = document.getElementById('cliTipoFiltro')?.value || '';
+  const zona  = document.getElementById('cliZonaFiltro')?.value || '';
 
-let lista = DB_clientes.filter(c => {
-const matchBusq = !busq || c.nombre.toLowerCase().includes(busq) || (c.rif||'').toLowerCase().includes(busq);
-const matchTipo = !tipo || c.tipo === tipo;
-const matchZona = !zona || c.zona === zona;
-return matchBusq && matchTipo && matchZona;
-});
+  let lista = DB_clientes.filter(c => {
+    const matchBusq = !busq || c.nombre.toLowerCase().includes(busq) || (c.rif||'').toLowerCase().includes(busq);
+    const matchTipo = !tipo || c.tipo === tipo;
+    const matchZona = !zona || c.zona === zona;
+    return matchBusq && matchTipo && matchZona;
+  });
 
-const tb = document.getElementById('clientesTable');
-if (!tb) return;
+  const tb = document.getElementById('clientesTable');
+  if (!tb) return;
 
-if (!lista.length) {
-tb.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:24px;color:var(--t3);">No se encontraron clientes con esos filtros</td></tr>`;
-return;
-}
+  if (!lista.length) {
+    tb.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:24px;color:var(--t3);">No se encontraron clientes con esos filtros</td></tr>`;
+    return;
+  }
 
-tb.innerHTML = lista.map(function(c) {
-var badge  = getTipoBadge(c.tipo);
-var icon   = getTipoIcon(c.tipo);
-var lshort = c.tipo === 'oro' ? 'Lista A' : c.tipo === 'plata' ? 'Lista B' : 'Lista C';
-var dias   = getDias(c.tipo);
-var lim    = c.limCredit ? '$' + c.limCredit.toLocaleString() : '—';
-var actBdg = c.activo
-? '<span class="badge bg">Activo</span>'
-: '<span class="badge br">Inactivo</span>';
-var acciones =
-'<button class="btn btn-ghost btn-xs" onclick="verCliente(\'' + c.id + '\')">👁️</button>' +
-'<button class="btn btn-ghost btn-xs" onclick="editarCliente(\'' + c.id + '\')">✏️</button>' +
-'<button class="btn btn-ghost btn-xs" onclick="toggleCliente(\'' + c.id + '\')">' +
-(c.activo ? '🔴' : '🟢') + '</button>';
-return '<tr>' +
-'<td style="font-family:monospace;color:var(--t2);font-size:11px;">' + c.id + '</td>' +
-'<td><div style="font-weight:600;">' + c.nombre + '</div>' +
-'<div style="font-size:10px;color:var(--t3);">' + (c.email || '—') + '</div></td>' +
-'<td style="font-family:monospace;font-size:11px;color:var(--t2);">' + (c.rif || '—') + '</td>' +
-'<td><span class="badge ' + badge + '">' + icon + ' ' + c.tipo.toUpperCase() + '</span></td>' +
-'<td><span class="badge ' + badge + '">' + lshort + '</span></td>' +
-'<td><span class="badge bb">' + c.zona + '</span></td>' +
-'<td style="text-align:center;">' + dias + 'd</td>' +
-'<td>' + lim + '</td>' +
-'<td style="font-size:11px;color:var(--t2);">' + (c.telefono || '—') + '</td>' +
-'<td>' + actBdg + '</td>' +
-'<td><div style="display:flex;gap:4px;">' + acciones + '</div></td>' +
-'</tr>';
-}).join('');
+  tb.innerHTML = lista.map(function(c) {
+    var badge  = getTipoBadge(c.tipo);
+    var icon   = getTipoIcon(c.tipo);
+    var lshort = c.tipo === 'oro' ? 'Lista A' : c.tipo === 'plata' ? 'Lista B' : 'Lista C';
+    var dias   = getDias(c.tipo);
+    var lim    = c.limCredit ? '$' + c.limCredit.toLocaleString() : '—';
+    var actBdg = c.activo
+      ? '<span class="badge bg">Activo</span>'
+      : '<span class="badge br">Inactivo</span>';
+    var acciones =
+      '<button class="btn btn-ghost btn-xs" onclick="verCliente(\'' + c.id + '\')">👁️</button>' +
+      '<button class="btn btn-ghost btn-xs" onclick="editarCliente(\'' + c.id + '\')">✏️</button>' +
+      '<button class="btn btn-ghost btn-xs" onclick="toggleCliente(\'' + c.id + '\')">' +
+        (c.activo ? '🔴' : '🟢') + '</button>';
+    return '<tr>' +
+      '<td style="font-family:monospace;color:var(--t2);font-size:11px;">' + c.id + '</td>' +
+      '<td><div style="font-weight:600;">' + c.nombre + '</div>' +
+        '<div style="font-size:10px;color:var(--t3);">' + (c.email || '—') + '</div></td>' +
+      '<td style="font-family:monospace;font-size:11px;color:var(--t2);">' + (c.rif || '—') + '</td>' +
+      '<td><span class="badge ' + badge + '">' + icon + ' ' + c.tipo.toUpperCase() + '</span></td>' +
+      '<td><span class="badge ' + badge + '">' + lshort + '</span></td>' +
+      '<td><span class="badge bb">' + c.zona + '</span></td>' +
+      '<td style="text-align:center;">' + dias + 'd</td>' +
+      '<td>' + lim + '</td>' +
+      '<td style="font-size:11px;color:var(--t2);">' + (c.telefono || '—') + '</td>' +
+      '<td>' + actBdg + '</td>' +
+      '<td><div style="display:flex;gap:4px;">' + acciones + '</div></td>' +
+    '</tr>';
+  }).join('');
 }
 
 /* ── Selector de tipo visual ── */
 let tipoSeleccionado = '';
 
 function selTipo(tipo) {
-tipoSeleccionado = tipo;
-document.getElementById('cliTipoSelected').value = tipo;
+  tipoSeleccionado = tipo;
+  document.getElementById('cliTipoSelected').value = tipo;
 
-// Reset all
-['Oro','Plata','Bronce'].forEach(t => {
-const el = document.getElementById('tipo' + t);
-if (!el) return;
-el.style.transform = '';
-el.style.boxShadow = '';
-});
+  // Reset all
+  ['Oro','Plata','Bronce'].forEach(t => {
+    const el = document.getElementById('tipo' + t);
+    if (!el) return;
+    el.style.transform = '';
+    el.style.boxShadow = '';
+  });
 
-// Highlight selected
-const map = {oro:'Oro', plata:'Plata', bronce:'Bronce'};
-const selEl = document.getElementById('tipo' + map[tipo]);
-if (selEl) {
-selEl.style.transform = 'translateY(-3px)';
-selEl.style.boxShadow = tipo === 'oro'
-? '0 6px 20px rgba(232,32,10,.3)'
-: tipo === 'plata'
-? '0 6px 20px rgba(45,122,69,.3)'
-: '0 6px 20px rgba(80,80,80,.2)';
-}
+  // Highlight selected
+  const map = {oro:'Oro', plata:'Plata', bronce:'Bronce'};
+  const selEl = document.getElementById('tipo' + map[tipo]);
+  if (selEl) {
+    selEl.style.transform = 'translateY(-3px)';
+    selEl.style.boxShadow = tipo === 'oro'
+      ? '0 6px 20px rgba(232,32,10,.3)'
+      : tipo === 'plata'
+      ? '0 6px 20px rgba(45,122,69,.3)'
+      : '0 6px 20px rgba(80,80,80,.2)';
+  }
 
-// Auto-fill crédito y lista
-const dias    = tipo === 'oro' ? 60 : tipo === 'plata' ? 30 : 15;
-const lista   = tipo === 'oro' ? 'Lista A — Precio Oro' : tipo === 'plata' ? 'Lista B — Precio Plata' : 'Lista C — Precio Base';
+  // Auto-fill crédito y lista
+  const dias    = tipo === 'oro' ? 60 : tipo === 'plata' ? 30 : 15;
+  const lista   = tipo === 'oro' ? 'Lista A — Precio Oro' : tipo === 'plata' ? 'Lista B — Precio Plata' : 'Lista C — Precio Base';
 
-const dc = document.getElementById('cliDiasCredito'); if (dc) dc.value = dias;
-const ld = document.getElementById('cliListaDisplay'); if (ld) ld.value = lista;
+  const dc = document.getElementById('cliDiasCredito'); if (dc) dc.value = dias;
+  const ld = document.getElementById('cliListaDisplay'); if (ld) ld.value = lista;
 
-updatePreview();
+  updatePreview();
 }
 
 function updatePreview() {
-const nombre = document.getElementById('cliNombre')?.value || '';
-const tipo   = tipoSeleccionado;
-const rif    = document.getElementById('cliRif')?.value || '';
-const zona   = document.getElementById('cliZona')?.value || '';
-const limite = document.getElementById('cliLimite')?.value || '0';
-const prev   = document.getElementById('cliPreview');
+  const nombre = document.getElementById('cliNombre')?.value || '';
+  const tipo   = tipoSeleccionado;
+  const rif    = document.getElementById('cliRif')?.value || '';
+  const zona   = document.getElementById('cliZona')?.value || '';
+  const limite = document.getElementById('cliLimite')?.value || '0';
+  const prev   = document.getElementById('cliPreview');
 
-if (!nombre && !tipo) { if (prev) prev.style.display = 'none'; return; }
-if (prev) prev.style.display = 'block';
+  if (!nombre && !tipo) { if (prev) prev.style.display = 'none'; return; }
+  if (prev) prev.style.display = 'block';
 
-const ico    = tipo === 'oro' ? '🥇' : tipo === 'plata' ? '🥈' : '🥉';
-const lista  = tipo === 'oro' ? 'Lista A — Oro' : tipo === 'plata' ? 'Lista B — Plata' : tipo === 'bronce' ? 'Lista C — Bronce' : '—';
-const dias   = tipo === 'oro' ? '60 días crédito' : tipo === 'plata' ? '30 días crédito' : tipo === 'bronce' ? '15 días crédito' : '—';
-const color  = tipo === 'oro' ? 'var(--orange)' : tipo === 'plata' ? 'var(--cyan)' : 'var(--t2)';
+  const ico    = tipo === 'oro' ? '🥇' : tipo === 'plata' ? '🥈' : '🥉';
+  const lista  = tipo === 'oro' ? 'Lista A — Oro' : tipo === 'plata' ? 'Lista B — Plata' : tipo === 'bronce' ? 'Lista C — Bronce' : '—';
+  const dias   = tipo === 'oro' ? '60 días crédito' : tipo === 'plata' ? '30 días crédito' : tipo === 'bronce' ? '15 días crédito' : '—';
+  const color  = tipo === 'oro' ? 'var(--orange)' : tipo === 'plata' ? 'var(--cyan)' : 'var(--t2)';
 
-const pn = document.getElementById('cliPreviewNombre');  if (pn) pn.textContent = nombre || '(sin nombre)';
-const pd = document.getElementById('cliPreviewDetalle'); if (pd) pd.textContent = (rif ? rif + ' · ' : '') + zona;
-const pl = document.getElementById('cliPreviewLista');
-if (pl) { pl.textContent = lista; pl.style.color = color; }
-const pc = document.getElementById('cliPreviewCredito');
-if (pc) pc.textContent = dias + (limite > 0 ? ' · Límite $' + parseInt(limite).toLocaleString() : '');
-const pi = document.getElementById('cliPreviewIcon');    if (pi) pi.textContent = ico;
+  const pn = document.getElementById('cliPreviewNombre');  if (pn) pn.textContent = nombre || '(sin nombre)';
+  const pd = document.getElementById('cliPreviewDetalle'); if (pd) pd.textContent = (rif ? rif + ' · ' : '') + zona;
+  const pl = document.getElementById('cliPreviewLista');
+  if (pl) { pl.textContent = lista; pl.style.color = color; }
+  const pc = document.getElementById('cliPreviewCredito');
+  if (pc) pc.textContent = dias + (limite > 0 ? ' · Límite $' + parseInt(limite).toLocaleString() : '');
+  const pi = document.getElementById('cliPreviewIcon');    if (pi) pi.textContent = ico;
 }
 
 // Live preview on input
 document.addEventListener('input', e => {
-if (['cliNombre','cliRif','cliZona','cliLimite'].includes(e.target.id)) updatePreview();
+  if (['cliNombre','cliRif','cliZona','cliLimite'].includes(e.target.id)) updatePreview();
 });
 
 /* ── Guardar cliente ── */
-async function guardarCliente() {
-const nombre = document.getElementById('cliNombre')?.value?.trim();
-const tipo   = document.getElementById('cliTipoSelected')?.value;
-if (!nombre) { alert('El nombre del cliente es obligatorio'); return; }
-if (!tipo)   { alert('Selecciona el tipo de cliente (Oro / Plata / Bronce)'); return; }
-const tipoMap = {oro:1, plata:2, bronce:3};
-const zonaMap = {Norte:1, Sur:2, Este:3, Oeste:4, Centro:5, Cono:6};
-const zona = document.getElementById('cliZona')?.value || 'Centro';
-const payload = {
-  nombre,
-  ruc:           document.getElementById('cliRif')?.value || null,
-  tipo_id:       tipoMap[tipo] || 3,
-  zona_id:       zonaMap[zona] || 5,
-  direccion:     document.getElementById('cliDir')?.value || '',
-  telefono:      document.getElementById('cliTel')?.value || '',
-  email:         document.getElementById('cliEmail')?.value || '',
-  limite_credito: parseFloat(document.getElementById('cliLimite')?.value) || 0,
-};
-if (clienteEditId) {
-  try {
-    await api('/clientes/' + clienteEditId, { method: 'PUT', body: JSON.stringify({...payload, activo: true}) });
-    DB_traz.unshift({t:'o',ev:'Cliente actualizado',desc:nombre,time:'Hace un momento'});
-  } catch(e) { alert('Error al actualizar: ' + e.message); return; }
-} else {
-  const codigo = document.getElementById('cliCodigo')?.value?.trim() || ('C' + String(Date.now()).slice(-4));
-  try {
-    await api('/clientes', { method: 'POST', body: JSON.stringify({...payload, codigo: codigo}) });
-    DB_traz.unshift({t:'g',ev:'Nuevo cliente registrado',desc:nombre + ' · ' + tipo.toUpperCase(),time:'Hace un momento'});
-  } catch(e) { alert('Error al crear cliente: ' + e.message); return; }
-}
-await loadData();
-populateSelects();
-renderClientes();
-renderTrazabilidad();
-closeModal('mCliente');
-resetFormCliente();
+function guardarCliente() {
+  const nombre = document.getElementById('cliNombre')?.value?.trim();
+  const tipo   = document.getElementById('cliTipoSelected')?.value;
+
+  if (!nombre) { alert('El nombre del cliente es obligatorio'); return; }
+  if (!tipo)   { alert('Selecciona el tipo de cliente (Oro / Plata / Bronce)'); return; }
+
+  const codigo = document.getElementById('cliCodigo')?.value?.trim() ||
+    'C' + String(DB_clientes.length + 1).padStart(3,'0');
+  const dias   = tipo === 'oro' ? 60 : tipo === 'plata' ? 30 : 15;
+
+  if (clienteEditId) {
+    // Editar existente
+    const idx = DB_clientes.findIndex(c => c.id === clienteEditId);
+    if (idx >= 0) {
+      DB_clientes[idx] = {
+        ...DB_clientes[idx],
+        nombre,
+        rif:        document.getElementById('cliRif')?.value || '',
+        tipo,
+        zona:       document.getElementById('cliZona')?.value || 'Centro',
+        telefono:   document.getElementById('cliTel')?.value || '',
+        email:      document.getElementById('cliEmail')?.value || '',
+        limCredit:  parseFloat(document.getElementById('cliLimite')?.value) || 0,
+        diasCredito: dias,
+        descuento:  parseFloat(document.getElementById('cliDescuento')?.value) || 0,
+      };
+    }
+    DB_traz.unshift({t:'o',ev:'Cliente actualizado',desc:`${nombre} · Tipo: ${tipo.toUpperCase()} · Lista ${tipo==='oro'?'A':tipo==='plata'?'B':'C'}`,time:'Hace un momento'});
+  } else {
+    // Nuevo cliente
+    const nuevo = {
+      id:          codigo,
+      codigo,
+      nombre,
+      rif:         document.getElementById('cliRif')?.value || '',
+      tipo,
+      zona:        document.getElementById('cliZona')?.value || 'Centro',
+      telefono:    document.getElementById('cliTel')?.value || '',
+      email:       document.getElementById('cliEmail')?.value || '',
+      ciudad:      document.getElementById('cliCiudad')?.value || 'Caracas',
+      limCredit:   parseFloat(document.getElementById('cliLimite')?.value) || 0,
+      diasCredito: dias,
+      descuento:   parseFloat(document.getElementById('cliDescuento')?.value) || 0,
+      activo:      true,
+      lat:         -12.05,
+      lng:         -77.04,
+    };
+    DB_clientes.push(nuevo);
+    DB_traz.unshift({t:'g',ev:'Nuevo cliente registrado',desc:`${nombre} · ${tipo.toUpperCase()} · Lista ${tipo==='oro'?'A':tipo==='plata'?'B':'C'}`,time:'Hace un momento'});
+  }
+
+  // Refresh selects in pedido forms
+  populateSelects();
+  renderClientes();
+  renderTrazabilidad();
+  closeModal('mCliente');
+  resetFormCliente();
 }
 
+/* ── Ver detalle ── */
 function verCliente(id) {
-var c = DB_clientes.find(function(x){ return x.id === id; });
-if (!c) return;
+  var c = DB_clientes.find(function(x){ return x.id === id; });
+  if (!c) return;
 
-var ico    = getTipoIcon(c.tipo);
-var bdg    = getTipoBadge(c.tipo);
-var lista  = getLista(c.tipo);
-var dias   = getDias(c.tipo);
-var color  = getTipoColor(c.tipo);
-var peds   = DB_pedidos.filter(function(p){ return p.clienteId === c.id; });
-var total  = peds.reduce(function(s,p){ return s + p.total; }, 0);
-var ticket = peds.length ? '$' + Math.round(total/peds.length).toLocaleString() : '—';
-var nombre = c.nombre || '';
-var rif    = c.rif || '—';
-var ciudad = c.ciudad || 'Caracas';
-var zona   = c.zona || '';
-var tel    = c.telefono || '—';
-var email  = c.email || '—';
-var lim    = c.limCredit ? '$' + c.limCredit.toLocaleString() : 'Sin límite';
-var desc   = (c.descuento || 0) + '%';
-var activo = c.activo
-? '<span class="badge bg">Activo</span>'
-: '<span class="badge br">Inactivo</span>';
+  var ico    = getTipoIcon(c.tipo);
+  var bdg    = getTipoBadge(c.tipo);
+  var lista  = getLista(c.tipo);
+  var dias   = getDias(c.tipo);
+  var color  = getTipoColor(c.tipo);
+  var peds   = DB_pedidos.filter(function(p){ return p.clienteId === c.id; });
+  var total  = peds.reduce(function(s,p){ return s + p.total; }, 0);
+  var ticket = peds.length ? '$' + Math.round(total/peds.length).toLocaleString() : '—';
+  var nombre = c.nombre || '';
+  var rif    = c.rif || '—';
+  var ciudad = c.ciudad || 'Caracas';
+  var zona   = c.zona || '';
+  var tel    = c.telefono || '—';
+  var email  = c.email || '—';
+  var lim    = c.limCredit ? '$' + c.limCredit.toLocaleString() : 'Sin límite';
+  var desc   = (c.descuento || 0) + '%';
+  var activo = c.activo
+    ? '<span class="badge bg">Activo</span>'
+    : '<span class="badge br">Inactivo</span>';
 
-document.getElementById('mVerTitle').textContent = '👥 ' + nombre;
+  document.getElementById('mVerTitle').textContent = '👥 ' + nombre;
 
-var html = '';
-html += '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:14px;background:var(--bg3);border-radius:var(--r);">';
-html +=   '<div style="font-size:40px;">' + ico + '</div>';
-html +=   '<div style="flex:1;">';
-html +=     '<div style="font-size:16px;font-weight:700;">' + nombre + '</div>';
-html +=     '<div style="font-size:11px;color:var(--t3);margin-top:3px;">' + rif + ' · ' + ciudad + '</div>';
-html +=     '<div style="margin-top:6px;display:flex;gap:6px;">';
-html +=       '<span class="badge ' + bdg + '">' + c.tipo.toUpperCase() + '</span>';
-html +=       '<span class="badge bb">' + zona + '</span>';
-html +=       activo;
-html +=     '</div>';
-html +=   '</div>';
-html += '</div>';
+  var html = '';
+  html += '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:14px;background:var(--bg3);border-radius:var(--r);">';
+  html +=   '<div style="font-size:40px;">' + ico + '</div>';
+  html +=   '<div style="flex:1;">';
+  html +=     '<div style="font-size:16px;font-weight:700;">' + nombre + '</div>';
+  html +=     '<div style="font-size:11px;color:var(--t3);margin-top:3px;">' + rif + ' · ' + ciudad + '</div>';
+  html +=     '<div style="margin-top:6px;display:flex;gap:6px;">';
+  html +=       '<span class="badge ' + bdg + '">' + c.tipo.toUpperCase() + '</span>';
+  html +=       '<span class="badge bb">' + zona + '</span>';
+  html +=       activo;
+  html +=     '</div>';
+  html +=   '</div>';
+  html += '</div>';
 
-html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">';
 
-html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;">';
-html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Condiciones Comerciales</div>';
-html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Lista de precios</span><span style="font-weight:700;color:' + color + ';">' + lista + '</span></div>';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Días de crédito</span><span style="font-weight:700;">' + dias + ' días</span></div>';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Límite de crédito</span><span style="font-weight:700;">' + lim + '</span></div>';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Descuento especial</span><span style="font-weight:700;">' + desc + '</span></div>';
-html += '</div></div>';
+  html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;">';
+  html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Condiciones Comerciales</div>';
+  html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Lista de precios</span><span style="font-weight:700;color:' + color + ';">' + lista + '</span></div>';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Días de crédito</span><span style="font-weight:700;">' + dias + ' días</span></div>';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Límite de crédito</span><span style="font-weight:700;">' + lim + '</span></div>';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Descuento especial</span><span style="font-weight:700;">' + desc + '</span></div>';
+  html += '</div></div>';
 
-html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;">';
-html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Contacto</div>';
-html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Teléfono</span><span>' + tel + '</span></div>';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Email</span><span style="font-size:11px;">' + email + '</span></div>';
-html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Zona despacho</span><span class="badge bb">' + zona + '</span></div>';
-html += '</div></div>';
-html += '</div>';
+  html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;">';
+  html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Contacto</div>';
+  html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Teléfono</span><span>' + tel + '</span></div>';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Email</span><span style="font-size:11px;">' + email + '</span></div>';
+  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Zona despacho</span><span class="badge bb">' + zona + '</span></div>';
+  html += '</div></div>';
+  html += '</div>';
 
-html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;margin-bottom:14px;">';
-html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:10px;">Historial de Compras</div>';
-html += '<div style="display:flex;gap:16px;">';
-html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;color:var(--orange);">' + peds.length + '</div><div style="font-size:10px;color:var(--t3);">Pedidos totales</div></div>';
-html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;color:var(--green);">$' + total.toLocaleString() + '</div><div style="font-size:10px;color:var(--t3);">Compras acumuladas</div></div>';
-html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;">' + ticket + '</div><div style="font-size:10px;color:var(--t3);">Ticket promedio</div></div>';
-html += '</div></div>';
+  html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;margin-bottom:14px;">';
+  html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:10px;">Historial de Compras</div>';
+  html += '<div style="display:flex;gap:16px;">';
+  html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;color:var(--orange);">' + peds.length + '</div><div style="font-size:10px;color:var(--t3);">Pedidos totales</div></div>';
+  html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;color:var(--green);">$' + total.toLocaleString() + '</div><div style="font-size:10px;color:var(--t3);">Compras acumuladas</div></div>';
+  html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;">' + ticket + '</div><div style="font-size:10px;color:var(--t3);">Ticket promedio</div></div>';
+  html += '</div></div>';
 
-html += '<div style="display:flex;gap:8px;justify-content:flex-end;">';
-html += '<button class="btn btn-ghost" onclick="closeModal(\'mVerCliente\')">Cerrar</button>';
-html += '<button class="btn btn-primary" onclick="closeModal(\'mVerCliente\');editarCliente(\'' + id + '\')">✏️ Editar</button>';
-html += '</div>';
+  html += '<div style="display:flex;gap:8px;justify-content:flex-end;">';
+  html += "<button class=\"btn btn-ghost\" onclick=\"closeModal('mVerCliente')\">Cerrar</button>";
+  html += "<button class=\"btn btn-primary\" onclick=\"closeModal('mVerCliente');editarCliente('" + id + "')\">✏️ Editar</button>";
+  html += '</div>';
 
-document.getElementById('mVerBody').innerHTML = html;
-openModal('mVerCliente');
+  document.getElementById('mVerBody').innerHTML = html;
+  openModal('mVerCliente');
 }
 
 /* ── Editar cliente ── */
 function editarCliente(id) {
-const c = DB_clientes.find(x => x.id === id);
-if (!c) return;
-clienteEditId = id;
+  const c = DB_clientes.find(x => x.id === id);
+  if (!c) return;
+  clienteEditId = id;
 
-document.getElementById('mClienteTitle').textContent = '✏️ Editar Cliente';
-document.getElementById('cliNombre').value  = c.nombre || '';
-document.getElementById('cliRif').value     = c.rif || '';
-document.getElementById('cliCodigo').value  = c.id || '';
-document.getElementById('cliTel').value     = c.telefono || '';
-document.getElementById('cliEmail').value   = c.email || '';
-document.getElementById('cliDir').value     = c.direccion || '';
-document.getElementById('cliCiudad').value  = c.ciudad || '';
-document.getElementById('cliZona').value    = c.zona || 'Centro';
-document.getElementById('cliLimite').value  = c.limCredit || '';
-document.getElementById('cliDescuento').value = c.descuento || 0;
-document.getElementById('cliObs').value     = c.obs || '';
+  document.getElementById('mClienteTitle').textContent = '✏️ Editar Cliente';
+  document.getElementById('cliNombre').value  = c.nombre || '';
+  document.getElementById('cliRif').value     = c.rif || '';
+  document.getElementById('cliCodigo').value  = c.id || '';
+  document.getElementById('cliTel').value     = c.telefono || '';
+  document.getElementById('cliEmail').value   = c.email || '';
+  document.getElementById('cliDir').value     = c.direccion || '';
+  document.getElementById('cliCiudad').value  = c.ciudad || '';
+  document.getElementById('cliZona').value    = c.zona || 'Centro';
+  document.getElementById('cliLimite').value  = c.limCredit || '';
+  document.getElementById('cliDescuento').value = c.descuento || 0;
+  document.getElementById('cliObs').value     = c.obs || '';
 
-selTipo(c.tipo);
-openModal('mCliente');
+  selTipo(c.tipo);
+  openModal('mCliente');
 }
 
 /* ── Toggle activo/inactivo ── */
-async function toggleCliente(id) {
-const c = DB_clientes.find(x => x.id === id);
-if (!c) return;
-const nuevoActivo = !c.activo;
-try {
-  await api('/clientes/' + id, { method: 'PUT', body: JSON.stringify({ nombre: c.nombre, ruc: c.rif||null, tipo_id: c.tipo==='oro'?1:c.tipo==='plata'?2:3, zona_id: 5, limite_credito: c.limCredit||0, activo: nuevoActivo }) });
-} catch(e) { alert('Error: ' + e.message); return; }
-c.activo = nuevoActivo;
-DB_traz.unshift({t: nuevoActivo ? 'g' : 'r', ev: nuevoActivo ? 'Cliente activado' : 'Cliente desactivado', desc: c.nombre, time:'Hace un momento'});
-await loadData();
-renderClientes();
-renderTrazabilidad();
+function toggleCliente(id) {
+  const c = DB_clientes.find(x => x.id === id);
+  if (!c) return;
+  c.activo = !c.activo;
+  DB_traz.unshift({t: c.activo ? 'g' : 'r', ev: c.activo ? 'Cliente activado' : 'Cliente desactivado', desc: c.nombre, time:'Hace un momento'});
+  renderClientes();
+  renderTrazabilidad();
 }
 
 /* ── Reset form ── */
 function resetFormCliente() {
-clienteEditId = null;
-tipoSeleccionado = '';
-const ids = ['cliNombre','cliRif','cliCodigo','cliTel','cliEmail','cliDir','cliCiudad','cliLimite','cliDescuento','cliObs','cliDiasCredito','cliListaDisplay'];
-ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-document.getElementById('cliTipoSelected').value = '';
-['Oro','Plata','Bronce'].forEach(t => {
-const el = document.getElementById('tipo'+t);
-if (el) { el.style.transform=''; el.style.boxShadow=''; }
-});
-const prev = document.getElementById('cliPreview');
-if (prev) prev.style.display = 'none';
-const title = document.getElementById('mClienteTitle');
-if (title) title.textContent = '👥 Nuevo Cliente';
+  clienteEditId = null;
+  tipoSeleccionado = '';
+  const ids = ['cliNombre','cliRif','cliCodigo','cliTel','cliEmail','cliDir','cliCiudad','cliLimite','cliDescuento','cliObs','cliDiasCredito','cliListaDisplay'];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('cliTipoSelected').value = '';
+  ['Oro','Plata','Bronce'].forEach(t => {
+    const el = document.getElementById('tipo'+t);
+    if (el) { el.style.transform=''; el.style.boxShadow=''; }
+  });
+  const prev = document.getElementById('cliPreview');
+  if (prev) prev.style.display = 'none';
+  const title = document.getElementById('mClienteTitle');
+  if (title) title.textContent = '👥 Nuevo Cliente';
 }
 
-/* ════════ AUTO-LOGIN ════════ */
-document.addEventListener('DOMContentLoaded', async function() {
-  const saved = localStorage.getItem('kx_token');
-  if (!saved) return;
-  TOKEN = saved;
-  try {
-    const me = await api('/auth/me');
-    if (me && me.id) { currentUser = me; await enterApp(); }
-    else { localStorage.removeItem('kx_token'); TOKEN = ''; }
-  } catch(e) { localStorage.removeItem('kx_token'); TOKEN = ''; }
-});
-
 function exportarClientes() {
-let csv = 'Codigo,Nombre,RIF,Tipo,Lista,Zona,Dias Credito,Limite Credito,Telefono,Email\n';
-DB_clientes.forEach(c => {
-const lista = c.tipo === 'oro' ? 'A' : c.tipo === 'plata' ? 'B' : 'C';
-const dias  = c.tipo === 'oro' ? 60  : c.tipo === 'plata' ? 30  : 15;
-csv += `${c.id},"${c.nombre}",${c.rif||''},${c.tipo},${lista},${c.zona},${dias},${c.limCredit||0},${c.telefono||''},${c.email||''}\n`;
-});
-const blob = new Blob([csv], {type:'text/csv'});
-const url  = URL.createObjectURL(blob);
-const a    = document.createElement('a');
-a.href = url; a.download = 'clientes_koratex.csv'; a.click();
-URL.revokeObjectURL(url);
+  let csv = 'Codigo,Nombre,RIF,Tipo,Lista,Zona,Dias Credito,Limite Credito,Telefono,Email\n';
+  DB_clientes.forEach(c => {
+    const lista = c.tipo === 'oro' ? 'A' : c.tipo === 'plata' ? 'B' : 'C';
+    const dias  = c.tipo === 'oro' ? 60  : c.tipo === 'plata' ? 30  : 15;
+    csv += `${c.id},"${c.nombre}",${c.rif||''},${c.tipo},${lista},${c.zona},${dias},${c.limCredit||0},${c.telefono||''},${c.email||''}\n`;
+  });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'clientes_koratex.csv'; a.click();
+  URL.revokeObjectURL(url);
 }
 
 </script>
 
 <!-- ════ MODAL: CLIENTE ════ -->
-
 <div class="modal-overlay" id="mCliente">
   <div class="modal">
     <div class="modal-header">
@@ -2553,133 +2454,131 @@ URL.revokeObjectURL(url);
     </div>
     <div class="modal-body">
 
-  <div class="fs">
-    <div class="fs-title">Datos de la empresa</div>
-    <div class="fg2">
-      <div class="fg full">
-        <label>Nombre / Razón Social *</label>
-        <input type="text" id="cliNombre" placeholder="Ej: Constructora Andina, C.A.">
+      <div class="fs">
+        <div class="fs-title">Datos de la empresa</div>
+        <div class="fg2">
+          <div class="fg full">
+            <label>Nombre / Razón Social *</label>
+            <input type="text" id="cliNombre" placeholder="Ej: Constructora Andina, C.A.">
+          </div>
+          <div class="fg">
+            <label>RIF / RUC *</label>
+            <input type="text" id="cliRif" placeholder="Ej: J-12345678-9">
+          </div>
+          <div class="fg">
+            <label>Código interno</label>
+            <input type="text" id="cliCodigo" placeholder="Auto (ej: C009)">
+          </div>
+          <div class="fg">
+            <label>Teléfono</label>
+            <input type="tel" id="cliTel" placeholder="+58 412-0000000">
+          </div>
+          <div class="fg">
+            <label>Email</label>
+            <input type="email" id="cliEmail" placeholder="[contacto@empresa.com](mailto:contacto@empresa.com)">
+          </div>
+          <div class="fg full">
+            <label>Dirección</label>
+            <input type="text" id="cliDir" placeholder="Dirección de entrega principal">
+          </div>
+          <div class="fg">
+            <label>Ciudad</label>
+            <input type="text" id="cliCiudad" placeholder="Ej: Caracas">
+          </div>
+          <div class="fg">
+            <label>Zona de despacho</label>
+            <select id="cliZona">
+              <option value="Norte">Norte</option>
+              <option value="Sur">Sur</option>
+              <option value="Este">Este</option>
+              <option value="Oeste">Oeste</option>
+              <option value="Centro">Centro</option>
+              <option value="Cono">Cono</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <div class="fg">
-        <label>RIF / RUC *</label>
-        <input type="text" id="cliRif" placeholder="Ej: J-12345678-9">
+
+      <div class="fs">
+        <div class="fs-title">Clasificación comercial</div>
+
+        <!-- Selector visual de tipo -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div class="tipo-option" id="tipoOro" onclick="selTipo('oro')" style="
+            background:rgba(232,32,10,.06);border:2px solid rgba(232,32,10,.2);
+            border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
+            <div style="font-size:22px;margin-bottom:5px;">🥇</div>
+            <div style="font-size:12px;font-weight:700;color:var(--orange);">ORO</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px;">Lista A · 60d crédito</div>
+          </div>
+          <div class="tipo-option" id="tipoPlata" onclick="selTipo('plata')" style="
+            background:rgba(45,122,69,.06);border:2px solid rgba(45,122,69,.2);
+            border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
+            <div style="font-size:22px;margin-bottom:5px;">🥈</div>
+            <div style="font-size:12px;font-weight:700;color:var(--cyan);">PLATA</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px;">Lista B · 30d crédito</div>
+          </div>
+          <div class="tipo-option" id="tipoBronce" onclick="selTipo('bronce')" style="
+            background:rgba(80,80,80,.06);border:2px solid rgba(80,80,80,.2);
+            border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
+            <div style="font-size:22px;margin-bottom:5px;">🥉</div>
+            <div style="font-size:12px;font-weight:700;color:var(--t2);">BRONCE</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px;">Lista C · 15d crédito</div>
+          </div>
+        </div>
+        <input type="hidden" id="cliTipoSelected" value="">
+
+        <div class="fg2">
+          <div class="fg">
+            <label>Días de crédito</label>
+            <input type="number" id="cliDiasCredito" placeholder="Auto según tipo" readonly
+              style="background:var(--bg3);cursor:not-allowed;">
+          </div>
+          <div class="fg">
+            <label>Límite de crédito ($)</label>
+            <input type="number" id="cliLimite" placeholder="0.00" step="100" min="0">
+          </div>
+          <div class="fg">
+            <label>Lista de precios</label>
+            <input type="text" id="cliListaDisplay" readonly placeholder="Auto según tipo"
+              style="background:var(--bg3);cursor:not-allowed;">
+          </div>
+          <div class="fg">
+            <label>Descuento especial (%)</label>
+            <input type="number" id="cliDescuento" placeholder="0" min="0" max="15" step="0.5">
+          </div>
+          <div class="fg full">
+            <label>Observaciones / Condiciones especiales</label>
+            <textarea id="cliObs" placeholder="Condiciones de pago especiales, contacto de compras, etc."></textarea>
+          </div>
+        </div>
       </div>
-      <div class="fg">
-        <label>Código interno</label>
-        <input type="text" id="cliCodigo" placeholder="Auto (ej: C009)">
+
+      <!-- Preview en tiempo real -->
+      <div id="cliPreview" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Vista previa del cliente</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div id="cliPreviewIcon" style="font-size:28px;"></div>
+          <div>
+            <div id="cliPreviewNombre" style="font-size:14px;font-weight:700;"></div>
+            <div id="cliPreviewDetalle" style="font-size:11px;color:var(--t3);margin-top:2px;"></div>
+          </div>
+          <div style="margin-left:auto;text-align:right;">
+            <div id="cliPreviewLista" style="font-size:12px;font-weight:700;"></div>
+            <div id="cliPreviewCredito" style="font-size:10px;color:var(--t3);margin-top:2px;"></div>
+          </div>
+        </div>
       </div>
-      <div class="fg">
-        <label>Teléfono</label>
-        <input type="tel" id="cliTel" placeholder="+58 412-0000000">
-      </div>
-      <div class="fg">
-        <label>Email</label>
-        <input type="email" id="cliEmail" placeholder="contacto@empresa.com">
-      </div>
-      <div class="fg full">
-        <label>Dirección</label>
-        <input type="text" id="cliDir" placeholder="Dirección de entrega principal">
-      </div>
-      <div class="fg">
-        <label>Ciudad</label>
-        <input type="text" id="cliCiudad" placeholder="Ej: Caracas">
-      </div>
-      <div class="fg">
-        <label>Zona de despacho</label>
-        <select id="cliZona">
-          <option value="Norte">Norte</option>
-          <option value="Sur">Sur</option>
-          <option value="Este">Este</option>
-          <option value="Oeste">Oeste</option>
-          <option value="Centro">Centro</option>
-          <option value="Cono">Cono</option>
-        </select>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('mCliente');resetFormCliente()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarCliente()">💾 Guardar Cliente</button>
       </div>
     </div>
-  </div>
-
-  <div class="fs">
-    <div class="fs-title">Clasificación comercial</div>
-
-    <!-- Selector visual de tipo -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
-      <div class="tipo-option" id="tipoOro" onclick="selTipo('oro')" style="
-        background:rgba(232,32,10,.06);border:2px solid rgba(232,32,10,.2);
-        border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
-        <div style="font-size:22px;margin-bottom:5px;">🥇</div>
-        <div style="font-size:12px;font-weight:700;color:var(--orange);">ORO</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Lista A · 60d crédito</div>
-      </div>
-      <div class="tipo-option" id="tipoPlata" onclick="selTipo('plata')" style="
-        background:rgba(45,122,69,.06);border:2px solid rgba(45,122,69,.2);
-        border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
-        <div style="font-size:22px;margin-bottom:5px;">🥈</div>
-        <div style="font-size:12px;font-weight:700;color:var(--cyan);">PLATA</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Lista B · 30d crédito</div>
-      </div>
-      <div class="tipo-option" id="tipoBronce" onclick="selTipo('bronce')" style="
-        background:rgba(80,80,80,.06);border:2px solid rgba(80,80,80,.2);
-        border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
-        <div style="font-size:22px;margin-bottom:5px;">🥉</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t2);">BRONCE</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Lista C · 15d crédito</div>
-      </div>
-    </div>
-    <input type="hidden" id="cliTipoSelected" value="">
-
-    <div class="fg2">
-      <div class="fg">
-        <label>Días de crédito</label>
-        <input type="number" id="cliDiasCredito" placeholder="Auto según tipo" readonly
-          style="background:var(--bg3);cursor:not-allowed;">
-      </div>
-      <div class="fg">
-        <label>Límite de crédito ($)</label>
-        <input type="number" id="cliLimite" placeholder="0.00" step="100" min="0">
-      </div>
-      <div class="fg">
-        <label>Lista de precios</label>
-        <input type="text" id="cliListaDisplay" readonly placeholder="Auto según tipo"
-          style="background:var(--bg3);cursor:not-allowed;">
-      </div>
-      <div class="fg">
-        <label>Descuento especial (%)</label>
-        <input type="number" id="cliDescuento" placeholder="0" min="0" max="15" step="0.5">
-      </div>
-      <div class="fg full">
-        <label>Observaciones / Condiciones especiales</label>
-        <textarea id="cliObs" placeholder="Condiciones de pago especiales, contacto de compras, etc."></textarea>
-      </div>
-    </div>
-  </div>
-
-  <!-- Preview en tiempo real -->
-  <div id="cliPreview" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:14px;">
-    <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Vista previa del cliente</div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div id="cliPreviewIcon" style="font-size:28px;"></div>
-      <div>
-        <div id="cliPreviewNombre" style="font-size:14px;font-weight:700;"></div>
-        <div id="cliPreviewDetalle" style="font-size:11px;color:var(--t3);margin-top:2px;"></div>
-      </div>
-      <div style="margin-left:auto;text-align:right;">
-        <div id="cliPreviewLista" style="font-size:12px;font-weight:700;"></div>
-        <div id="cliPreviewCredito" style="font-size:10px;color:var(--t3);margin-top:2px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-actions">
-    <button class="btn btn-ghost" onclick="closeModal('mCliente');resetFormCliente()">Cancelar</button>
-    <button class="btn btn-primary" onclick="guardarCliente()">💾 Guardar Cliente</button>
-  </div>
-</div>
-
   </div>
 </div>
 
 <!-- ════ MODAL: VER/EDITAR CLIENTE ════ -->
-
 <div class="modal-overlay" id="mVerCliente">
   <div class="modal">
     <div class="modal-header">

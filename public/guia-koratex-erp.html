@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Completa · Koratex ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f4f4f4;
+    color: #1a1a1a;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: white; font-size: 12px; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .cover { page-break-after: always; }
+    section { page-break-inside: avoid; }
+    .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+    a { color: #1a1a1a !important; text-decoration: none; }
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: linear-gradient(135deg, #080808 0%, #1a1a1a 50%, #0f0f0f 100%);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(232,32,10,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 70%, rgba(45,122,69,0.08) 0%, transparent 50%),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.01) 60px, rgba(255,255,255,0.01) 61px),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,0.01) 60px, rgba(255,255,255,0.01) 61px);
+  }
+  .cover > * { position: relative; z-index: 1; }
+
+  /* ── LOGO ── */
+  .logo-container {
+    margin-bottom: 40px;
+  }
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    background: #e8200a;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: -2px;
+    box-shadow: 0 8px 32px rgba(232,32,10,0.4);
+  }
+  .logo-text-block {
+    text-align: left;
+  }
+  .logo-name {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: 8px;
+    color: #f0f0f0;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .logo-tagline {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #888;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .cover-title {
+    font-size: 28px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .cover-subtitle {
+    font-size: 42px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 30px;
+  }
+  .cover-subtitle span { color: #e8200a; }
+  .cover-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+    max-width: 500px;
+    line-height: 1.8;
+    margin-bottom: 50px;
+  }
+  .cover-badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 60px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+  }
+  .cover-footer {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 1px;
+  }
+  .cover-line {
+    width: 60px;
+    height: 3px;
+    background: #e8200a;
+    margin: 20px auto;
+  }
+
+  /* ── CONTENT PAGES ── */
+  .content-page {
+    background: white;
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    background: #080808;
+    color: white;
+    padding: 24px 36px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-header.red { background: linear-gradient(135deg, #c0180a, #e8200a); }
+  .section-header.green { background: linear-gradient(135deg, #1a5c30, #2d7a45); }
+  .section-header.blue { background: linear-gradient(135deg, #1a3a6c, #2563eb); }
+  .section-header.amber { background: linear-gradient(135deg, #8a5a00, #d97706); }
+  .section-header.violet { background: linear-gradient(135deg, #4c1d95, #7c3aed); }
+  .section-header.steel { background: linear-gradient(135deg, #1c1c1c, #383838); }
+
+  .section-num {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-info h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .section-info p {
+    font-size: 12px;
+    opacity: 0.6;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── CONTENT BODY ── */
+  .section-body {
+    padding: 32px 36px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: #f8f8f8;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .card.highlight {
+    background: #fff9e6;
+    border-color: #f5a623;
+    border-left: 4px solid #f5a623;
+  }
+  .card.danger {
+    background: #fff5f5;
+    border-color: #e8200a;
+    border-left: 4px solid #e8200a;
+  }
+  .card.success {
+    background: #f0fdf4;
+    border-color: #2d7a45;
+    border-left: 4px solid #2d7a45;
+  }
+  .card.info {
+    background: #eff6ff;
+    border-color: #2563eb;
+    border-left: 4px solid #2563eb;
+  }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+  }
+  .card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── GRIDS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 600px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  /* ── ROLE CARDS ── */
+  .role-card {
+    border-radius: 10px;
+    padding: 16px;
+    color: white;
+    text-align: center;
+  }
+  .role-card .role-icon { font-size: 28px; margin-bottom: 8px; }
+  .role-card .role-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .role-card .role-email { font-size: 11px; opacity: 0.7; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
+  .role-card .role-desc { font-size: 11px; opacity: 0.8; line-height: 1.4; }
+  .role-card.admin { background: linear-gradient(135deg, #1c1c1c, #383838); }
+  .role-card.comercial { background: linear-gradient(135deg, #c0180a, #e8200a); }
+  .role-card.logistica { background: linear-gradient(135deg, #1a5c30, #2d7a45); }
+  .role-card.finanzas { background: linear-gradient(135deg, #8a5a00, #d97706); }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: #0f0f0f;
+    color: #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin: 12px 0;
+    overflow-x: auto;
+    line-height: 1.8;
+    border: 1px solid #252525;
+  }
+  .code-block .comment { color: #555; }
+  .code-block .key { color: #a78bfa; }
+  .code-block .val { color: #3db870; }
+  .code-block .url { color: #60a5fa; }
+  .code-block .red { color: #e8200a; }
+  .code-block .amber { color: #f5a623; }
+
+  /* ── STEPS ── */
+  .step-list { list-style: none; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .step-list li::before {
+    content: counter(steps);
+    width: 32px;
+    height: 32px;
+    background: #e8200a;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-list li .step-content { flex: 1; }
+  .step-list li strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .step-list li p { font-size: 13px; color: #555; }
+
+  /* ── MODULE LIST ── */
+  .module-item {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .module-item:last-child { border-bottom: none; }
+  .module-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .module-info strong { font-size: 13px; font-weight: 600; display: block; }
+  .module-info span { font-size: 12px; color: #888; }
+  .module-access {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .access-all { background: #e0fdf4; color: #2d7a45; }
+  .access-com { background: #fee2e2; color: #b91c1c; }
+  .access-log { background: #dcfce7; color: #166534; }
+  .access-fin { background: #fef9c3; color: #854d0e; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th {
+    background: #f0f0f0;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555;
+    border-bottom: 2px solid #ddd;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+  }
+  tr:last-child td { border-bottom: none; }
+  td code {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #e8200a;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid #e8e8e8;
+    margin: 24px 0;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    display: flex;
+    gap: 14px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 22px; flex-shrink: 0; }
+  .callout-text { font-size: 13px; color: #555; line-height: 1.7; }
+  .callout-text strong { color: #1a1a1a; display: block; margin-bottom: 4px; }
+  .callout.danger { background: #fff5f5; border-color: #fca5a5; }
+  .callout.success { background: #f0fdf4; border-color: #86efac; }
+  .callout.info { background: #eff6ff; border-color: #93c5fd; }
+
+  /* ── PILL ── */
+  .pill {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .pill-red { background: #fee2e2; color: #b91c1c; }
+  .pill-green { background: #dcfce7; color: #166534; }
+  .pill-blue { background: #dbeafe; color: #1d4ed8; }
+  .pill-amber { background: #fef9c3; color: #854d0e; }
+  .pill-gray { background: #f3f4f6; color: #374151; }
+
+  /* ── NAV PRINT BUTTON ── */
+  .print-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #e8200a;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(232,32,10,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    transition: transform 0.15s;
+  }
+  .print-btn:hover { transform: scale(1.04); }
+  @media print { .print-btn { display: none; } }
+
+  /* ── SMALL HELPERS ── */
+  .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; display: block; }
+  .val-box {
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #1a1a1a;
+    word-break: break-all;
+  }
+  .val-box.secret { background: #fff5f5; border-color: #fca5a5; color: #b91c1c; }
+
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .flow-box {
+    background: #1a1a1a;
+    color: #f0f0f0;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .flow-arrow { color: #888; font-size: 18px; }
+
+  p { margin-bottom: 10px; color: #444; font-size: 13px; }
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; color: #444; font-size: 13px; }
+  h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1a1a1a; }
+  h4 { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  strong { color: #1a1a1a; }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+  }
+  .toc-num {
+    width: 28px;
+    height: 28px;
+    background: #080808;
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .toc-title { flex: 1; font-weight: 500; }
+  .toc-page { font-size: 12px; color: #aaa; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     PORTADA
+══════════════════════════════════════ -->
+<div class="cover">
+  <div class="logo-container">
+    <div class="logo-mark">
+      <div class="logo-icon">KX</div>
+      <div class="logo-text-block">
+        <div class="logo-name">Koratex</div>
+        <div class="logo-tagline">Sistema ERP Integral</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-line"></div>
+
+  <div class="cover-title">Documentación oficial</div>
+  <div class="cover-subtitle">Guía Completa de<br><span>Configuración</span> y Uso</div>
+  <div class="cover-desc">
+    Todo lo que necesitas saber para instalar, configurar, usar y mantener el
+    sistema ERP de Koratex. Escrita para personas sin conocimientos técnicos.
+  </div>
+
+  <div class="cover-badges">
+    <span class="badge">Railway · Servidor</span>
+    <span class="badge">Supabase · Base de datos</span>
+    <span class="badge">GitHub · Código</span>
+    <span class="badge">Express · Backend</span>
+    <span class="badge">PostgreSQL · DB</span>
+  </div>
+
+  <div class="cover-footer">
+    Versión 2.0 &nbsp;·&nbsp; Mayo 2025 &nbsp;·&nbsp; Uso interno Koratex
+  </div>
+</div>
+
+<div class="wrapper">
+
+<!-- ══════════════════════════════════════
+     ÍNDICE
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header steel">
+    <div class="section-num">📋</div>
+    <div class="section-info">
+      <h2>Índice de contenidos</h2>
+      <p>Todo lo que cubre esta guía</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="toc-item"><div class="toc-num">1</div><div class="toc-title">¿Qué es el sistema ERP de Koratex?</div></div>
+    <div class="toc-item"><div class="toc-num">2</div><div class="toc-title">Los servicios en la nube que usa el sistema</div></div>
+    <div class="toc-item"><div class="toc-num">3</div><div class="toc-title">Cómo entrar al sistema (acceso y contraseñas)</div></div>
+    <div class="toc-item"><div class="toc-num">4</div><div class="toc-title">Los módulos del sistema — qué hace cada uno</div></div>
+    <div class="toc-item"><div class="toc-num">5</div><div class="toc-title">La base de datos Supabase — acceso y configuración</div></div>
+    <div class="toc-item"><div class="toc-num">6</div><div class="toc-title">Cómo exportar datos a Excel</div></div>
+    <div class="toc-item"><div class="toc-num">7</div><div class="toc-title">El servidor Railway — configuración y variables</div></div>
+    <div class="toc-item"><div class="toc-num">8</div><div class="toc-title">El código en GitHub</div></div>
+    <div class="toc-item"><div class="toc-num">9</div><div class="toc-title">Guía de uso diario — paso a paso</div></div>
+    <div class="toc-item"><div class="toc-num">10</div><div class="toc-title">Cómo configurar todo desde cero</div></div>
+    <div class="toc-item"><div class="toc-num">11</div><div class="toc-title">Datos de acceso — resumen rápido</div></div>
+    <div class="toc-item" style="border-bottom:none"><div class="toc-num">12</div><div class="toc-title">Qué hacer si algo falla</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     01 · QUÉ ES EL ERP
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header red">
+    <div class="section-num">1</div>
+    <div class="section-info">
+      <h2>¿Qué es el sistema ERP de Koratex?</h2>
+      <p>Introducción y panorama general</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <p>
+      Un <strong>ERP (Enterprise Resource Planning)</strong> es un sistema de gestión que centraliza todas las
+      operaciones de una empresa en un solo lugar. En el caso de Koratex, este sistema permite gestionar
+      pedidos, clientes, inventario, finanzas y logística desde cualquier dispositivo con internet.
+    </p>
+
+    <div class="card success">
+      <h3>✅ Lo más importante que debes saber</h3>
+      <ul>
+        <li>Solo necesitas un <strong>navegador web</strong> (Chrome, Safari, Firefox) para usarlo.</li>
+        <li>No hay que instalar ningún programa en tu computadora o celular.</li>
+        <li>Todos los datos se guardan en la nube — no se pierden aunque cierres el navegador.</li>
+        <li>Varios usuarios pueden usarlo al mismo tiempo desde distintos dispositivos.</li>
+        <li>Cualquier acción (un pedido, un pago) se actualiza automáticamente para todos.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <h3>¿Cómo funciona técnicamente? (sin tecnicismos)</h3>
+    <p>Imagina tres "lugares" distintos que trabajan juntos:</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:8px;">🖥️</div>
+        <h3>La pantalla (Frontend)</h3>
+        <p>Lo que ves en el navegador. El formulario de login, los módulos, los botones. Es un archivo HTML.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:8px;">⚙️</div>
+        <h3>El servidor (Backend)</h3>
+        <p>Un programa en Railway que recibe los datos y los procesa. Ej: valida contraseñas, calcula totales.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:28px;margin-bottom:8px;">🗄️</div>
+        <h3>La base de datos (DB)</h3>
+        <p>Donde se guardan todos los datos permanentemente: clientes, pedidos, pagos. Está en Supabase.</p>
+      </div>
+    </div>
+
+    <div class="flow" style="justify-content:center; margin-top: 20px;">
+      <div class="flow-box">👤 Usuario</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">🌐 Navegador</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">⚙️ Railway (servidor)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">🗄️ Supabase (datos)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     02 · SERVICIOS EN LA NUBE
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header blue">
+    <div class="section-num">2</div>
+    <div class="section-info">
+      <h2>Los servicios en la nube</h2>
+      <p>Railway, Supabase y GitHub explicados</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="font-size:32px;">🚂</div>
+        <div><h3 style="margin:0">Railway</h3><span class="pill pill-green">Servidor activo</span></div>
+      </div>
+      <p>Railway es la plataforma donde vive el servidor de Koratex ERP. Piénsalo como el "motor" que hace que todo funcione. Cuando alguien abre el ERP en su navegador, Railway es el que responde.</p>
+      <div class="grid-2" style="margin-top:12px;">
+        <div>
+          <span class="label">URL del sistema</span>
+          <div class="val-box">http://koratex-erp-production.up.railway.app/</div>
+        </div>
+        <div>
+          <span class="label">Panel de control Railway</span>
+          <div class="val-box">railway.app/dashboard</div>
+        </div>
+      </div>
+      <div class="callout info" style="margin-top:14px;margin-bottom:0;">
+        <div class="callout-icon">ℹ️</div>
+        <div class="callout-text">
+          <strong>¿Qué hace Railway?</strong>
+          Ejecuta el código del servidor (Node.js / Express), sirve la página web y conecta con Supabase. Si necesitas cambiar configuraciones del servidor (como la contraseña de la base de datos), se hace desde el panel de Railway.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="font-size:32px;">🐘</div>
+        <div><h3 style="margin:0">Supabase</h3><span class="pill pill-green">Base de datos activa</span></div>
+      </div>
+      <p>Supabase es donde se guardan todos los datos del ERP: clientes, productos, pedidos, pagos, inventario. Es una base de datos PostgreSQL en la nube, accesible desde el navegador y desde Excel.</p>
+      <div class="grid-2" style="margin-top:12px;">
+        <div>
+          <span class="label">Panel de Supabase</span>
+          <div class="val-box">supabase.com/dashboard</div>
+        </div>
+        <div>
+          <span class="label">Proyecto</span>
+          <div class="val-box">pxmiqsoniaighcekdvyq</div>
+        </div>
+      </div>
+      <div class="callout success" style="margin-top:14px;margin-bottom:0;">
+        <div class="callout-icon">✅</div>
+        <div class="callout-text">
+          <strong>Ventaja clave de Supabase</strong>
+          Puedes ver y exportar todos los datos directamente desde el navegador, sin instalar nada. También permite conectar a Excel con Power Query.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="font-size:32px;">🐙</div>
+        <div><h3 style="margin:0">GitHub</h3><span class="pill pill-blue">Código fuente</span></div>
+      </div>
+      <p>GitHub es donde está guardado el código del sistema. Piénsalo como el "archivo histórico" de todos los cambios que se hacen al sistema. Cuando se actualiza o corrige algo, los cambios se guardan aquí primero y luego Railway los toma automáticamente.</p>
+      <div class="grid-2" style="margin-top:12px;">
+        <div>
+          <span class="label">Repositorio</span>
+          <div class="val-box">github.com/ricciardi2002-ship-it/Koratex-erp</div>
+        </div>
+        <div>
+          <span class="label">Rama principal</span>
+          <div class="val-box">main</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3>Resumen de costos</h3>
+    <table>
+      <thead><tr><th>Servicio</th><th>Plan</th><th>Costo</th><th>Límite</th></tr></thead>
+      <tbody>
+        <tr><td>Railway</td><td>Hobby</td><td>~$5 USD/mes</td><td>Ilimitado en uso normal</td></tr>
+        <tr><td>Supabase</td><td>Free</td><td><strong>Gratis</strong></td><td>500 MB almacenamiento, 50,000 filas</td></tr>
+        <tr><td>GitHub</td><td>Free</td><td><strong>Gratis</strong></td><td>Repositorios privados ilimitados</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     03 · ACCESO Y CONTRASEÑAS
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header red">
+    <div class="section-num">3</div>
+    <div class="section-info">
+      <h2>Acceso al sistema</h2>
+      <p>URL, usuarios, contraseñas y roles</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="card highlight">
+      <h3>🌐 URL del sistema</h3>
+      <div class="val-box" style="font-size:15px;font-weight:600;letter-spacing:0.5px;">
+        http://koratex-erp-production.up.railway.app/
+      </div>
+      <p style="margin-top:10px;margin-bottom:0;">Abre esta dirección en cualquier navegador desde cualquier dispositivo con internet. No hay app que instalar.</p>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Contraseña universal (todos los usuarios)</h3>
+    <div class="val-box secret" style="font-size:16px;font-weight:700;text-align:center;letter-spacing:2px;">
+      koratex2025
+    </div>
+    <div class="callout danger" style="margin-top:12px;">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-text">
+        <strong>Importante sobre la contraseña</strong>
+        Esta es la contraseña inicial para todos los usuarios. Si la cambias desde el panel de Supabase (tabla <code>usuarios</code>), deberás recordar la nueva contraseña ya que el sistema verifica contra la base de datos.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3>Los 4 usuarios del sistema</h3>
+    <div class="grid-2">
+      <div class="role-card admin">
+        <div class="role-icon">⚙️</div>
+        <div class="role-name">Administrador</div>
+        <div class="role-email">admin@koratex.com</div>
+        <div class="role-desc">Acceso total a todos los módulos. Para el responsable general del sistema.</div>
+      </div>
+      <div class="role-card comercial">
+        <div class="role-icon">📊</div>
+        <div class="role-name">Comercial</div>
+        <div class="role-email">comercial@koratex.com</div>
+        <div class="role-desc">Pedidos, clientes y trazabilidad. Para el equipo de ventas.</div>
+      </div>
+      <div class="role-card logistica">
+        <div class="role-icon">🚚</div>
+        <div class="role-name">Logística</div>
+        <div class="role-email">logistica@koratex.com</div>
+        <div class="role-desc">Despacho, rutas y seguimiento de entregas. Para el equipo logístico.</div>
+      </div>
+      <div class="role-card finanzas">
+        <div class="role-icon">💰</div>
+        <div class="role-name">Finanzas</div>
+        <div class="role-email">finanzas@koratex.com</div>
+        <div class="role-desc">Cobranza, facturas y pagos. Para el equipo de administración.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3>Cómo iniciar sesión</h3>
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>Abre el navegador y ve a la URL del sistema</strong>
+          <p>Chrome, Firefox o Safari funcionan perfectamente.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ingresa el email y contraseña</strong>
+          <p>Email: según tu rol (ej: admin@koratex.com). Contraseña: koratex2025</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>O usa los botones de acceso rápido</strong>
+          <p>En la pantalla de login hay 4 botones (Admin, Comercial, Logística, Finanzas) que rellenan automáticamente el email. Solo presiona el botón de tu rol.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>El sistema recuerda tu sesión</strong>
+          <p>Si cierras el navegador y vuelves a abrir la URL, entrarás directamente sin necesidad de volver a poner tu contraseña (hasta que cierres sesión manualmente).</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     04 · MÓDULOS
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header green">
+    <div class="section-num">4</div>
+    <div class="section-info">
+      <h2>Módulos del sistema</h2>
+      <p>Qué hace cada sección del ERP</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#1e1e1e;">📊</div>
+      <div class="module-info">
+        <strong>Dashboard</strong>
+        <span>Pantalla principal con resumen: ventas del día, pedidos pendientes, stock crítico, cobros por vencer</span>
+      </div>
+      <span class="module-access access-all">Todos los roles</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#fee2e2;">🛒</div>
+      <div class="module-info">
+        <strong>Nuevo Pedido</strong>
+        <span>Crear un pedido desde cero: seleccionar cliente, agregar productos y cantidades, confirmar</span>
+      </div>
+      <span class="module-access access-com">Comercial · Admin</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#fef3c7;">📋</div>
+      <div class="module-info">
+        <strong>Cola de Pedidos</strong>
+        <span>Ver todos los pedidos activos, cambiar su estado (pendiente → preparación → despachado → entregado)</span>
+      </div>
+      <span class="module-access access-all">Todos los roles</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#dbeafe;">👥</div>
+      <div class="module-info">
+        <strong>Clientes</strong>
+        <span>Base de datos de clientes: crear, editar, activar/desactivar. Tipos: Oro (60 días), Plata (30 días), Bronce (15 días)</span>
+      </div>
+      <span class="module-access access-com">Comercial · Admin</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#dcfce7;">🚚</div>
+      <div class="module-info">
+        <strong>Logística / Despacho</strong>
+        <span>Organizar rutas de entrega, asignar vehículos y conductores, seguimiento de paradas</span>
+      </div>
+      <span class="module-access access-log">Logística · Admin</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#f3e8ff;">📦</div>
+      <div class="module-info">
+        <strong>Inventario PT</strong>
+        <span>Stock de productos terminados (KTX-001, KTX-002, etc.). Ver disponibilidad en tiempo real</span>
+      </div>
+      <span class="module-access access-all">Todos los roles</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#fef9c3;">⚗️</div>
+      <div class="module-info">
+        <strong>Materias Primas</strong>
+        <span>Stock de materiales (cemento, resinas, etc.). Registrar entradas/salidas, ver niveles mínimos</span>
+      </div>
+      <span class="module-access access-log">Logística · Admin</span>
+    </div>
+
+    <div class="module-item">
+      <div class="module-icon" style="background:#fce7f3;">💵</div>
+      <div class="module-info">
+        <strong>Cobranza / Finanzas</strong>
+        <span>Ver facturas pendientes, registrar pagos, controlar mora y crédito de clientes</span>
+      </div>
+      <span class="module-access access-fin">Finanzas · Admin</span>
+    </div>
+
+    <div class="module-item" style="border-bottom:none;">
+      <div class="module-icon" style="background:#ecfdf5;">🔍</div>
+      <div class="module-info">
+        <strong>Trazabilidad</strong>
+        <span>Historial de todas las acciones realizadas en el sistema (quién hizo qué y cuándo)</span>
+      </div>
+      <span class="module-access access-all">Todos los roles</span>
+    </div>
+
+    <hr class="divider">
+    <h3>Productos del sistema (catálogo inicial)</h3>
+    <table>
+      <thead><tr><th>Código</th><th>Producto</th><th>Lista A</th><th>Lista B</th><th>Lista C</th><th>Stock</th></tr></thead>
+      <tbody>
+        <tr><td><code>KTX-001</code></td><td>Estuco Fino Interior (Bolsa 20kg)</td><td>S/28.00</td><td>S/31.50</td><td>S/35.00</td><td>480</td></tr>
+        <tr><td><code>KTX-002</code></td><td>Adhesivo Cerámico Plus (Bolsa 25kg)</td><td>S/22.50</td><td>S/25.00</td><td>S/28.00</td><td>620</td></tr>
+        <tr><td><code>KTX-003</code></td><td>Impermeabilizante Flex (Balde 20L)</td><td>S/85.00</td><td>S/92.00</td><td>S/99.00</td><td>190</td></tr>
+        <tr><td><code>KTX-004</code></td><td>Mortero Estructural (Bolsa 30kg)</td><td>S/32.00</td><td>S/36.00</td><td>S/40.00</td><td>340</td></tr>
+        <tr><td><code>KTX-005</code></td><td>Sellador Multiusos (Galón 4L)</td><td>S/45.00</td><td>S/50.00</td><td>S/56.00</td><td>210</td></tr>
+        <tr><td><code>KTX-006</code></td><td>Estuco Exterior Renovado (Bolsa 20kg)</td><td>S/31.00</td><td>S/35.00</td><td>S/39.00</td><td>280</td></tr>
+        <tr><td><code>KTX-007</code></td><td>Pegamax Porcelanato (Bolsa 25kg)</td><td>S/26.00</td><td>S/29.50</td><td>S/33.00</td><td>390</td></tr>
+        <tr><td><code>KTX-008</code></td><td>Hidrofugante Concentrado (Balde 5L)</td><td>S/38.00</td><td>S/43.00</td><td>S/48.00</td><td>150</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:#888;">Lista A = Clientes Oro (60 días crédito) · Lista B = Plata (30 días) · Lista C = Bronce (15 días)</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     05 · SUPABASE
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header blue">
+    <div class="section-num">5</div>
+    <div class="section-info">
+      <h2>La base de datos · Supabase</h2>
+      <p>Cómo acceder y administrar los datos</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <p>Supabase es donde viven todos los datos del ERP. Puedes ver, editar y exportar cualquier dato directamente desde el navegador — sin instalar programas.</p>
+
+    <div class="card highlight">
+      <h3>🔑 Datos de acceso a Supabase</h3>
+      <div class="grid-2">
+        <div>
+          <span class="label">Sitio web</span>
+          <div class="val-box">supabase.com/dashboard</div>
+        </div>
+        <div>
+          <span class="label">Email de cuenta</span>
+          <div class="val-box">— (el email con el que creaste la cuenta)</div>
+        </div>
+        <div>
+          <span class="label">Contraseña de la base de datos</span>
+          <div class="val-box secret">koratex2001*</div>
+        </div>
+        <div>
+          <span class="label">ID del proyecto</span>
+          <div class="val-box">pxmiqsoniaighcekdvyq</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">🔐</div>
+      <div class="callout-text">
+        <strong>Guarda esta contraseña en un lugar seguro</strong>
+        La contraseña <strong>koratex2001*</strong> es la contraseña maestra de la base de datos. Si la pierdes, deberás resetearla desde el panel de Supabase (Settings → Database → Reset password) y luego actualizar la variable DATABASE_URL en Railway.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3>Cómo ver los datos en Supabase</h3>
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>Entra a supabase.com y haz login</strong>
+          <p>Usa el email y contraseña de tu cuenta de Supabase (no confundir con la contraseña de la base de datos).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Selecciona el proyecto Koratex</strong>
+          <p>En el panel principal verás el proyecto. Haz clic en él.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ve a "Table Editor" en el menú izquierdo</strong>
+          <p>Aquí puedes ver todas las tablas: clientes, pedidos, facturas, productos, etc.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Selecciona la tabla que quieras ver</strong>
+          <p>Por ejemplo, haz clic en "pedidos" para ver todos los pedidos registrados.</p>
+        </div>
+      </li>
+    </ol>
+
+    <hr class="divider">
+    <h3>Tablas principales de la base de datos</h3>
+    <table>
+      <thead><tr><th>Tabla</th><th>¿Qué contiene?</th></tr></thead>
+      <tbody>
+        <tr><td><code>usuarios</code></td><td>Cuentas de acceso al sistema (email, contraseña cifrada, rol)</td></tr>
+        <tr><td><code>clientes</code></td><td>Base de datos de clientes (nombre, RUC, tipo, zona, crédito)</td></tr>
+        <tr><td><code>productos</code></td><td>Catálogo de productos con precios por lista A/B/C</td></tr>
+        <tr><td><code>inventario_pt</code></td><td>Stock actual y reservado de cada producto terminado</td></tr>
+        <tr><td><code>materias_primas</code></td><td>Stock de materias primas con niveles mínimo y máximo</td></tr>
+        <tr><td><code>pedidos</code></td><td>Todos los pedidos con estado de pago y despacho</td></tr>
+        <tr><td><code>pedido_items</code></td><td>Líneas de cada pedido (producto, cantidad, precio)</td></tr>
+        <tr><td><code>facturas</code></td><td>Facturas emitidas con monto total y pagado</td></tr>
+        <tr><td><code>pagos</code></td><td>Registro de cada pago recibido</td></tr>
+        <tr><td><code>vehiculos</code></td><td>Flota de vehículos para despacho</td></tr>
+        <tr><td><code>rutas_despacho</code></td><td>Rutas y paradas de entrega programadas</td></tr>
+        <tr><td><code>audit_log</code></td><td>Historial de todas las acciones del sistema</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     06 · EXCEL
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header green">
+    <div class="section-num">6</div>
+    <div class="section-info">
+      <h2>Exportar datos a Excel</h2>
+      <p>Dos métodos para analizar tus datos en Excel</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>Método 1 — Exportar CSV desde Supabase (más fácil)</h3>
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>Entra a Supabase → Table Editor</strong>
+          <p>Abre supabase.com y ve al proyecto Koratex.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Selecciona la tabla que quieres exportar</strong>
+          <p>Por ejemplo: "pedidos", "clientes" o "facturas".</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Haz clic en el ícono de descarga (↓ Export)</strong>
+          <p>Está en la esquina superior derecha de la tabla. Selecciona "Export to CSV".</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Abre el archivo .csv en Excel</strong>
+          <p>Excel abrirá el archivo directamente con todos los datos organizados en columnas.</p>
+        </div>
+      </li>
+    </ol>
+
+    <hr class="divider">
+
+    <h3>Método 2 — Conexión en vivo con Power Query (datos siempre actualizados)</h3>
+    <p>Este método conecta Excel directamente a Supabase. Cada vez que actualizas en Excel, los datos se sincronizan automáticamente.</p>
+
+    <div class="card info">
+      <h3>📋 Datos que necesitas para conectar Excel</h3>
+      <div class="grid-2">
+        <div>
+          <span class="label">Host de la base de datos</span>
+          <div class="val-box">db.pxmiqsoniaighcekdvyq.supabase.co</div>
+        </div>
+        <div>
+          <span class="label">Puerto</span>
+          <div class="val-box">5432</div>
+        </div>
+        <div>
+          <span class="label">Base de datos</span>
+          <div class="val-box">postgres</div>
+        </div>
+        <div>
+          <span class="label">Usuario</span>
+          <div class="val-box">postgres</div>
+        </div>
+        <div>
+          <span class="label">Contraseña</span>
+          <div class="val-box secret">koratex2001*</div>
+        </div>
+        <div>
+          <span class="label">SSL</span>
+          <div class="val-box">Requerido (activar)</div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>En Excel → Datos → Obtener datos → De una base de datos → De PostgreSQL</strong>
+          <p>Si no aparece PostgreSQL, instala el conector desde: microsoft.com → busca "PostgreSQL connector for Excel".</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ingresa el servidor y la base de datos</strong>
+          <p>Servidor: <strong>db.pxmiqsoniaighcekdvyq.supabase.co:5432</strong> · Base de datos: <strong>postgres</strong></p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ingresa usuario y contraseña</strong>
+          <p>Usuario: <strong>postgres</strong> · Contraseña: <strong>koratex2001*</strong></p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Selecciona las tablas que quieres importar</strong>
+          <p>Aparecerá un listado de todas las tablas (pedidos, clientes, facturas, etc.). Selecciona las que necesitas.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Haz clic en "Cargar" y listo</strong>
+          <p>Los datos aparecerán en Excel. Para actualizar en el futuro: clic derecho sobre la tabla → "Actualizar".</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div class="callout-text">
+        <strong>Consulta SQL útil para un reporte de pedidos</strong>
+        En Supabase → SQL Editor → New query, puedes pegar esto para obtener un reporte completo:
+      </div>
+    </div>
+    <div class="code-block">
+<span class="comment">-- Reporte de pedidos con nombre del cliente</span>
+SELECT p.numero, c.nombre AS cliente, p.total,
+       p.estado_pago, p.estado_despacho, p.fecha_pedido
+FROM pedidos p
+JOIN clientes c ON c.id = p.cliente_id
+ORDER BY p.fecha_pedido DESC;
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     07 · RAILWAY
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header amber">
+    <div class="section-num">7</div>
+    <div class="section-info">
+      <h2>El servidor · Railway</h2>
+      <p>Configuración, variables de entorno y deploys</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <p>Railway es la plataforma que ejecuta el código del servidor. Aquí es donde se configuran las contraseñas, puertos y conexiones — es como el "panel de control" del motor del ERP.</p>
+
+    <hr class="divider">
+    <h3>Variables de entorno (configuración del servidor)</h3>
+    <p>Las variables de entorno son como "contraseñas y configuraciones" que el servidor necesita para funcionar. Se configuran en: <strong>Railway → servicio Koratex-erp → Variables</strong></p>
+
+    <div class="code-block">
+<span class="comment"># Variables actuales en Railway</span>
+
+<span class="key">DATABASE_URL</span>   = <span class="url">postgresql://postgres:koratex2001*@db.pxmiqsoniaighcekdvyq.supabase.co:5432/postgres</span>
+
+<span class="key">JWT_SECRET</span>     = <span class="val">koratex_jwt_secret_2025</span>
+<span class="comment">                   (clave para cifrar tokens de sesión — no cambiar)</span>
+
+<span class="key">PORT</span>           = <span class="val">3000</span>
+<span class="comment">                   (puerto del servidor — Railway lo asigna automáticamente)</span>
+
+<span class="key">NODE_ENV</span>       = <span class="val">production</span>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-text">
+        <strong>Si cambias la contraseña de Supabase</strong>
+        Debes actualizar la variable <strong>DATABASE_URL</strong> en Railway con la nueva contraseña. De lo contrario el servidor no podrá conectarse a la base de datos y el ERP dejará de funcionar.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3>Cómo actualizar una variable en Railway</h3>
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>Entra a railway.app y haz login</strong>
+          <p>Usa la cuenta con la que creaste el proyecto.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Abre el proyecto "Koratex-erp"</strong>
+          <p>Haz clic en el servicio principal (no en la base de datos de Railway si la hay).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ve a la pestaña "Variables"</strong>
+          <p>Aquí verás todas las variables configuradas.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Haz clic en la variable que quieres cambiar</strong>
+          <p>Edita el valor y haz clic en "Save". Railway reiniciará el servidor automáticamente.</p>
+        </div>
+      </li>
+    </ol>
+
+    <hr class="divider">
+    <h3>Estructura del código del servidor</h3>
+    <div class="code-block">
+<span class="comment"># Archivos del servidor (en src/)</span>
+src/
+├── app.js                  <span class="comment">← Punto de entrada principal</span>
+├── config/
+│   ├── db.js               <span class="comment">← Conexión a PostgreSQL/Supabase</span>
+│   └── initDb.js           <span class="comment">← Crea tablas si no existen</span>
+├── middleware/
+│   └── auth.js             <span class="comment">← Verifica tokens JWT</span>
+└── routes/
+    ├── auth.js             <span class="comment">← Login · /api/auth/login</span>
+    ├── pedidos.js          <span class="comment">← Pedidos · /api/pedidos</span>
+    ├── productos.js        <span class="comment">← Productos · /api/productos</span>
+    ├── cobranza.js         <span class="comment">← Facturas/pagos · /api/cobranza</span>
+    ├── inventario.js       <span class="comment">← Stock · /api/inventario</span>
+    └── dashboard.js        <span class="comment">← Métricas · /api/dashboard</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     08 · GITHUB
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header steel">
+    <div class="section-num">8</div>
+    <div class="section-info">
+      <h2>El código · GitHub</h2>
+      <p>Repositorio, archivos importantes y cómo se actualiza el sistema</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="card info">
+      <h3>🔗 Repositorio del proyecto</h3>
+      <div class="val-box">https://github.com/ricciardi2002-ship-it/Koratex-erp</div>
+      <p style="margin-top:10px;margin-bottom:0;">Aquí está guardado todo el código del sistema. Es un repositorio privado.</p>
+    </div>
+
+    <hr class="divider">
+    <h3>Archivos más importantes</h3>
+    <table>
+      <thead><tr><th>Archivo</th><th>¿Para qué sirve?</th></tr></thead>
+      <tbody>
+        <tr><td><code>public/index.html</code></td><td>La interfaz completa del ERP (todo lo que ves en el navegador)</td></tr>
+        <tr><td><code>src/app.js</code></td><td>El servidor principal — configura rutas y middleware</td></tr>
+        <tr><td><code>src/config/db.js</code></td><td>Conexión a la base de datos Supabase</td></tr>
+        <tr><td><code>supabase-schema.sql</code></td><td>El script SQL para crear todas las tablas en Supabase</td></tr>
+        <tr><td><code>package.json</code></td><td>Lista de librerías que usa el servidor</td></tr>
+        <tr><td><code>.gitignore</code></td><td>Archivos que no se suben a GitHub (contraseñas, node_modules)</td></tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
+    <h3>¿Cómo se actualiza el sistema?</h3>
+    <p>El flujo de actualización es automático gracias a la integración Railway ↔ GitHub:</p>
+
+    <div class="flow" style="justify-content:center; flex-direction:column; align-items:flex-start;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="flow-box" style="background:#2563eb;">1. Se modifica el código</div>
+        <div class="flow-arrow">→</div>
+        <div style="font-size:13px;color:#555;">Se edita algún archivo (ej: index.html)</div>
+      </div>
+      <div style="margin-left:15px;border-left:2px solid #ddd;padding-left:15px;height:16px;"></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="flow-box" style="background:#1a5c30;">2. Se sube a GitHub</div>
+        <div class="flow-arrow">→</div>
+        <div style="font-size:13px;color:#555;">Los cambios se "pushean" a la rama <strong>main</strong></div>
+      </div>
+      <div style="margin-left:15px;border-left:2px solid #ddd;padding-left:15px;height:16px;"></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="flow-box" style="background:#8a5a00;">3. Railway detecta el cambio</div>
+        <div class="flow-arrow">→</div>
+        <div style="font-size:13px;color:#555;">Automáticamente en 2-3 minutos</div>
+      </div>
+      <div style="margin-left:15px;border-left:2px solid #ddd;padding-left:15px;height:16px;"></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="flow-box" style="background:#c0180a;">4. El ERP se actualiza</div>
+        <div class="flow-arrow">→</div>
+        <div style="font-size:13px;color:#555;">Los usuarios ya ven la nueva versión</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     09 · USO DIARIO
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header red">
+    <div class="section-num">9</div>
+    <div class="section-info">
+      <h2>Guía de uso diario</h2>
+      <p>Paso a paso para las operaciones más comunes</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3>📦 Cómo registrar un nuevo pedido</h3>
+    <ol class="step-list">
+      <li><div class="step-content"><strong>Entra con el usuario Comercial o Admin</strong><p>comercial@koratex.com / koratex2025</p></div></li>
+      <li><div class="step-content"><strong>Ve al módulo "Nuevo Pedido" en el menú lateral</strong><p>Ícono de carrito en la barra de navegación.</p></div></li>
+      <li><div class="step-content"><strong>Selecciona el cliente en el desplegable</strong><p>El sistema aplica automáticamente la lista de precios según el tipo de cliente (Oro/Plata/Bronce).</p></div></li>
+      <li><div class="step-content"><strong>Agrega los productos</strong><p>Selecciona el producto, ingresa la cantidad. Puedes agregar hasta 15 líneas por pedido.</p></div></li>
+      <li><div class="step-content"><strong>Revisa el total y haz clic en "Confirmar Pedido"</strong><p>El pedido se guarda en la base de datos y aparece en la Cola de Pedidos para todos los usuarios.</p></div></li>
+    </ol>
+
+    <hr class="divider">
+
+    <h3>🚚 Cómo actualizar el estado de un pedido</h3>
+    <ol class="step-list">
+      <li><div class="step-content"><strong>Ve al módulo "Cola de Pedidos"</strong><p>Verás todos los pedidos con su estado actual.</p></div></li>
+      <li><div class="step-content"><strong>Encuentra el pedido y haz clic en "Cambiar Estado"</strong><p>Los estados van en orden: Pendiente → Preparación → Despachado → Entregado</p></div></li>
+      <li><div class="step-content"><strong>El estado se actualiza en tiempo real</strong><p>Todos los usuarios verán el nuevo estado inmediatamente (el sistema refresca cada 60 segundos automáticamente).</p></div></li>
+    </ol>
+
+    <hr class="divider">
+
+    <h3>💰 Cómo registrar un pago</h3>
+    <ol class="step-list">
+      <li><div class="step-content"><strong>Entra con el usuario Finanzas o Admin</strong><p>finanzas@koratex.com / koratex2025</p></div></li>
+      <li><div class="step-content"><strong>Ve al módulo "Cobranza"</strong><p>Verás todas las facturas pendientes con monto y días de mora.</p></div></li>
+      <li><div class="step-content"><strong>Selecciona la factura, ingresa el monto y el tipo de pago</strong><p>Tipos: Efectivo, Transferencia, Cheque.</p></div></li>
+      <li><div class="step-content"><strong>Haz clic en "Registrar Pago"</strong><p>El pago queda registrado y el estado de la factura se actualiza automáticamente.</p></div></li>
+    </ol>
+
+    <hr class="divider">
+
+    <h3>📊 Actualización automática de datos</h3>
+    <div class="card success">
+      <p>El sistema <strong>recarga automáticamente los datos cada 60 segundos</strong>. Esto significa que si alguien registra un pedido desde otro dispositivo, tú lo verás en tu pantalla en menos de un minuto sin necesidad de recargar la página.</p>
+      <p style="margin-bottom:0;">También puedes forzar la actualización cambiando de módulo en el menú lateral.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     10 · CONFIGURAR DESDE CERO
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header violet">
+    <div class="section-num">10</div>
+    <div class="section-info">
+      <h2>Configurar todo desde cero</h2>
+      <p>Guía completa de instalación para un nuevo entorno</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-text">
+        <strong>¿Cuándo usar esta sección?</strong>
+        Solo si el sistema falla completamente y necesitas volver a montarlo desde cero, o si quieres crear una copia del sistema para otra empresa/entorno.
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3>Paso A — Crear la base de datos en Supabase</h3>
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>Crea una cuenta gratuita en supabase.com</strong>
+          <p>Haz clic en "Start for free" y regístrate con un email.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Crea un nuevo proyecto</strong>
+          <p>Dale un nombre (ej: "koratex-erp"), elige una región cercana (South America) y anota la contraseña de la base de datos.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ve a SQL Editor → New query</strong>
+          <p>En el menú izquierdo de Supabase.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Ejecuta el script supabase-schema.sql</strong>
+          <p>Abre github.com/ricciardi2002-ship-it/Koratex-erp → archivo <strong>supabase-schema.sql</strong> → botón "Raw" → Ctrl+A → Ctrl+C → pégalo en el SQL Editor → "Run".</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Copia la cadena de conexión</strong>
+          <p>En Supabase: Settings → Database → Connection string → URI. Tendrá este formato:</p>
+        </div>
+      </li>
+    </ol>
+    <div class="code-block">postgresql://postgres:<span class="red">[TU-CONTRASEÑA]</span>@db.<span class="amber">[TU-ID-PROYECTO]</span>.supabase.co:5432/postgres</div>
+
+    <hr class="divider">
+    <h3>Paso B — Configurar Railway</h3>
+    <ol class="step-list">
+      <li>
+        <div class="step-content">
+          <strong>Crea una cuenta en railway.app</strong>
+          <p>Puedes registrarte con tu cuenta de GitHub para conectarlos automáticamente.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Crea un nuevo proyecto desde GitHub</strong>
+          <p>New Project → Deploy from GitHub repo → selecciona "Koratex-erp".</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-content">
+          <strong>Agrega las variables de entorno</strong>
+          <p>Ve a Variables y agrega:</p>
+        </div>
+      </li>
+    </ol>
+    <div class="code-block">
+<span class="key">DATABASE_URL</span>  = <span class="url">postgresql://postgres:[CONTRASEÑA]@db.[ID].supabase.co:5432/postgres</span>
+<span class="key">JWT_SECRET</span>    = <span class="val">koratex_jwt_secret_2025</span>
+<span class="key">NODE_ENV</span>      = <span class="val">production</span>
+    </div>
+
+    <ol class="step-list" style="counter-reset: steps 3;">
+      <li>
+        <div class="step-content">
+          <strong>Railway desplegará el servidor automáticamente</strong>
+          <p>En 2-3 minutos el sistema estará disponible en la URL que Railway te asigne.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout success">
+      <div class="callout-icon">✅</div>
+      <div class="callout-text">
+        <strong>¡Listo! El sistema ya está funcionando</strong>
+        Abre la URL de Railway en el navegador. Deberías ver la pantalla de login de Koratex ERP. Usa admin@koratex.com / koratex2025 para entrar.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     11 · RESUMEN DE DATOS
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header red">
+    <div class="section-num">11</div>
+    <div class="section-info">
+      <h2>Resumen rápido de accesos</h2>
+      <p>Todos los datos importantes en una sola página</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="callout danger">
+      <div class="callout-icon">🔐</div>
+      <div class="callout-text">
+        <strong>Información confidencial — Uso interno únicamente</strong>
+        Guarda esta página en un lugar seguro. No compartas estas credenciales con personas externas a Koratex.
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Servicio</th><th>URL / Acceso</th><th>Usuario</th><th>Contraseña / Clave</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>🌐 ERP Koratex</strong></td>
+          <td><code>koratex-erp-production.up.railway.app</code></td>
+          <td>admin@koratex.com</td>
+          <td><code>koratex2025</code></td>
+        </tr>
+        <tr>
+          <td><strong>🚂 Railway</strong></td>
+          <td><code>railway.app/dashboard</code></td>
+          <td>— (email de cuenta)</td>
+          <td>— (contraseña de cuenta)</td>
+        </tr>
+        <tr>
+          <td><strong>🐘 Supabase</strong></td>
+          <td><code>supabase.com/dashboard</code></td>
+          <td>— (email de cuenta)</td>
+          <td>— (contraseña de cuenta)</td>
+        </tr>
+        <tr>
+          <td><strong>🗄️ Base de datos</strong></td>
+          <td><code>db.pxmiqsoniaighcekdvyq.supabase.co</code></td>
+          <td><code>postgres</code></td>
+          <td><code>koratex2001*</code></td>
+        </tr>
+        <tr>
+          <td><strong>🐙 GitHub</strong></td>
+          <td><code>github.com/ricciardi2002-ship-it/Koratex-erp</code></td>
+          <td>ricciardi2002-ship-it</td>
+          <td>— (contraseña de cuenta)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
+    <h3>Usuarios del ERP</h3>
+    <table>
+      <thead><tr><th>Rol</th><th>Email</th><th>Contraseña</th><th>Acceso</th></tr></thead>
+      <tbody>
+        <tr><td>⚙️ Admin</td><td><code>admin@koratex.com</code></td><td><code>koratex2025</code></td><td>Todo el sistema</td></tr>
+        <tr><td>📊 Comercial</td><td><code>comercial@koratex.com</code></td><td><code>koratex2025</code></td><td>Pedidos y clientes</td></tr>
+        <tr><td>🚚 Logística</td><td><code>logistica@koratex.com</code></td><td><code>koratex2025</code></td><td>Despacho e inventario</td></tr>
+        <tr><td>💰 Finanzas</td><td><code>finanzas@koratex.com</code></td><td><code>koratex2025</code></td><td>Cobranza y pagos</td></tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
+    <h3>Cadena de conexión completa (DATABASE_URL)</h3>
+    <div class="code-block" style="word-break:break-all;">
+postgresql://postgres:<span class="red">koratex2001*</span>@db.pxmiqsoniaighcekdvyq.supabase.co:5432/postgres
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     12 · SOLUCIÓN DE PROBLEMAS
+══════════════════════════════════════ -->
+<div class="content-page">
+  <div class="section-header amber">
+    <div class="section-num">12</div>
+    <div class="section-info">
+      <h2>¿Qué hacer si algo falla?</h2>
+      <p>Diagnóstico y solución de los problemas más comunes</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="card danger">
+      <h3>❌ No puedo entrar al sistema (página no carga)</h3>
+      <p><strong>Causa probable:</strong> El servidor en Railway está caído o reiniciándose.</p>
+      <ul>
+        <li>Espera 2-3 minutos y recarga la página.</li>
+        <li>Entra a railway.app → proyecto Koratex → verifica que el servicio esté "Active" (punto verde).</li>
+        <li>Si está en rojo, haz clic en el servicio → "Restart".</li>
+      </ul>
+    </div>
+
+    <div class="card danger">
+      <h3>❌ Login dice "Error de conexión con el servidor"</h3>
+      <p><strong>Causa probable:</strong> El servidor no puede conectarse a la base de datos.</p>
+      <ul>
+        <li>Verifica que la variable DATABASE_URL en Railway sea correcta.</li>
+        <li>Verifica que Supabase esté activo (supabase.com → tu proyecto → debe mostrar "Healthy").</li>
+        <li>Si la contraseña de Supabase fue cambiada, actualiza DATABASE_URL en Railway.</li>
+      </ul>
+    </div>
+
+    <div class="card danger">
+      <h3>❌ Login dice "Credenciales inválidas"</h3>
+      <p><strong>Causa probable:</strong> Email o contraseña incorrectos, o el usuario no existe en la base de datos.</p>
+      <ul>
+        <li>Verifica que el email sea exactamente: admin@koratex.com (sin espacios).</li>
+        <li>Contraseña: koratex2025 (sin espacios, minúsculas).</li>
+        <li>En Supabase → Table Editor → tabla <strong>usuarios</strong> → verifica que el usuario exista y que <strong>activo = true</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="card highlight">
+      <h3>⚠️ Los datos no se actualizan / están desactualizados</h3>
+      <p><strong>Causa probable:</strong> Cache del navegador o el refresco automático no ha corrido aún.</p>
+      <ul>
+        <li>Cambia de módulo y regresa (el sistema recarga los datos al navegar).</li>
+        <li>O espera hasta 60 segundos (el sistema refresca automáticamente).</li>
+        <li>Última opción: Ctrl+F5 (recarga forzada del navegador).</li>
+      </ul>
+    </div>
+
+    <div class="card highlight">
+      <h3>⚠️ Supabase deja de ser gratuito (plan free lleno)</h3>
+      <p><strong>Límite del plan gratuito:</strong> 500 MB de base de datos.</p>
+      <ul>
+        <li>En Supabase → Settings → Usage → verifica el espacio usado.</li>
+        <li>Si se acerca al límite, puedes limpiar el <strong>audit_log</strong> (tabla de historial) que crece rápido.</li>
+        <li>O actualiza al plan Pro de Supabase (~$25 USD/mes) para más capacidad.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <h3>Contacto para soporte técnico</h3>
+    <div class="card info">
+      <p>Para cambios en el código del sistema, nuevas funcionalidades o bugs que no puedas resolver con esta guía, el sistema fue desarrollado con el apoyo de <strong>Claude Code (Anthropic)</strong> — el agente de IA que puede acceder directamente al repositorio y hacer cambios.</p>
+      <p style="margin-bottom:0;">Para retomar una sesión de desarrollo, abre el repositorio en Claude Code y describe el problema que necesitas resolver.</p>
+    </div>
+
+    <hr class="divider">
+    <div style="text-align:center;padding:20px 0;">
+      <div style="display:inline-flex;align-items:center;gap:14px;background:#080808;color:white;padding:16px 28px;border-radius:12px;">
+        <div style="font-size:32px;">KX</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:3px;">KORATEX</div>
+          <div style="font-size:11px;color:#888;letter-spacing:2px;">SISTEMA ERP · VERSIÓN 2.0</div>
+        </div>
+      </div>
+      <p style="margin-top:16px;font-size:12px;color:#aaa;">Documento generado el 2 de mayo de 2025 · Uso interno</p>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+
+<!-- Botón imprimir -->
+<button class="print-btn no-print" onclick="window.print()">
+  🖨️ Imprimir / Guardar PDF
+</button>
+
+</body>
+</html>
