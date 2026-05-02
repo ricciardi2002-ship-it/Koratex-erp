@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ error: 'Token requerido' });
     }
     const token = header.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'koratex_secret');
 
     const result = await query(
       `SELECT u.id, u.nombre, u.email, u.activo, r.nombre as rol
