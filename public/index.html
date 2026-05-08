@@ -12,51 +12,51 @@
    Tipografía: Sora + DM Mono
 ═══════════════════════════════════ */
 :root {
-  /* KORATEX BRAND — Negro industrial */
-  --bg:       #080808;
-  --bg2:      #0f0f0f;
-  --bg3:      #161616;
-  --steel:    #1e1e1e;
-  --wire:     #252525;
-  --border:   #2a2a2a;
-  --border2:  #383838;
+  /* KORATEX — Blanco tecnológico */
+  --bg:       #f0f4f8;
+  --bg2:      #ffffff;
+  --bg3:      #f8fafc;
+  --steel:    #eef2f7;
+  --wire:     #dde3ec;
+  --border:   #e2e8f0;
+  --border2:  #cbd5e1;
 
-  /* Rojo Koratex principal */
+  /* Rojo Koratex */
   --orange:   #e8200a;
-  --orange2:  #ff2d12;
-  --orange-l: rgba(232,32,10,.1);
-  --orange-b: rgba(232,32,10,.16);
+  --orange2:  #c91a07;
+  --orange-l: rgba(232,32,10,.08);
+  --orange-b: rgba(232,32,10,.10);
 
-  /* Verde Koratex secundario */
-  --cyan:     #2d7a45;
-  --cyan-l:   rgba(45,122,69,.12);
+  /* Azul tech */
+  --cyan:     #0369a1;
+  --cyan-l:   rgba(3,105,161,.10);
 
-  /* Verde claro éxito */
-  --green:    #3db870;
-  --green-l:  rgba(61,184,112,.1);
+  /* Verde éxito */
+  --green:    #059669;
+  --green-l:  rgba(5,150,105,.10);
 
   /* Alerta rojo */
-  --red:      #e8200a;
-  --red-l:    rgba(232,32,10,.1);
+  --red:      #dc2626;
+  --red-l:    rgba(220,38,38,.09);
 
-  /* Advertencia ámbar */
-  --amber:    #f5a623;
-  --amber-l:  rgba(245,166,35,.1);
+  /* Ámbar */
+  --amber:    #d97706;
+  --amber-l:  rgba(217,119,6,.10);
 
-  --violet:   #a78bfa;
-  --violet-l: rgba(167,139,250,.1);
+  --violet:   #7c3aed;
+  --violet-l: rgba(124,58,237,.10);
 
-  /* Texto sobre fondo negro */
-  --t1: #f0f0f0;
-  --t2: #888888;
-  --t3: #505050;
-  --t4: #2e2e2e;
+  /* Texto sobre blanco */
+  --t1: #0f172a;
+  --t2: #475569;
+  --t3: #94a3b8;
+  --t4: #e2e8f0;
 
   --r:  10px;
   --rl: 16px;
   --rx: 22px;
-  --sh: 0 4px 24px rgba(0,0,0,.5);
-  --shl: 0 12px 48px rgba(0,0,0,.6);
+  --sh: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
+  --shl: 0 8px 32px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -72,11 +72,12 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 #loginScreen {
   min-height:100vh;
   display:flex; align-items:center; justify-content:center;
-  background: radial-gradient(ellipse at 50% 40%, rgba(232,32,10,.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 20% 80%, rgba(45,122,69,.05) 0%, transparent 50%),
-              repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,.006) 60px, rgba(255,255,255,.006) 61px),
-              repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,.006) 60px, rgba(255,255,255,.006) 61px),
-              var(--bg);
+  background:
+    radial-gradient(ellipse at 60% -10%, rgba(232,32,10,.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 10% 90%, rgba(3,105,161,.07) 0%, transparent 50%),
+    repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(14,30,60,.028) 50px, rgba(14,30,60,.028) 51px),
+    repeating-linear-gradient(0deg,  transparent, transparent 50px, rgba(14,30,60,.028) 50px, rgba(14,30,60,.028) 51px),
+    var(--bg);
   padding:20px;
 }
 .login-box {
@@ -85,19 +86,19 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
   border-radius:var(--rx);
   padding:44px 40px;
   width:100%; max-width:420px;
-  box-shadow:var(--shl);
+  box-shadow:0 8px 40px rgba(15,23,42,.14), 0 2px 8px rgba(0,0,0,.06);
   position:relative;
 }
 .login-box::before {
   content:'';
   position:absolute; top:0; left:30px; right:30px; height:2px;
-  background:linear-gradient(90deg, transparent, #e8200a, #2d7a45, transparent);
+  background:linear-gradient(90deg, transparent, #e8200a 40%, #0369a1, transparent);
   border-radius:0 0 2px 2px;
 }
 .login-box::after {
   content:'';
   position:absolute; bottom:0; left:30px; right:30px; height:1px;
-  background:linear-gradient(90deg, transparent, #2d7a45, transparent);
+  background:linear-gradient(90deg, transparent, #0369a1, transparent);
   border-radius:2px 2px 0 0;
 }
 .login-brand { display:flex; align-items:center; gap:13px; margin-bottom:6px; }
@@ -133,6 +134,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
   width:220px; min-height:100vh;
   background:var(--bg2);
   border-right:1px solid var(--border);
+  box-shadow:2px 0 12px rgba(15,23,42,.06);
   display:flex; flex-direction:column;
   position:fixed; top:0; left:0; z-index:200;
   transition:transform .3s cubic-bezier(.4,0,.2,1);
@@ -145,8 +147,8 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 }
 .sb-brand::before {
   content:'';
-  position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg, #e8200a, #2d7a45);
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, #e8200a 0%, #e8200a 50%, #0369a1 100%);
 }
 .sb-logo {
   width:34px; height:34px; border-radius:0;
@@ -158,7 +160,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 .sb-title small { display:block; font-size:8px; color:var(--t3); letter-spacing:1.5px; font-weight:400; margin-top:2px; }
 
 .sb-nav { flex:1; padding:6px 7px; overflow-y:auto; }
-.sb-section { font-size:8.5px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--t4); padding:13px 9px 4px; }
+.sb-section { font-size:8.5px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--t3); padding:13px 9px 4px; }
 .nav-item {
   display:flex; align-items:center; gap:9px;
   padding:8px 11px; border-radius:8px;
@@ -187,7 +189,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
   width:32px; height:32px; border-radius:8px;
   background:linear-gradient(135deg,var(--orange),var(--cyan));
   display:flex; align-items:center; justify-content:center;
-  font-size:11px; font-weight:800; color:var(--bg); flex-shrink:0;
+  font-size:11px; font-weight:800; color:#fff; flex-shrink:0;
 }
 .sb-uname { font-size:12px; font-weight:600; color:var(--t1); }
 .sb-urole { font-size:10px; color:var(--t3); }
@@ -205,7 +207,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
   height:52px; background:var(--bg2); border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
   padding:0 22px; position:sticky; top:0; z-index:100;
-  box-shadow:0 1px 0 rgba(232,32,10,.15);
+  box-shadow:0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,.04);
 }
 .tb-left { display:flex; align-items:center; gap:10px; }
 .menu-btn { display:none; background:none; border:none; color:var(--t2); font-size:20px; cursor:pointer; }
@@ -246,13 +248,13 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
   font-weight:600; cursor:pointer; border:none;
   font-family:'Inter',sans-serif; transition:all .15s;
 }
-.btn-primary { background:var(--orange); color:var(--bg); box-shadow:0 3px 12px rgba(255,107,43,.3); }
-.btn-primary:hover { background:var(--orange2); transform:translateY(-1px); }
+.btn-primary { background:var(--orange); color:#fff; box-shadow:0 2px 8px rgba(232,32,10,.25); }
+.btn-primary:hover { background:var(--orange2); transform:translateY(-1px); box-shadow:0 4px 14px rgba(232,32,10,.35); }
 .btn-ghost { background:transparent; color:var(--t2); border:1px solid var(--border); }
 .btn-ghost:hover { background:var(--bg3); color:var(--t1); }
-.btn-green { background:var(--green); color:var(--bg); }
-.btn-green:hover { background:#00ffb2; }
-.btn-cyan { background:var(--cyan); color:var(--bg); }
+.btn-green { background:var(--green); color:#fff; }
+.btn-green:hover { background:#047857; }
+.btn-cyan { background:var(--cyan); color:#fff; }
 .btn-red { background:var(--red-l); color:var(--red); border:1px solid rgba(255,68,102,.2); }
 .btn-sm { padding:5px 10px; font-size:11px; border-radius:6px; }
 .btn-xs { padding:3px 7px; font-size:10px; border-radius:5px; }
@@ -266,6 +268,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
   background:var(--bg2); border:1px solid var(--border);
   border-radius:var(--rl); padding:16px;
   transition:transform .2s, box-shadow .2s; position:relative; overflow:hidden;
+  box-shadow:var(--sh);
 }
 .kpi:hover { transform:translateY(-2px); box-shadow:var(--sh); }
 .kpi::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
@@ -285,7 +288,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 /* ══════════════════════════
    CARDS
 ══════════════════════════ */
-.card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--rl); padding:18px; }
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--rl); padding:18px; box-shadow:var(--sh); }
 .card-title {
   font-size:13px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
   display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
@@ -297,7 +300,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 /* ══════════════════════════
    TABLES
 ══════════════════════════ */
-.tw { background:var(--bg2); border:1px solid var(--border); border-radius:var(--rl); overflow:hidden; }
+.tw { background:var(--bg2); border:1px solid var(--border); border-radius:var(--rl); overflow:hidden; box-shadow:var(--sh); }
 .tw-toolbar {
   padding:12px 16px; border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
@@ -306,14 +309,15 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 .search-box {
   display:flex; align-items:center; gap:6px;
   background:var(--bg3); border:1px solid var(--border);
-  border-radius:7px; padding:5px 10px;
+  border-radius:7px; padding:5px 10px; transition:border-color .15s;
 }
+.search-box:focus-within { border-color:var(--orange); }
 .search-box input { background:none; border:none; outline:none; font-size:12px; color:var(--t1); font-family:'Inter',sans-serif; width:130px; }
 .search-box input::placeholder { color:var(--t3); }
 table { width:100%; border-collapse:collapse; }
 thead th { background:var(--bg3); padding:9px 13px; font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--t3); text-align:left; }
 tbody tr { border-top:1px solid var(--border); transition:background .1s; }
-tbody tr:hover { background:rgba(255,255,255,.018); }
+tbody tr:hover { background:rgba(3,105,161,.04); }
 tbody td { padding:11px 13px; font-size:12.5px; }
 
 /* ══════════════════════════
@@ -343,14 +347,14 @@ tbody td { padding:11px 13px; font-size:12.5px; }
 ══════════════════════════ */
 .modal-overlay {
   display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
+  background:rgba(15,23,42,.50); backdrop-filter:blur(8px);
   z-index:600; align-items:center; justify-content:center; padding:16px;
 }
 .modal-overlay.open { display:flex; }
 .modal {
   background:var(--bg2); border:1px solid var(--border2);
   border-radius:var(--rx); width:100%; max-width:700px; max-height:92vh; overflow-y:auto;
-  box-shadow:0 32px 80px rgba(0,0,0,.7);
+  box-shadow:0 20px 60px rgba(15,23,42,.20), 0 4px 16px rgba(0,0,0,.08);
   animation:mIn .2s cubic-bezier(.4,0,.2,1);
 }
 .modal.modal-lg { max-width:900px; }
@@ -385,7 +389,7 @@ input,select,textarea {
   color:var(--t1); padding:8px 11px; font-size:13px;
   font-family:'Inter',sans-serif; outline:none; transition:all .15s; width:100%;
 }
-input:focus,select:focus,textarea:focus { border-color:var(--orange); background:var(--bg2); box-shadow:0 0 0 3px rgba(255,107,43,.1); }
+input:focus,select:focus,textarea:focus { border-color:var(--cyan); background:var(--bg2); box-shadow:0 0 0 3px rgba(3,105,161,.10); outline:none; }
 textarea { resize:vertical; min-height:65px; }
 .form-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
 
@@ -427,7 +431,7 @@ textarea { resize:vertical; min-height:65px; }
 ══════════════════════════ */
 .prog { margin-bottom:10px; }
 .prog-label { display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; }
-.prog-bar { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; }
+.prog-bar { height:6px; background:var(--steel); border-radius:3px; overflow:hidden; }
 .prog-fill { height:100%; border-radius:3px; transition:width .6s ease; }
 
 /* ══════════════════════════
@@ -536,10 +540,11 @@ textarea { resize:vertical; min-height:65px; }
 
 /* REGISTRO PAGO RÁPIDO */
 .pago-rapido {
-  background:var(--green-l); border:1px solid rgba(0,229,160,.2);
-  border-radius:var(--r); padding:14px;
+  background:linear-gradient(135deg,rgba(3,105,161,.07),rgba(232,32,10,.04));
+  border:1px solid var(--border); border-radius:var(--rl); padding:18px;
+  box-shadow:var(--sh);
 }
-.pago-rapido-title { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--green); margin-bottom:10px; }
+.pago-rapido-title { font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
 
 /* ══════════════════════════
    TIMELINE
@@ -564,7 +569,7 @@ textarea { resize:vertical; min-height:65px; }
 .bc-val { font-size:9px; font-weight:700; color:var(--t2); font-family:'DM Mono',monospace; }
 
 /* SIDEBAR OVERLAY */
-.sb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:199; }
+.sb-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:199; }
 .sb-overlay.open { display:block; }
 
 /* ALERTA BOX */
@@ -913,10 +918,10 @@ textarea { resize:vertical; min-height:65px; }
         </div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi ko"><div class="kpi-label">Total por cobrar</div><div class="kpi-val">$186,400</div><div class="kpi-sub">Corriente + vencido</div></div>
-        <div class="kpi kr"><div class="kpi-label">Facturas en mora</div><div class="kpi-val">$48,200</div><div class="kpi-sub"><span class="kpi-dn">12 facturas vencidas</span></div></div>
-        <div class="kpi kg"><div class="kpi-label">Cobrado este mes</div><div class="kpi-val">$138,200</div><div class="kpi-sub"><span class="kpi-up">78.3% efectividad</span></div></div>
-        <div class="kpi ka"><div class="kpi-label">Vence esta semana</div><div class="kpi-val">$31,400</div><div class="kpi-sub">Gestionar ahora</div></div>
+        <div class="kpi ko"><div class="kpi-label">Total por cobrar</div><div class="kpi-val" id="cKpiTotal">—</div><div class="kpi-sub" id="cKpiTotalSub">Corriente + vencido</div></div>
+        <div class="kpi kr"><div class="kpi-label">Facturas en mora</div><div class="kpi-val" id="cKpiMora">—</div><div class="kpi-sub" id="cKpiMoraSub">—</div></div>
+        <div class="kpi kg"><div class="kpi-label">Cobrado acumulado</div><div class="kpi-val" id="cKpiCobrado">—</div><div class="kpi-sub" id="cKpiCobradoSub">—</div></div>
+        <div class="kpi ka"><div class="kpi-label">Facturas pendientes</div><div class="kpi-val" id="cKpiPend">—</div><div class="kpi-sub" id="cKpiPendSub">—</div></div>
       </div>
 
       <div class="g2">
@@ -1965,8 +1970,9 @@ function renderCola() {
       <td>${diasChip(p.diasAnt)}</td>
       <td>${estadoDesp(p.estadoDesp)}</td>
       <td>${estadoPago(p.estadoPago)}</td>
-      <td onclick="event.stopPropagation()">
-        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">▶ Avanzar</button>
+      <td onclick="event.stopPropagation()" style="display:flex;gap:4px;">
+        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">&#9654;</button>
+        <button class="btn btn-cyan btn-xs" onclick="crearFactura('${p.id}','${p.dbId}')" title="Generar factura">🧾</button>
       </td>
     </tr>`;
   }).join('');
@@ -2103,6 +2109,22 @@ function renderMP() {
 
 /* ── Cobranza ── */
 function renderCobranza() {
+  var totalPorCobrar = DB_facturas.filter(function(f){ return f.estado!=='pagada'; }).reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
+  var enMora    = DB_facturas.filter(function(f){ return f.mora>0 && f.estado!=='pagada'; });
+  var moraMonto = enMora.reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
+  var cobrado   = DB_facturas.reduce(function(s,f){ return s+f.pagado; }, 0);
+  var pendCount = DB_facturas.filter(function(f){ return f.estado!=='pagada'; }).length;
+  var totalF    = DB_facturas.length;
+  var pct       = totalF > 0 ? Math.round(DB_facturas.filter(function(f){ return f.estado==='pagada'; }).length/totalF*100) : 0;
+  var el;
+  el=document.getElementById('cKpiTotal');     if(el) el.textContent='$'+Math.round(totalPorCobrar).toLocaleString();
+  el=document.getElementById('cKpiTotalSub');  if(el) el.textContent=pendCount+' factura'+(pendCount!==1?'s':'')+' por cobrar';
+  el=document.getElementById('cKpiMora');      if(el) el.textContent='$'+Math.round(moraMonto).toLocaleString();
+  el=document.getElementById('cKpiMoraSub');   if(el) el.innerHTML=enMora.length>0?'<span class="kpi-dn">'+enMora.length+' en mora</span>':'Sin mora';
+  el=document.getElementById('cKpiCobrado');   if(el) el.textContent='$'+Math.round(cobrado).toLocaleString();
+  el=document.getElementById('cKpiCobradoSub');if(el) el.innerHTML='<span class="kpi-up">'+pct+'% cobrado</span>';
+  el=document.getElementById('cKpiPend');      if(el) el.textContent=pendCount;
+  el=document.getElementById('cKpiPendSub');   if(el) el.textContent=totalF+' facturas totales';
   // Urgentes
   const cu = document.getElementById('cobrosUrgentes');
   if (cu) {
@@ -2810,6 +2832,29 @@ function resetFormCliente() {
   if (title) title.textContent = '👥 Nuevo Cliente';
 }
 
+
+/* ════════ FACTURACIÓN ════════ */
+async function crearFactura(pedidoNum, pedidoDbId) {
+  var p = DB_pedidos.find(function(x){ return x.id===pedidoNum; });
+  if (!p) return;
+  // Check if already has a factura
+  var existente = DB_facturas.find(function(f){ return f.pedidoId===pedidoDbId || f.pedidoId===p.dbId; });
+  if (existente) { alert('Este pedido ya tiene la factura '+existente.num); return; }
+  if (!confirm('Generar factura para el pedido '+pedidoNum+' por $'+p.total.toLocaleString()+'?')) return;
+  var hoy = new Date();
+  var venc = new Date(hoy.getTime() + (30 * 86400000)); // 30 días
+  var fechaV = venc.toISOString().split('T')[0];
+  var numF = 'F001-' + String(Date.now()).slice(-5);
+  try {
+    await api('/cobranza', { method:'POST', body: JSON.stringify({
+      numero: numF, pedido_id: p.dbId, cliente_id: p.clienteId,
+      monto_total: p.total, fecha_vencimiento: fechaV
+    })});
+    DB_traz.unshift({t:'g',ev:'Factura generada',desc:numF+' · '+pedidoNum+' · $'+p.total.toLocaleString(),time:'Hace un momento'});
+    await loadData(); populateSelects(); renderAll();
+    alert('✅ Factura '+numF+' generada correctamente');
+  } catch(e) { alert('Error al generar factura: '+e.message); }
+}
 
 /* ════════ EXPORT / AKKIO ════════ */
 async function descargarExport(tipo) {
