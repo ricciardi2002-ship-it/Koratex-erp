@@ -1273,9 +1273,12 @@ textarea { resize:vertical; min-height:65px; }
       <div class="tw">
         <div class="tw-toolbar">
           <div class="tw-title" id="vTableTitle">Ventas despachadas</div>
-          <div class="search-box">
-            <span style="color:var(--t3);font-size:12px;">🔍</span>
-            <input type="text" id="vSearch" placeholder="Buscar cliente, nro..." oninput="renderVentas()">
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="search-box">
+              <span style="color:var(--t3);font-size:12px;">🔍</span>
+              <input type="text" id="vSearch" placeholder="Buscar cliente, nro..." oninput="renderVentas()">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="exportarVentasXLSX()" title="Descargar Excel para Akkio">📥 Excel</button>
           </div>
         </div>
         <table>
