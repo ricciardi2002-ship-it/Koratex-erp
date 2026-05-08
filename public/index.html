@@ -1139,8 +1139,78 @@ textarea { resize:vertical; min-height:65px; }
 
     <!-- ══ TRAZABILIDAD ══ -->
     <div class="page" id="page-trazabilidad">
-      <div class="ph"><div class="ph-text"><h2>Trazabilidad</h2><p>Log de movimientos del sistema</p></div></div>
+      <div class="ph"><div class="ph-text"><h2>Trazabilidad</h2><p>Log de movimientos del sistema</p></div>
+        <button class="btn btn-primary btn-sm" onclick="navigate('exportar')">📥 Exportar datos</button>
+      </div>
       <div class="card"><div class="card-title">Historial de movimientos</div><div class="tl" id="trazTl"></div></div>
+    </div>
+
+    <!-- ══ EXPORTAR / AKKIO ══ -->
+    <div class="page" id="page-exportar">
+      <div class="ph"><div class="ph-text"><h2>Exportar para Akkio</h2><p>Descarga los datasets listos para análisis e inteligencia artificial</p></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+
+        <div class="card" style="border:1px solid var(--border);">
+          <div style="font-size:32px;margin-bottom:12px;">📊</div>
+          <div class="card-title" style="margin-bottom:6px;">Ventas por Línea de Pedido</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Una fila por producto vendido. Incluye fecha, cliente, zona, categoría, cantidad, precio, descuento, estado de pago y despacho. <strong>Ideal para forecasting de ventas.</strong></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--t3);margin-bottom:16px;">
+            <div>✓ Columna objetivo: <code>cantidad</code> o <code>subtotal_linea</code></div>
+            <div>✓ Variables: fecha, zona, cliente_tipo, categoria_producto</div>
+            <div>✓ Uso: Predicción de demanda por producto</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="descargarExport('ventas')">⬇ Descargar CSV — Ventas</button>
+        </div>
+
+        <div class="card" style="border:1px solid var(--border);">
+          <div style="font-size:32px;margin-bottom:12px;">👥</div>
+          <div class="card-title" style="margin-bottom:6px;">Análisis de Clientes</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Una fila por cliente con historial completo: pedidos, monto acumulado, ticket promedio, días sin comprar, facturas en mora. <strong>Ideal para segmentación y churn.</strong></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--t3);margin-bottom:16px;">
+            <div>✓ Columna objetivo: <code>dias_sin_comprar</code> o <code>facturas_en_mora</code></div>
+            <div>✓ Variables: tipo, zona, monto_total, ticket_promedio</div>
+            <div>✓ Uso: Predecir riesgo de abandono o mora</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="descargarExport('clientes')">⬇ Descargar CSV — Clientes</button>
+        </div>
+
+        <div class="card" style="border:1px solid var(--border);">
+          <div style="font-size:32px;margin-bottom:12px;">📦</div>
+          <div class="card-title" style="margin-bottom:6px;">Rendimiento de Productos</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Una fila por producto con stock, margen, unidades vendidas (30 y 90 días), descuento promedio y valor de inventario. <strong>Ideal para optimización de catálogo.</strong></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--t3);margin-bottom:16px;">
+            <div>✓ Columna objetivo: <code>unidades_ultimos_30d</code></div>
+            <div>✓ Variables: categoria, precio, margen, stock</div>
+            <div>✓ Uso: Predecir demanda y optimizar precios</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="descargarExport('productos')">⬇ Descargar CSV — Productos</button>
+        </div>
+
+        <div class="card" style="border:1px solid var(--border);">
+          <div style="font-size:32px;margin-bottom:12px;">💳</div>
+          <div class="card-title" style="margin-bottom:6px;">Cobranza y Riesgo de Pago</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Una fila por factura con estado, días de mora, % cobrado, historial de pagos. <strong>Ideal para modelo de riesgo crediticio.</strong></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--t3);margin-bottom:16px;">
+            <div>✓ Columna objetivo: <code>dias_mora</code> o <code>estado</code></div>
+            <div>✓ Variables: tipo_cliente, zona, monto_total, dias_credito</div>
+            <div>✓ Uso: Predecir probabilidad de mora</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="descargarExport('cobranza')">⬇ Descargar CSV — Cobranza</button>
+        </div>
+
+        <div class="card" style="border:1px solid var(--border);">
+          <div style="font-size:32px;margin-bottom:12px;">🏭</div>
+          <div class="card-title" style="margin-bottom:6px;">Inventario Materia Prima</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Stock actual vs. mínimos, cobertura en días, valor de inventario por material. <strong>Ideal para alertas automáticas de reposición.</strong></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--t3);margin-bottom:16px;">
+            <div>✓ Columna objetivo: <code>estado_stock</code> o <code>cobertura_dias</code></div>
+            <div>✓ Variables: stock_actual, consumo_mensual, stock_minimo</div>
+            <div>✓ Uso: Predecir cuándo reabastecer</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="descargarExport('inventario_mp')">⬇ Descargar CSV — Inventario MP</button>
+        </div>
+
+      </div>
     </div>
 
   </div><!-- /main -->
@@ -1489,7 +1559,7 @@ function getAlertas() {
 /* ════════ ROLE SYSTEM ════════ */
 let currentRole = 'admin';
 const ROLES = {
-  admin:     {label:'Administrador', av:'AD', nav:['dashboard','nuevo-pedido','cola','clientes','despacho','inventario','cobranza','catalogo','finanzas','trazabilidad','alertas']},
+  admin:     {label:'Administrador', av:'AD', nav:['dashboard','nuevo-pedido','cola','clientes','despacho','inventario','cobranza','catalogo','finanzas','trazabilidad','alertas','exportar']},
   comercial: {label:'Comercial',     av:'CM', nav:['nuevo-pedido','cola','clientes','cobranza','catalogo','alertas']},
   logistica: {label:'Logística',     av:'LG', nav:['dashboard','cola','despacho','inventario','alertas']},
   finanzas:  {label:'Finanzas',      av:'FN', nav:['dashboard','cobranza','finanzas','alertas']},
@@ -1506,6 +1576,7 @@ const NAV = {
   'finanzas':     {label:'Finanzas',          icon:'💰', group:'Finanzas'},
   'trazabilidad': {label:'Trazabilidad',      icon:'🔍', group:'Sistema'},
   'alertas':      {label:'Alertas',           icon:'🔔', group:'Sistema', badge:3},
+  'exportar':     {label:'Exportar / Akkio',  icon:'📥', group:'Sistema'},
 };
 
 function enterAs(role) { quickLogin(role + '@koratex.com'); }
@@ -2739,6 +2810,26 @@ function resetFormCliente() {
   if (title) title.textContent = '👥 Nuevo Cliente';
 }
 
+
+/* ════════ EXPORT / AKKIO ════════ */
+async function descargarExport(tipo) {
+  var btn = event && event.target;
+  if (btn) { btn.disabled = true; btn.textContent = 'Generando...'; }
+  try {
+    var r = await fetch('/api/export/' + tipo, {
+      headers: { 'Authorization': 'Bearer ' + TOKEN }
+    });
+    if (!r.ok) { alert('Error al exportar: ' + r.statusText); return; }
+    var blob = await r.blob();
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url;
+    a.download = 'koratex_' + tipo + '_akkio.csv';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+  } catch(e) { alert('Error: ' + e.message); }
+  if (btn) { btn.disabled = false; btn.textContent = '⬇ Descargar CSV — ' + tipo.charAt(0).toUpperCase() + tipo.slice(1); }
+}
 
 /* ════════ AUTO-LOGIN ════════ */
 document.addEventListener('DOMContentLoaded', async function() {
