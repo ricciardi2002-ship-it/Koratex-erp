@@ -615,6 +615,7 @@ textarea { resize:vertical; min-height:65px; }
 .dias-1 { background:var(--amber-l); color:var(--amber); }
 .dias-2 { background:var(--red-l); color:var(--red); }
 </style>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -1216,6 +1217,19 @@ textarea { resize:vertical; min-height:65px; }
           <button class="btn btn-primary" style="width:100%;" onclick="descargarExport('inventario_mp')">⬇ Descargar CSV — Inventario MP</button>
         </div>
 
+        <div class="card" style="border:2px solid var(--green);position:relative;">
+          <div style="position:absolute;top:10px;right:12px;font-size:10px;background:var(--green);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">LIVE</div>
+          <div style="font-size:32px;margin-bottom:12px;">📈</div>
+          <div class="card-title" style="margin-bottom:6px;">Ventas Despachadas · Excel</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:16px;">Una fila por pedido despachado o entregado — últimos 12 meses. Datos en tiempo real desde la vista de Ventas. <strong>Listo para subir a Akkio.</strong></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--t3);margin-bottom:16px;">
+            <div>✓ Columna objetivo: <code>total</code> o <code>subtotal</code></div>
+            <div>✓ Variables: mes, zona, tipo_cliente, vendedor, lista_precios</div>
+            <div>✓ Uso: Forecasting de ingresos mensuales</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="exportarVentasXLSX()">⬇ Descargar Excel — Ventas</button>
+        </div>
+
       </div>
     </div>
 
@@ -1230,6 +1244,7 @@ textarea { resize:vertical; min-height:65px; }
           <select id="vFiltroZona" style="padding:6px 10px;font-size:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);" onchange="renderVentas()">
             <option value="">Todas las zonas</option>
           </select>
+          <button class="btn btn-ghost btn-sm" onclick="exportarVentasXLSX()">📥 Exportar Excel</button>
         </div>
       </div>
 
@@ -3199,6 +3214,45 @@ function exportarClientes() {
 
 
 document.querySelector('#loginScreen img') && (document.getElementById('_sbLogo').src = document.querySelector('#loginScreen img').src);
+
+function exportarVentasXLSX() {
+  if (!DB_ventas || !DB_ventas.length) { alert('No hay datos de ventas cargados.'); return; }
+  var mesEl  = document.getElementById('vFiltroMes');
+  var zonaEl = document.getElementById('vFiltroZona');
+  var filtroMes  = mesEl  ? mesEl.value  : '';
+  var filtroZona = zonaEl ? zonaEl.value : '';
+
+  var rows = DB_ventas.filter(function(v) {
+    if (filtroMes  && v.mes  !== filtroMes)  return false;
+    if (filtroZona && v.zona !== filtroZona) return false;
+    return true;
+  });
+
+  if (!rows.length) { alert('No hay registros con los filtros actuales.'); return; }
+
+  var wsData = [['N° Pedido','Fecha','Mes','Cliente','Código Cliente','Tipo Cliente','Zona','Vendedor','Lista Precios','Items','Subtotal','IGV','Total','Estado Pago','Estado Despacho']];
+  rows.forEach(function(v) {
+    wsData.push([
+      v.id, v.fecha, v.mes, v.clienteNombre, v.clienteCodigo,
+      v.tipoCliente, v.zona, v.vendedor, v.lista, v.items,
+      v.subtotal, v.igv, v.total, v.estadoPago, v.estadoDesp
+    ]);
+  });
+
+  var wb = XLSX.utils.book_new();
+  var ws = XLSX.utils.aoa_to_sheet(wsData);
+
+  // Column widths
+  ws['!cols'] = [
+    {wch:12},{wch:12},{wch:9},{wch:30},{wch:14},{wch:14},{wch:12},
+    {wch:20},{wch:7},{wch:6},{wch:12},{wch:10},{wch:12},{wch:13},{wch:14}
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Ventas');
+
+  var label = filtroMes ? '_' + filtroMes : '_12meses';
+  XLSX.writeFile(wb, 'koratex_ventas' + label + '_akkio.xlsx');
+}
 </script>
 
 <!-- ════ MODAL: CLIENTE ════ -->
