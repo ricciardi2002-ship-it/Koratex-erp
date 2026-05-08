@@ -1230,14 +1230,13 @@ textarea { resize:vertical; min-height:65px; }
     <div class="modal-header"><h3>📦 Agregar Producto</h3><button class="modal-close" onclick="closeModal('mProducto')">✕</button></div>
     <div class="modal-body">
       <div class="fg2">
-        <div class="fg full"><label>Nombre</label><input type="text" placeholder="Ej: Estuco Fino Koratex 20kg"></div>
-        <div class="fg"><label>Tipo</label><select><option>Adhesivo</option><option>Estuco</option><option>Impermeabilizante</option><option>Mortero</option><option>Sellador</option></select></div>
-        <div class="fg"><label>Presentación</label><input type="text" placeholder="Bolsa 20kg"></div>
-        <div class="fg"><label>Precio Lista A (Oro)</label><input type="number" placeholder="0.00" step="0.01"></div>
-        <div class="fg"><label>Precio Lista B (Plata)</label><input type="number" placeholder="0.00" step="0.01"></div>
-        <div class="fg"><label>Precio Lista C (Bronce)</label><input type="number" placeholder="0.00" step="0.01"></div>
-        <div class="fg"><label>Costo producción</label><input type="number" placeholder="0.00" step="0.01"></div>
-        <div class="fg"><label>Stock inicial PT</label><input type="number" placeholder="0"></div>
+        <div class="fg full"><label>Nombre</label><input id="prodNombre" type="text" placeholder="Ej: Estuco Fino Koratex 20kg"></div>
+        <div class="fg"><label>Tipo</label><select id="prodTipo"><option value="1">Adhesivo</option><option value="2">Estuco</option><option value="3">Impermeabilizante</option><option value="4">Mortero</option><option value="5">Sellador</option><option value="6">Pintura</option></select></div>
+        <div class="fg"><label>Presentación</label><input id="prodPres" type="text" placeholder="Bolsa 20kg"></div>
+        <div class="fg"><label>Precio Lista A (Oro)</label><input id="prodPA" type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Precio Lista B (Plata)</label><input id="prodPB" type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Precio Lista C (Bronce)</label><input id="prodPC" type="number" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Costo producción</label><input id="prodCosto" type="number" placeholder="0.00" step="0.01"></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-ghost" onclick="closeModal('mProducto')">Cancelar</button>
@@ -1253,12 +1252,12 @@ textarea { resize:vertical; min-height:65px; }
     <div class="modal-header"><h3>🚚 Programar Despacho</h3><button class="modal-close" onclick="closeModal('mDespacho')">✕</button></div>
     <div class="modal-body">
       <div class="fg2">
-        <div class="fg"><label>Camión</label><select><option>Camión A – ABC-123</option><option>Camión B – DEF-456</option><option>Furgón C – GHI-789</option></select></div>
-        <div class="fg"><label>Zona</label><select><option>Norte</option><option>Sur</option><option>Este</option><option>Oeste</option><option>Centro</option></select></div>
-        <div class="fg"><label>Fecha salida</label><input type="date"></div>
-        <div class="fg"><label>Hora salida</label><input type="time" value="08:00"></div>
-        <div class="fg full"><label>Pedidos a incluir</label><select multiple style="height:100px;"><option>PED-0048 · Maderas y Ferreterías</option><option>PED-0049 · Ferretería Central</option><option>PED-0050 · Constructora Andina</option></select></div>
-        <div class="fg full"><label>Optimización</label><select><option>Automática (Nearest Neighbor)</option><option>Manual</option></select></div>
+        <div class="fg"><label>Vehículo</label><select id="despVehiculo"><option value="">— Seleccionar —</option></select></div>
+        <div class="fg"><label>Zona</label><select id="despZona"><option value="">— Todas —</option><option>Norte</option><option>Sur</option><option>Este</option><option>Oeste</option><option>Centro</option><option>Cono</option></select></div>
+        <input type="hidden" id="despZonaId">
+        <div class="fg"><label>Fecha salida</label><input id="despFecha" type="date"></div>
+        <div class="fg"><label>Hora salida</label><input id="despHora" type="time" value="08:00"></div>
+        <div class="fg full"><label>Pedidos a incluir (Ctrl+clic para múltiples)</label><select id="despPedidos" multiple style="height:120px;"></select></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-ghost" onclick="closeModal('mDespacho')">Cancelar</button>
@@ -1327,13 +1326,22 @@ async function loadData() {
       api('/pedidos'),
       api('/cobranza'),
       api('/inventario/materias-primas'),
+      api('/dashboard/ventas-por-dia'),
+      api('/inventario/alertas'),
+      api('/despacho/vehiculos/lista'),
     ]);
-    const clientes  = (results[0].status==='fulfilled' && results[0].value) || [];
-    const productos = (results[1].status==='fulfilled' && results[1].value) || [];
-    const pedidos   = (results[2].status==='fulfilled' && results[2].value) || [];
-    const facturas  = (results[3].status==='fulfilled' && results[3].value) || [];
-    const mp        = (results[4].status==='fulfilled' && results[4].value) || [];
+    const clientes   = (results[0].status==='fulfilled' && results[0].value) || [];
+    const productos  = (results[1].status==='fulfilled' && results[1].value) || [];
+    const pedidos    = (results[2].status==='fulfilled' && results[2].value) || [];
+    const facturas   = (results[3].status==='fulfilled' && results[3].value) || [];
+    const mp         = (results[4].status==='fulfilled' && results[4].value) || [];
+    const ventasDia  = (results[5].status==='fulfilled' && results[5].value) || [];
+    const alertasAPI = (results[6].status==='fulfilled' && results[6].value) || [];
+    const vehiculos  = (results[7].status==='fulfilled' && results[7].value) || [];
     console.log('[KX] loadData:', clientes.length,'clientes,', productos.length,'productos,', pedidos.length,'pedidos');
+    DB_ventasDia = ventasDia;
+    DB_alertas = alertasAPI;
+    DB_vehiculos = vehiculos;
 
     DB_clientes = clientes.map(function(c) {
       return { id: c.id, codigo: c.codigo, nombre: c.nombre,
@@ -1453,33 +1461,30 @@ let DB_mp = [];
 let DB_pedidos = [];
 
 let DB_facturas = [];
+let DB_ventasDia = [];
+let DB_alertas = [];
+let DB_vehiculos = [];
 
-const DB_traz = [
-  {t:'g',ev:'Pedido entregado',    desc:'PED-0044 · Constructora Andina · $4,621',          time:'Hoy 14:30'},
-  {t:'o',ev:'Nuevo pedido',        desc:'PED-0050 · Constructora Andina · $5,600 · stock reservado',time:'Hoy 11:15'},
-  {t:'g',ev:'Compra MP recibida',  desc:'OC-0039 · 500 bolsas Cemento Portland · stock +500',time:'Hoy 09:00'},
-  {t:'r',ev:'Alerta stock crítico',desc:'Polvo de Talco: 90kg (mínimo 150kg)',               time:'Hoy 08:45'},
-  {t:'r',ev:'Factura en mora',     desc:'F001-00238 · Distrib. Roca · 24 días · $6,800',    time:'Ayer 17:00'},
-  {t:'g',ev:'Pago registrado',     desc:'F001-00218 · Constructora Andina · $12,800',        time:'Ayer 15:20'},
-];
+let DB_traz = [];
 
-const DB_cxp = [
-  {prov:'Cementos Lima SAC',     monto:28400,vence:'2025-05-10'},
-  {prov:'Química Industrial',    monto:12600,vence:'2025-05-05'},
-  {prov:'Minerales Andinos SAC', monto:8900, vence:'2025-04-30'},
-  {prov:'Áridos del Sur',        monto:5400, vence:'2025-05-15'},
-  {prov:'Colorquím SAC',         monto:7100, vence:'2025-05-20'},
-];
-
-const ALERTAS = [
-  {tipo:'crit',ico:'🔴',titulo:'Stock crítico: Polvo de Talco',     desc:'90 kg disponibles · Mínimo: 150 kg · Compra urgente requerida',    time:'hace 2h'},
-  {tipo:'crit',ico:'🔴',titulo:'Stock crítico: Pigmento TiO2',      desc:'65 kg disponibles · Mínimo: 80 kg',                                 time:'hace 3h'},
-  {tipo:'crit',ico:'🔴',titulo:'Stock crítico: Acelerante',         desc:'40 kg disponibles · Mínimo: 60 kg',                                 time:'hace 4h'},
-  {tipo:'warn',ico:'🟡',titulo:'Factura vencida: Ferretería Central',desc:'F001-00224 · $4,200 · 14 días de mora',                            time:'hace 6h'},
-  {tipo:'warn',ico:'🟡',titulo:'Factura vencida: Distrib. Roca',    desc:'F001-00238 · $6,800 · 24 días de mora · Gestionar hoy',            time:'hace 8h'},
-  {tipo:'warn',ico:'🟡',titulo:'CxP vencida: Minerales Andinos',    desc:'$8,900 · Vencimiento hoy · Programar pago',                        time:'hace 1h'},
-  {tipo:'info',ico:'🔵',titulo:'Pedido PED-0050 registrado',        desc:'Constructora Andina SAC · $5,600 · Stock reservado automáticamente',time:'hace 30m'},
-];
+function getAlertas() {
+  var a = [];
+  DB_mp.filter(function(m){ return m.stock <= m.min; }).forEach(function(m){
+    a.push({tipo:'crit',ico:'🔴',titulo:'Stock crítico: '+m.nombre,
+      desc:m.stock+' '+m.unidad+' disponibles · Mínimo: '+m.min+' · Compra urgente',time:'Ahora'});
+  });
+  DB_mp.filter(function(m){ return m.stock > m.min && m.stock <= m.min*1.5; }).forEach(function(m){
+    a.push({tipo:'warn',ico:'🟡',titulo:'Stock bajo: '+m.nombre,
+      desc:m.stock+' '+m.unidad+' disponibles · Mínimo: '+m.min,time:'Ahora'});
+  });
+  DB_facturas.filter(function(f){ return f.mora > 0 && f.estado !== 'pagada'; }).slice(0,5).forEach(function(f){
+    var cli = getCliente(f.clienteId);
+    var saldo = f.total - f.pagado;
+    a.push({tipo:'warn',ico:'🟡',titulo:'Factura vencida: '+(cli?cli.nombre:f.clienteNombre||''),
+      desc:f.num+' · $'+saldo.toLocaleString()+' · '+f.mora+'d mora',time:'Ahora'});
+  });
+  return a;
+}
 
 /* ════════ ROLE SYSTEM ════════ */
 let currentRole = 'admin';
@@ -1586,12 +1591,36 @@ function populateSelects() {
     const el = document.getElementById(id); if (!el) return;
     el.innerHTML = DB_mp.map(m => `<option value="${m.cod}">${m.nombre} (${m.stock} ${m.unidad})</option>`).join('');
   });
-  const prF = document.getElementById('prFactura');
+  var prF = document.getElementById('prFactura');
   if (prF) {
     prF.innerHTML = '<option value="">— Seleccionar factura —</option>' +
-      DB_facturas.filter(f => f.estado !== 'pagada').map(f => {
-        const c = getCliente(f.clienteId);
-        return `<option value="${f.num}" data-saldo="${f.total-f.pagado}">${f.num} · ${c?c.nombre:''} · $${(f.total-f.pagado).toLocaleString()}</option>`;
+      DB_facturas.filter(function(f){ return f.estado !== 'pagada'; }).map(function(f) {
+        var c = getCliente(f.clienteId);
+        return '<option value="'+f.num+'" data-saldo="'+(f.total-f.pagado)+'">'+f.num+' · '+(c?c.nombre:'')+' · $'+(f.total-f.pagado).toLocaleString()+'</option>';
+      }).join('');
+  }
+  // Despacho: vehiculos
+  var despV = document.getElementById('despVehiculo');
+  if (despV) {
+    despV.innerHTML = '<option value="">— Seleccionar vehículo —</option>' +
+      DB_vehiculos.map(function(v){ return '<option value="'+v.id+'">'+v.nombre+' · '+v.placa+' · '+v.conductor+'</option>'; }).join('');
+  }
+  // Despacho: pedidos pendientes
+  var despP = document.getElementById('despPedidos');
+  if (despP) {
+    var pends = DB_pedidos.filter(function(p){ return p.estadoDesp !== 'entregado'; });
+    despP.innerHTML = pends.map(function(p){
+      var cli = getCliente(p.clienteId);
+      return '<option value="'+p.dbId+'">'+p.id+' · '+(cli?cli.nombre:p.clienteNombre||'')+' · $'+p.total.toLocaleString()+'</option>';
+    }).join('');
+  }
+  // Cobranza urgentes panel: populate mcFactura select
+  var mcF = document.getElementById('mcFactura');
+  if (mcF) {
+    mcF.innerHTML = '<option value="">— Seleccionar factura —</option>' +
+      DB_facturas.filter(function(f){ return f.estado !== 'pagada'; }).map(function(f) {
+        var c = getCliente(f.clienteId);
+        return '<option value="'+f.id+'">'+f.num+' · '+(c?c.nombre:'')+' · $'+(f.total-f.pagado).toLocaleString()+'</option>';
       }).join('');
   }
 }
@@ -1763,25 +1792,38 @@ function renderDashboard() {
   el = document.getElementById('dKpiCxC');      if(el) el.textContent = '$' + Math.round(cxcTotal).toLocaleString();
   el = document.getElementById('dKpiCxCSub');   if(el) el.innerHTML = '<span class="kpi-dn">' + cxcCount + ' facturas en mora</span>';
 
-  // Bar chart
-  const vals = [42,38,55,61,48,70,67], lbls = ['S1','S2','S3','S4','S5','S6','S7'];
-  const maxV = Math.max(...vals);
+  // Bar chart - últimos 14 días de ventas reales
   var bcEl = document.getElementById('bcDash');
-  if (bcEl) bcEl.innerHTML = vals.map((v,i) => {
-    const h = Math.round((v/maxV)*85);
-    const clr = i >= 5 ? 'var(--orange)' : 'var(--wire)';
-    return `<div class="bc-col"><div class="bc-val">$${v}k</div><div class="bc-bar" style="height:${h}%;background:${clr};"></div><div class="bc-label">${lbls[i]}</div></div>`;
-  }).join('');
+  if (bcEl) {
+    var chart = DB_ventasDia.slice(-14);
+    if (chart.length) {
+      var maxV = Math.max.apply(null, chart.map(function(d){ return parseFloat(d.total)||0; })) || 1;
+      bcEl.innerHTML = chart.map(function(d, i) {
+        var v = parseFloat(d.total)||0;
+        var h = Math.max(Math.round((v/maxV)*85), 2);
+        var clr = i >= chart.length-2 ? 'var(--orange)' : 'var(--wire)';
+        var lbl = d.fecha ? String(d.fecha).slice(5) : '';
+        return '<div class="bc-col"><div class="bc-val">$'+Math.round(v/1000)+'k</div>' +
+          '<div class="bc-bar" style="height:'+h+'%;background:'+clr+';"></div>' +
+          '<div class="bc-label">'+lbl+'</div></div>';
+      }).join('');
+    } else {
+      bcEl.innerHTML = '<div style="color:var(--t3);font-size:12px;padding:30px;text-align:center;">Sin ventas recientes</div>';
+    }
+  }
 
-  // Alerts
-  const da = document.getElementById('dashAlerts');
-  if (da) da.innerHTML = ALERTAS.slice(0,4).map(a => `
-    <div class="alert-box ${a.tipo==='crit'?'crit':a.tipo==='warn'?'warn':'info'}" style="margin-bottom:6px;">
-      <div class="alert-ico">${a.ico}</div>
-      <div class="alert-text" style="flex:1;"><div class="alert-title">${a.titulo}</div><div class="alert-desc">${a.desc}</div></div>
-      <div class="alert-time">${a.time}</div>
-    </div>
-  `).join('');
+  // Alerts - reales desde DB
+  var da = document.getElementById('dashAlerts');
+  if (da) {
+    var alertasR = getAlertas().slice(0,4);
+    da.innerHTML = alertasR.length ? alertasR.map(function(a) {
+      return '<div class="alert-box '+(a.tipo==='crit'?'crit':a.tipo==='warn'?'warn':'info')+'" style="margin-bottom:6px;">' +
+        '<div class="alert-ico">'+a.ico+'</div>' +
+        '<div class="alert-text" style="flex:1;"><div class="alert-title">'+a.titulo+'</div><div class="alert-desc">'+a.desc+'</div></div>' +
+        '<div class="alert-time">'+a.time+'</div>' +
+        '</div>';
+    }).join('') : '<div style="color:var(--t3);font-size:13px;padding:16px;text-align:center;">Sin alertas activas</div>';
+  }
 
   // Cola
   const dc = document.getElementById('dashCola');
@@ -1860,63 +1902,92 @@ function renderCola() {
 }
 
 /* ── Despacho ── */
-const ZONAS_DATA = [
-  {nombre:'Norte', pedidos:['PED-0049','PED-0050'], camion:'Camión A · ABC-123', color:'var(--orange)'},
-  {nombre:'Sur',   pedidos:['PED-0046'],            camion:'Camión B · DEF-456', color:'var(--cyan)'},
-  {nombre:'Este',  pedidos:['PED-0047'],            camion:'Camión B · DEF-456', color:'var(--cyan)'},
-  {nombre:'Oeste', pedidos:['PED-0048'],            camion:'Furgón C · GHI-789', color:'var(--green)'},
-  {nombre:'Centro',pedidos:['PED-0045'],            camion:'Furgón C · GHI-789', color:'var(--green)'},
-];
+var ZONA_COLORS = {Norte:'var(--orange)',Sur:'var(--cyan)',Este:'var(--green)',
+  Oeste:'var(--amber)',Centro:'var(--t2)',Cono:'var(--red)'};
 
 function renderDespacho() {
-  const zg = document.getElementById('zonasDespacho');
-  if (zg) zg.innerHTML = ZONAS_DATA.map(z => `
-    <div class="zona-card">
-      <div class="zona-header">
-        <div>
-          <div class="zona-name" style="color:${z.color}">${z.nombre}</div>
-          <div class="zona-km">${z.pedidos.length} pedidos pendientes</div>
-        </div>
-        <div class="zona-count" style="color:${z.color}">${z.pedidos.length}</div>
-      </div>
-      ${z.pedidos.map(pid => {
-        const p = DB_pedidos.find(x => x.id === pid);
-        const cli = p ? getCliente(p.clienteId) : null;
-        return p ? `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;">
-          <div><span style="color:var(--t3);font-family:'DM Mono',monospace;">${pid}</span><br><span style="font-weight:600;">${cli?cli.nombre:''}</span></div>
-          <div>${diasChip(p.diasAnt)}</div>
-        </div>` : '';
-      }).join('')}
-      <div class="camion-asignado">
-        <div class="camion-ic">🚚</div>
-        <div class="camion-info">
-          <div class="camion-name">${z.camion}</div>
-          <div class="camion-cap">Recomendado por sistema</div>
-        </div>
-        <button class="btn btn-primary btn-xs">Asignar</button>
-      </div>
-    </div>
-  `).join('');
+  var pending = DB_pedidos.filter(function(p){ return p.estadoDesp !== 'entregado'; });
 
-  const dt = document.getElementById('despachoTable');
-  if (dt) {
-    const pending = DB_pedidos.filter(p => ['pendiente','preparacion'].includes(p.estadoDesp));
-    dt.innerHTML = pending.map(p => {
-      const cli = getCliente(p.clienteId);
-      const zona = ZONAS_DATA.find(z => z.pedidos.includes(p.id));
-      const prio = p.diasAnt >= 3 ? '<span class="badge br">ALTA</span>' : p.diasAnt >= 1 ? '<span class="badge ba">MEDIA</span>' : '<span class="badge bg">NORMAL</span>';
-      return `<tr>
-        <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
-        <td style="font-weight:600;">${cli?cli.nombre:''}</td>
-        <td><span class="badge bb">${cli?cli.zona:''}</span></td>
-        <td style="font-size:11px;color:var(--t2);">${cli?cli.zona+' sector':''}</td>
-        <td>${p.items} bultos</td>
-        <td>${prio}</td>
-        <td style="font-size:11px;color:var(--t2);">${zona?zona.camion:'—'}</td>
-        <td>${estadoDesp(p.estadoDesp)}</td>
-      </tr>`;
-    }).join('');
+  // Group by zona
+  var byZona = {};
+  pending.forEach(function(p) {
+    var zona = p.zona || (getCliente(p.clienteId)||{}).zona || 'Sin zona';
+    if (!byZona[zona]) byZona[zona] = [];
+    byZona[zona].push(p);
+  });
+
+  var zg = document.getElementById('zonasDespacho');
+  if (zg) {
+    var zonas = Object.keys(byZona);
+    if (!zonas.length) {
+      zg.innerHTML = '<div style="color:var(--t3);padding:20px;font-size:13px;">No hay pedidos pendientes de despacho</div>';
+    } else {
+      zg.innerHTML = zonas.map(function(zona) {
+        var peds = byZona[zona];
+        var color = ZONA_COLORS[zona] || 'var(--t2)';
+        var pedHtml = peds.map(function(p) {
+          var cli = getCliente(p.clienteId);
+          return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;">' +
+            '<div><span style="color:var(--t3);font-family:monospace;">'+p.id+'</span><br>' +
+            '<span style="font-weight:600;">'+(cli?cli.nombre:p.clienteNombre||'')+'</span></div>' +
+            '<div>'+diasChip(p.diasAnt)+'</div>' +
+          '</div>';
+        }).join('');
+        var veh = DB_vehiculos.length ? DB_vehiculos[0].nombre+' · '+DB_vehiculos[0].placa : 'Sin asignar';
+        return '<div class="zona-card">' +
+          '<div class="zona-header">' +
+            '<div><div class="zona-name" style="color:'+color+'">'+zona+'</div>' +
+            '<div class="zona-km">'+peds.length+' pedido'+(peds.length!==1?'s':'')+' pendientes</div></div>' +
+            '<div class="zona-count" style="color:'+color+'">'+peds.length+'</div>' +
+          '</div>' +
+          pedHtml +
+          '<div class="camion-asignado">' +
+            '<div class="camion-ic">🚚</div>' +
+            '<div class="camion-info"><div class="camion-name">'+veh+'</div>' +
+            '<div class="camion-cap">Click para programar ruta</div></div>' +
+            '<button class="btn btn-primary btn-xs" onclick="abrirDespachoZona(\''+zona+'\')">Programar</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
   }
+
+  var dt = document.getElementById('despachoTable');
+  if (dt) {
+    dt.innerHTML = pending.map(function(p) {
+      var cli = getCliente(p.clienteId);
+      var zona = p.zona || (cli ? cli.zona : '');
+      var dir  = cli ? (cli.direccion || zona + ' sector') : zona;
+      var prio = p.diasAnt >= 3 ? '<span class="badge br">ALTA</span>' : p.diasAnt >= 1 ? '<span class="badge ba">MEDIA</span>' : '<span class="badge bg">NORMAL</span>';
+      return '<tr>' +
+        '<td><strong style="color:var(--orange);font-family:monospace;">'+p.id+'</strong></td>' +
+        '<td style="font-weight:600;">'+(cli?cli.nombre:p.clienteNombre||'')+'</td>' +
+        '<td><span class="badge bb">'+zona+'</span></td>' +
+        '<td style="font-size:11px;color:var(--t2);">'+dir+'</td>' +
+        '<td>'+p.items+' bultos</td>' +
+        '<td>'+prio+'</td>' +
+        '<td>'+estadoDesp(p.estadoDesp)+'</td>' +
+        '<td><button class="btn btn-ghost btn-xs" onclick="cambiarEstado(\''+p.id+'\')">&#9654; Avanzar</button></td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t3);">No hay pedidos pendientes</td></tr>';
+  }
+}
+
+function abrirDespachoZona(zona) {
+  // Pre-fill despacho modal for this zone
+  var zEl = document.getElementById('despZona');
+  if (zEl) zEl.value = zona;
+  var pedsSel = document.getElementById('despPedidos');
+  if (pedsSel) {
+    var pends = DB_pedidos.filter(function(p){
+      var z = p.zona || (getCliente(p.clienteId)||{}).zona || '';
+      return p.estadoDesp !== 'entregado' && z === zona;
+    });
+    Array.from(pedsSel.options).forEach(function(opt) {
+      opt.selected = pends.some(function(p){ return p.dbId === opt.value; });
+    });
+  }
+  openModal('mDespacho');
 }
 
 /* ── Inventario MP ── */
@@ -2044,38 +2115,67 @@ function renderFinanzas() {
     }).join('');
   }
 
-  const cxp = document.getElementById('cxpList');
-  if (cxp) cxp.innerHTML = DB_cxp.map(c => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;">
-      <div><div style="font-weight:600;">${c.prov}</div><div style="font-size:10px;color:var(--t3);">Vence: ${c.vence}</div></div>
-      <span style="font-family:'DM Mono',monospace;font-weight:500;color:var(--red);">$${c.monto.toLocaleString()}</span>
-    </div>
-  `).join('');
+  var cxp = document.getElementById('cxpList');
+  if (cxp) {
+    var vencidas = DB_facturas.filter(function(f){ return f.mora > 0 && f.estado !== 'pagada'; });
+    cxp.innerHTML = vencidas.length ? vencidas.map(function(f) {
+      var cli = getCliente(f.clienteId);
+      var saldo = f.total - f.pagado;
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;">' +
+        '<div><div style="font-weight:600;">'+(cli?cli.nombre:f.clienteNombre||'')+'</div>' +
+        '<div style="font-size:10px;color:var(--t3);">'+f.num+' · '+f.mora+'d mora · Vence: '+f.venc+'</div></div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-family:monospace;font-weight:500;color:var(--red);">$'+saldo.toLocaleString()+'</div>' +
+          '<button class="btn btn-ghost btn-xs" style="margin-top:4px;" onclick="openModal(\x27mCobro\x27)">Cobrar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('') : '<div style="color:var(--t3);font-size:13px;padding:20px;text-align:center;">✅ Sin facturas vencidas</div>';
+  }
 }
 
 /* ── Trazabilidad ── */
 function renderTrazabilidad() {
-  const tl = document.getElementById('trazTl');
+  var tl = document.getElementById('trazTl');
   if (!tl) return;
-  tl.innerHTML = DB_traz.map(t => `
-    <div class="tl-item">
-      <div class="tl-dot tl-${t.t}">${t.t==='g'?'✓':t.t==='o'?'◎':t.t==='r'?'!':'○'}</div>
-      <div><div class="tl-title">${t.ev}</div><div class="tl-desc">${t.desc}</div><div class="tl-time">${t.time}</div></div>
-    </div>
-  `).join('');
+  var items = DB_traz.slice();
+  // Supplement with recent pedidos if session is fresh
+  if (items.length < 5) {
+    DB_pedidos.slice(0,10).forEach(function(p) {
+      var cli = getCliente(p.clienteId);
+      var tipo = p.estadoDesp === 'entregado' ? 'g' : p.estadoDesp === 'despachado' ? 'g' : 'o';
+      var ev   = p.estadoDesp === 'entregado' ? 'Pedido entregado' : p.estadoDesp === 'despachado' ? 'Pedido despachado' : 'Pedido en proceso';
+      items.push({t:tipo,ev:ev,
+        desc:p.id+' · '+(cli?cli.nombre:p.clienteNombre||'')+' · $'+p.total.toLocaleString(),
+        time:p.fecha?String(p.fecha).split('T')[0]:'—'});
+    });
+    DB_facturas.filter(function(f){ return f.pagado > 0; }).slice(0,5).forEach(function(f) {
+      var cli = getCliente(f.clienteId);
+      items.push({t:'g',ev:'Pago registrado',
+        desc:f.num+' · '+(cli?cli.nombre:'')+' · $'+f.pagado.toLocaleString(),
+        time:f.venc||'—'});
+    });
+  }
+  tl.innerHTML = items.length ? items.map(function(t) {
+    return '<div class="tl-item">' +
+      '<div class="tl-dot tl-'+t.t+'">'+(t.t==='g'?'✓':t.t==='r'?'!':'◎')+'</div>' +
+      '<div><div class="tl-title">'+t.ev+'</div><div class="tl-desc">'+t.desc+'</div>' +
+      '<div class="tl-time">'+t.time+'</div></div>' +
+    '</div>';
+  }).join('') : '<div style="color:var(--t3);font-size:13px;padding:24px;text-align:center;">Sin actividad registrada</div>';
 }
 
 /* ── Alertas ── */
 function renderAlertas() {
-  const aa = document.getElementById('allAlerts');
+  var aa = document.getElementById('allAlerts');
   if (!aa) return;
-  aa.innerHTML = ALERTAS.map(a => `
-    <div class="alert-box ${a.tipo==='crit'?'crit':a.tipo==='warn'?'warn':'info'}" style="margin-bottom:8px;">
-      <div class="alert-ico">${a.ico}</div>
-      <div style="flex:1;"><div class="alert-title">${a.titulo}</div><div class="alert-desc">${a.desc}</div></div>
-      <div class="alert-time">${a.time}</div>
-    </div>
-  `).join('');
+  var alertas = getAlertas();
+  aa.innerHTML = alertas.length ? alertas.map(function(a) {
+    return '<div class="alert-box '+(a.tipo==='crit'?'crit':a.tipo==='warn'?'warn':'info')+'" style="margin-bottom:8px;">' +
+      '<div class="alert-ico">'+a.ico+'</div>' +
+      '<div style="flex:1;"><div class="alert-title">'+a.titulo+'</div><div class="alert-desc">'+a.desc+'</div></div>' +
+      '<div class="alert-time">'+a.time+'</div>' +
+    '</div>';
+  }).join('') : '<div style="color:var(--t3);font-size:13px;padding:24px;text-align:center;">✅ Sin alertas activas</div>';
 }
 
 /* ════════ ACTIONS ════════ */
@@ -2175,22 +2275,82 @@ async function registrarStock() {
   } catch(e) { alert('Error: ' + e.message); }
 }
 
-function saveCompra() {
-  const sel = document.getElementById('mcMP');
-  const cant = parseFloat(document.getElementById('mcCant').value)||0;
-  if (!sel||!cant) { alert('Selecciona material e ingresa cantidad'); return; }
-  const mp = DB_mp.find(m => m.cod === sel.value);
-  if (mp) {
-    mp.stock = Math.min(mp.stock + cant, mp.max);
-    DB_traz.unshift({t:'g',ev:'Entrada MP recibida',desc:`${mp.nombre} · +${cant} ${mp.unidad} · stock: ${mp.stock}`,time:'Hace un momento'});
-    renderMP(); renderTrazabilidad(); renderDashboard();
-  }
+async function saveCompra() {
+  var sel  = document.getElementById('mcMP');
+  var cant = parseFloat(document.getElementById('mcCant').value)||0;
+  if (!sel||!sel.value||!cant) { alert('Selecciona material e ingresa cantidad'); return; }
+  var mp = DB_mp.find(function(m){ return m.cod === sel.value; });
+  if (!mp) return;
+  try {
+    await api('/inventario/materias-primas/' + mp.id, { method: 'PATCH',
+      body: JSON.stringify({ ajuste: cant }) });
+    DB_traz.unshift({t:'g',ev:'Entrada MP recibida',
+      desc:mp.nombre+' · +'+cant+' '+mp.unidad,time:'Hace un momento'});
+    document.getElementById('mcCant').value = '';
+    await loadData(); renderAll();
+    alert('Entrada registrada: +' + cant + ' ' + mp.unidad + ' de ' + mp.nombre);
+  } catch(e) { alert('Error al registrar entrada: ' + e.message); }
   closeModal('mCompra');
 }
 
-function saveProd() { renderCatalogo(); closeModal('mProducto'); }
-function saveDespacho() { renderDespacho(); closeModal('mDespacho'); alert('✅ Ruta generada y optimizada por zonas'); }
-function reoptimizar() { alert('⚡ Rutas re-optimizadas con Nearest Neighbor.\nCamión A → Norte (2 paradas)\nCamión B → Sur + Este (2 paradas)\nFurgón C → Oeste + Centro (2 paradas)'); }
+async function saveProd() {
+  var nombre = document.getElementById('prodNombre') ? document.getElementById('prodNombre').value.trim() : '';
+  var tipoId = document.getElementById('prodTipo') ? parseInt(document.getElementById('prodTipo').value)||1 : 1;
+  var pres   = document.getElementById('prodPres') ? document.getElementById('prodPres').value.trim() : '';
+  var pA     = parseFloat(document.getElementById('prodPA') ? document.getElementById('prodPA').value : 0)||0;
+  var pB     = parseFloat(document.getElementById('prodPB') ? document.getElementById('prodPB').value : 0)||0;
+  var pC     = parseFloat(document.getElementById('prodPC') ? document.getElementById('prodPC').value : 0)||0;
+  var costo  = parseFloat(document.getElementById('prodCosto') ? document.getElementById('prodCosto').value : 0)||0;
+  if (!nombre || !pres || !pA) { alert('Nombre, presentación y Precio A son obligatorios'); return; }
+  var codigo = 'KTX-' + String(Date.now()).slice(-4);
+  try {
+    await api('/productos', { method: 'POST',
+      body: JSON.stringify({ codigo: codigo, nombre: nombre, tipo_id: tipoId,
+        presentacion: pres, precio_lista_a: pA, precio_lista_b: pB||pA*1.1,
+        precio_lista_c: pC||pA*1.2, costo_produccion: costo, peso_kg: 0 }) });
+    DB_traz.unshift({t:'g',ev:'Producto creado',desc:nombre,time:'Hace un momento'});
+    await loadData(); populateSelects(); buildAllLines(); renderAll();
+    // Reset form
+    ['prodNombre','prodPres','prodPA','prodPB','prodPC','prodCosto'].forEach(function(id){
+      var el = document.getElementById(id); if (el) el.value = '';
+    });
+    alert('Producto ' + nombre + ' agregado al catálogo');
+  } catch(e) { alert('Error al agregar producto: ' + e.message); }
+  closeModal('mProducto');
+}
+async function saveDespacho() {
+  var vehId = document.getElementById('despVehiculo') ? document.getElementById('despVehiculo').value : '';
+  var zonaId = document.getElementById('despZonaId') ? document.getElementById('despZonaId').value : '';
+  var fecha  = document.getElementById('despFecha')  ? document.getElementById('despFecha').value : '';
+  var hora   = document.getElementById('despHora')   ? document.getElementById('despHora').value : '08:00';
+  var pedsSel = document.getElementById('despPedidos');
+  var pedidos = pedsSel ? Array.from(pedsSel.selectedOptions).map(function(o){ return o.value; }) : [];
+  if (!vehId || !fecha) { alert('Selecciona vehículo y fecha'); return; }
+  if (!pedidos.length) { alert('Selecciona al menos un pedido'); return; }
+  try {
+    await api('/despacho', { method: 'POST',
+      body: JSON.stringify({ vehiculo_id: vehId, zona_id: zonaId||null,
+        fecha: fecha, hora_salida: hora, pedidos: pedidos }) });
+    DB_traz.unshift({t:'g',ev:'Ruta de despacho generada',
+      desc:pedidos.length+' pedidos · '+fecha,time:'Hace un momento'});
+    await loadData(); renderAll();
+    alert('✅ Ruta generada con ' + pedidos.length + ' pedidos para el ' + fecha);
+  } catch(e) { alert('Error al generar ruta: ' + e.message); }
+  closeModal('mDespacho');
+}
+function reoptimizar() {
+  var pending = DB_pedidos.filter(function(p){ return p.estadoDesp !== 'entregado'; });
+  var byZona = {};
+  pending.forEach(function(p){
+    var z = p.zona || (getCliente(p.clienteId)||{}).zona || 'Sin zona';
+    if (!byZona[z]) byZona[z] = [];
+    byZona[z].push(p.id);
+  });
+  var msg = '⚡ Rutas sugeridas:\n';
+  Object.keys(byZona).forEach(function(z){ msg += z+' → '+byZona[z].join(', ')+'\n'; });
+  msg += '\nHaz clic en “Programar” en cada zona para asignar vehículo.';
+  alert(msg);
+}
 
 async function cambiarEstado(id) {
   const p = DB_pedidos.find(function(x){ return x.id === id; });
@@ -2249,15 +2409,6 @@ function imprimirFormato() {
    - Filtros por tipo y zona
    - Edición y vista de detalle
 ══════════════════════════════════════════ */
-
-// Extend DB_clientes with extra fields
-DB_clientes.forEach((c, i) => {
-  if (!c.telefono) c.telefono = '+58 412-' + String(1000000 + i * 111111).slice(0,7);
-  if (!c.email)    c.email    = c.nombre.split(' ')[0].toLowerCase() + '@empresa.com';
-  if (!c.ciudad)   c.ciudad   = 'Caracas';
-  if (!c.activo)   c.activo   = true;
-  if (!c.descuento) c.descuento = c.tipo === 'oro' ? 5 : c.tipo === 'plata' ? 2 : 0;
-});
 
 let clienteEditId = null;
 
@@ -2550,13 +2701,25 @@ function editarCliente(id) {
 }
 
 /* ── Toggle activo/inactivo ── */
-function toggleCliente(id) {
-  const c = DB_clientes.find(x => x.id === id);
+async function toggleCliente(id) {
+  var c = DB_clientes.find(function(x){ return x.id === id; });
   if (!c) return;
-  c.activo = !c.activo;
-  DB_traz.unshift({t: c.activo ? 'g' : 'r', ev: c.activo ? 'Cliente activado' : 'Cliente desactivado', desc: c.nombre, time:'Hace un momento'});
-  renderClientes();
-  renderTrazabilidad();
+  var nuevoActivo = !c.activo;
+  var tipoMap = {oro:1, plata:2, bronce:3};
+  var zonaMap = {Norte:1,Sur:2,Este:3,Oeste:4,Centro:5,Cono:6};
+  try {
+    await api('/clientes/' + id, { method: 'PUT',
+      body: JSON.stringify({
+        nombre: c.nombre, ruc: c.rif||'',
+        tipo_id: tipoMap[c.tipo] || 3,
+        zona_id: zonaMap[c.zona] || 5,
+        direccion: c.direccion||'', telefono: c.telefono||'',
+        email: c.email||'', limite_credito: c.limCredit||0,
+        activo: nuevoActivo
+      }) });
+    DB_traz.unshift({t:nuevoActivo?'g':'r',ev:nuevoActivo?'Cliente activado':'Cliente desactivado',desc:c.nombre,time:'Hace un momento'});
+    await loadData(); renderAll();
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 /* ── Reset form ── */

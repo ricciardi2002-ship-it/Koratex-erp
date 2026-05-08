@@ -132,6 +132,16 @@ despachoRouter.get('/', auth, async (req, res, next) => {
   }
 });
 
+// GET /api/despacho/vehiculos/lista  — must be before /:id
+despachoRouter.get('/vehiculos/lista', auth, async (req, res, next) => {
+  try {
+    const result = await query(`SELECT * FROM vehiculos WHERE activo = TRUE ORDER BY placa`);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // GET /api/despacho/:id
 despachoRouter.get('/:id', auth, async (req, res, next) => {
   try {
@@ -198,16 +208,6 @@ despachoRouter.patch('/:id/estado', auth, roles('admin', 'logistica'), async (re
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Ruta no encontrada' });
     res.json(result.rows[0]);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// GET /api/despacho/vehiculos/lista
-despachoRouter.get('/vehiculos/lista', auth, async (req, res, next) => {
-  try {
-    const result = await query(`SELECT * FROM vehiculos WHERE activo = TRUE ORDER BY placa`);
-    res.json(result.rows);
   } catch (err) {
     next(err);
   }
