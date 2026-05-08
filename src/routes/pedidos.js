@@ -27,6 +27,37 @@ router.get('/', auth, async (req, res, next) => {
   }
 });
 
+// GET /api/pedidos/ventas-anuales  — dispatched orders last 12 months (no 200 limit)
+router.get('/ventas-anuales', auth, async (req, res, next) => {
+  try {
+    const result = await query(`
+      SELECT p.id, p.numero, p.fecha_pedido,
+             p.subtotal, p.igv, p.total,
+             p.estado_pago, p.estado_despacho, p.lista_precios,
+             c.nombre  AS cliente_nombre,
+             c.codigo  AS cliente_codigo,
+             tc.nombre AS tipo_cliente,
+             z.nombre  AS zona_nombre,
+             u.nombre  AS vendedor_nombre,
+             COUNT(pi.id)         AS item_count,
+             TO_CHAR(p.fecha_pedido, 'YYYY-MM') AS mes
+      FROM pedidos p
+      JOIN clientes c      ON c.id  = p.cliente_id
+      JOIN tipos_cliente tc ON tc.id = c.tipo_id
+      LEFT JOIN zonas z    ON z.id  = c.zona_id
+      LEFT JOIN usuarios u ON u.id  = p.vendedor_id
+      LEFT JOIN pedido_items pi ON pi.pedido_id = p.id
+      WHERE p.estado_despacho IN ('despachado','entregado')
+        AND p.fecha_pedido >= CURRENT_DATE - INTERVAL '12 months'
+      GROUP BY p.id, p.numero, p.fecha_pedido, p.subtotal, p.igv, p.total,
+               p.estado_pago, p.estado_despacho, p.lista_precios,
+               c.nombre, c.codigo, tc.nombre, z.nombre, u.nombre
+      ORDER BY p.fecha_pedido DESC
+    `);
+    res.json(result.rows);
+  } catch (err) { next(err); }
+});
+
 // GET /api/pedidos/:id
 router.get('/:id', auth, async (req, res, next) => {
   try {
