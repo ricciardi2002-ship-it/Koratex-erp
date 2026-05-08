@@ -1287,16 +1287,19 @@ async function api(path, opts) {
 async function loadData() {
   if (!TOKEN) return;
   try {
-    const results = await Promise.all([
+    const results = await Promise.allSettled([
       api('/clientes'),
       api('/productos'),
       api('/pedidos'),
       api('/cobranza'),
       api('/inventario/materias-primas'),
     ]);
-    const clientes = results[0] || [], productos = results[1] || [],
-          pedidos  = results[2] || [], facturas  = results[3] || [],
-          mp       = results[4] || [];
+    const clientes  = (results[0].status==='fulfilled' && results[0].value) || [];
+    const productos = (results[1].status==='fulfilled' && results[1].value) || [];
+    const pedidos   = (results[2].status==='fulfilled' && results[2].value) || [];
+    const facturas  = (results[3].status==='fulfilled' && results[3].value) || [];
+    const mp        = (results[4].status==='fulfilled' && results[4].value) || [];
+    console.log('[KX] loadData:', clientes.length,'clientes,', productos.length,'productos,', pedidos.length,'pedidos');
 
     DB_clientes = clientes.map(function(c) {
       return { id: c.id, codigo: c.codigo, nombre: c.nombre,
@@ -1312,7 +1315,7 @@ async function loadData() {
     });
 
     DB_productos = productos.map(function(p) {
-      return { id: p.id, cod: p.codigo, nombre: p.nombre, tipo: p.tipo_nombre || '',
+      return { id: p.id, cod: p.codigo, nombre: p.nombre, tipo: p.tipo || p.tipo_nombre || '',
         pres: p.presentacion, pA: parseFloat(p.precio_lista_a) || 0,
         pB: parseFloat(p.precio_lista_b) || 0, pC: parseFloat(p.precio_lista_c) || 0,
         costo: parseFloat(p.costo_produccion) || 0,
