@@ -9,10 +9,15 @@ router.get('/', auth, async (req, res, next) => {
   try {
     const result = await query(
       `SELECT p.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo,
-              u.nombre as vendedor_nombre
+              c.zona_id, z.nombre as zona_nombre,
+              u.nombre as vendedor_nombre,
+              COUNT(pi.id) as item_count
        FROM pedidos p
        JOIN clientes c ON c.id = p.cliente_id
+       LEFT JOIN zonas z ON z.id = c.zona_id
        LEFT JOIN usuarios u ON u.id = p.vendedor_id
+       LEFT JOIN pedido_items pi ON pi.pedido_id = p.id
+       GROUP BY p.id, c.nombre, c.codigo, c.zona_id, z.nombre, u.nombre
        ORDER BY p.created_at DESC
        LIMIT 200`
     );

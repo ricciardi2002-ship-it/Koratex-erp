@@ -1262,6 +1262,141 @@ textarea { resize:vertical; min-height:65px; }
 </div>
 
 <script>
+
+/* ════════ API LAYER ════════ */
+let TOKEN = localStorage.getItem('kx_token') || '';
+let currentUser = null;
+
+async function api(path, opts) {
+  opts = opts || {};
+  const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN };
+  if (opts.headers) Object.assign(headers, opts.headers);
+  const r = await fetch('/api' + path, Object.assign({}, opts, { headers: headers }));
+  if (r.status === 401) { logout(); return null; }
+  if (!r.ok) { const e = await r.json().catch(function(){ return {}; }); throw new Error(e.error || r.statusText); }
+  return r.json();
+}
+
+async function loadData() {
+  if (!TOKEN) return;
+  try {
+    const results = await Promise.allSettled([
+      api('/clientes'),
+      api('/productos'),
+      api('/pedidos'),
+      api('/cobranza'),
+      api('/inventario/materias-primas'),
+    ]);
+    const clientes  = (results[0].status==='fulfilled' && results[0].value) || [];
+    const productos = (results[1].status==='fulfilled' && results[1].value) || [];
+    const pedidos   = (results[2].status==='fulfilled' && results[2].value) || [];
+    const facturas  = (results[3].status==='fulfilled' && results[3].value) || [];
+    const mp        = (results[4].status==='fulfilled' && results[4].value) || [];
+    console.log('[KX] loadData:', clientes.length,'clientes,', productos.length,'productos,', pedidos.length,'pedidos');
+
+    DB_clientes = clientes.map(function(c) {
+      return { id: c.id, codigo: c.codigo, nombre: c.nombre,
+        tipo: (c.tipo_nombre || 'bronce').toLowerCase(),
+        zona: c.zona_nombre || 'Centro',
+        diasCredito: parseInt(c.dias_credito) || 15,
+        limCredit: parseFloat(c.limite_credito) || 0,
+        telefono: c.telefono || '', email: c.email || '',
+        rif: c.ruc || '', activo: c.activo !== false,
+        descuento: c.tipo_nombre === 'oro' ? 5 : c.tipo_nombre === 'plata' ? 2 : 0,
+        lista_precios: c.lista_precios || 'C', direccion: c.direccion || '',
+      };
+    });
+
+    DB_productos = productos.map(function(p) {
+      return { id: p.id, cod: p.codigo, nombre: p.nombre, tipo: p.tipo || p.tipo_nombre || '',
+        pres: p.presentacion, pA: parseFloat(p.precio_lista_a) || 0,
+        pB: parseFloat(p.precio_lista_b) || 0, pC: parseFloat(p.precio_lista_c) || 0,
+        costo: parseFloat(p.costo_produccion) || 0,
+        stockPT: parseInt(p.stock_total) || 0,
+      };
+    });
+
+    DB_pedidos = pedidos.map(function(p) {
+      var dias = p.fecha_pedido ? Math.floor((Date.now() - new Date(p.fecha_pedido).getTime()) / 86400000) : 0;
+      return { id: p.numero, dbId: p.id, fecha: p.fecha_pedido,
+        clienteId: p.cliente_id, clienteNombre: p.cliente_nombre,
+        zona: p.zona_nombre || '',
+        items: parseInt(p.item_count) || 0, total: parseFloat(p.total) || 0,
+        estadoPago: p.estado_pago || 'pendiente',
+        estadoDesp: p.estado_despacho || 'pendiente', diasAnt: dias,
+      };
+    });
+
+    DB_facturas = facturas.map(function(f) {
+      var venc = f.fecha_vencimiento ? f.fecha_vencimiento.split('T')[0] : '';
+      var mora = venc && new Date(venc) < new Date() && f.estado !== 'pagada'
+        ? Math.floor((Date.now() - new Date(venc).getTime()) / 86400000) : 0;
+      return { id: f.id, num: f.numero, clienteId: f.cliente_id,
+        clienteNombre: f.cliente_nombre,
+        total: parseFloat(f.monto_total) || 0, pagado: parseFloat(f.monto_pagado) || 0,
+        estado: f.estado === 'pagada' ? 'pagada' : 'pendiente',
+        venc: venc, mora: mora,
+      };
+    });
+
+    DB_mp = mp.map(function(m) {
+      return { id: m.id, cod: m.codigo, nombre: m.nombre, unidad: m.unidad,
+        stock: parseFloat(m.stock_actual) || 0, min: parseFloat(m.stock_minimo) || 0,
+        max: parseFloat(m.stock_maximo) || 0, consumo: parseFloat(m.consumo_mensual) || 1,
+        prov: m.proveedor_nombre || '', icon: '📦',
+      };
+    });
+  } catch(e) { console.error('loadData error:', e); }
+}
+
+/* ════════ AUTH ════════ */
+async function doLogin() {
+  var email = document.getElementById('loginEmail').value;
+  var pass  = document.getElementById('loginPass').value;
+  var errEl = document.getElementById('loginError');
+  var btn   = document.getElementById('loginBtn');
+  errEl.textContent = '';
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  try {
+    var r = await fetch('/api/auth/login', { method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: pass }) });
+    var data = await r.json();
+    if (data.token) {
+      TOKEN = data.token; currentUser = data.user;
+      localStorage.setItem('kx_token', TOKEN);
+      await enterApp();
+    } else { errEl.textContent = data.error || 'Credenciales inválidas'; }
+  } catch(e) { errEl.textContent = 'Error de conexión con el servidor'; }
+  btn.disabled = false; btn.textContent = 'Entrar al sistema';
+}
+
+function quickLogin(email) {
+  document.getElementById('loginEmail').value = email;
+  document.getElementById('loginPass').value  = 'koratex2025';
+  doLogin();
+}
+
+async function enterApp() {
+  var role = currentUser.rol;
+  currentRole = role;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display    = 'flex';
+  var r = ROLES[role] || ROLES['admin'];
+  var initials = (currentUser.nombre || 'U').split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
+  document.getElementById('sbAv').textContent   = initials;
+  document.getElementById('sbName').textContent = currentUser.nombre;
+  document.getElementById('sbRole').textContent = r.label;
+  buildNav(role);
+  populateSelects();
+  buildAllLines();
+  renderAll();
+  navigate(role === 'comercial' ? 'nuevo-pedido' : 'dashboard');
+  startClock();
+  loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(e){ console.warn('loadData inicial:', e); });
+  setInterval(function(){ loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(){}); }, 60000);
+}
+
 /* ════════════════════════════════════
    KORATEX ERP v2 — DATA & LOGIC
    Optimizado para los 4 problemas reales
@@ -1699,17 +1834,18 @@ function renderCola() {
 
   t.innerHTML = DB_pedidos.map(p => {
     const cli = getCliente(p.clienteId);
-    return `<tr>
+    const zona = p.zona || (cli ? cli.zona : '');
+    return `<tr style="cursor:pointer;" onclick="verDetallePedido('${p.id}')">
       <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
-      <td><div style="font-weight:600;">${cli?cli.nombre:''}</div><div style="font-size:10px;color:var(--t3);">${cli?cli.zona:''}</div></td>
-      <td><span class="badge bb">${cli?cli.zona:''}</span></td>
-      <td style="color:var(--t2);">${p.items} items</td>
+      <td><div style="font-weight:600;">${cli?cli.nombre:p.clienteNombre||''}</div><div style="font-size:10px;color:var(--t3);">${zona}</div></td>
+      <td><span class="badge bb">${zona}</span></td>
+      <td style="color:var(--t2);">${p.items} ítem${p.items!==1?'s':''}</td>
       <td style="font-family:'DM Mono',monospace;font-weight:500;">$${p.total.toLocaleString()}</td>
       <td>${diasChip(p.diasAnt)}</td>
       <td>${estadoDesp(p.estadoDesp)}</td>
       <td>${estadoPago(p.estadoPago)}</td>
-      <td>
-        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">✏️</button>
+      <td onclick="event.stopPropagation()">
+        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">▶ Avanzar</button>
       </td>
     </tr>`;
   }).join('');
@@ -2066,7 +2202,45 @@ function imprimirFormato() {
     '<div class="firma"><div><div class="firma-line">Firma responsable de inventario</div></div>' +
     '<div><div class="firma-line">Firma administrador / verificación</div></div></div>' +
     '<scri' + 'pt>window.onload=function(){window.print();}</' + 'script>' +
-    '</body></html>';
+    '
+<!-- ═══ MODAL DETALLE PEDIDO ═══ -->
+<div class="modal-overlay" id="mDetallePedido">
+  <div class="modal" style="max-width:680px;width:95%;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="mDetalleTitulo">Detalle del Pedido</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px;" id="mDetalleCliente"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('mDetallePedido')">✕</button>
+    </div>
+    <div style="padding:20px 24px;">
+      <!-- Info row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;" id="mDetalleInfo"></div>
+      <!-- Items table -->
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:8px;">Productos del pedido</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;" id="mDetalleItems">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border);">
+              <th style="text-align:left;padding:8px 6px;color:var(--t3);font-weight:600;font-size:11px;">Producto</th>
+              <th style="text-align:center;padding:8px 6px;color:var(--t3);font-weight:600;font-size:11px;">Cant.</th>
+              <th style="text-align:right;padding:8px 6px;color:var(--t3);font-weight:600;font-size:11px;">P.Unit</th>
+              <th style="text-align:right;padding:8px 6px;color:var(--t3);font-weight:600;font-size:11px;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody id="mDetalleItemsBody">
+            <tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Totals -->
+      <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;" id="mDetalleTotales"></div>
+      <!-- Actions -->
+      <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;" id="mDetalleAcciones"></div>
+    </div>
+  </div>
+</div>
+</body></html>';
   w.document.write(html);
   w.document.close();
 }
@@ -2427,6 +2601,93 @@ function resetFormCliente() {
   if (prev) prev.style.display = 'none';
   const title = document.getElementById('mClienteTitle');
   if (title) title.textContent = '👥 Nuevo Cliente';
+}
+
+
+/* ════════ AUTO-LOGIN ════════ */
+document.addEventListener('DOMContentLoaded', async function() {
+  const saved = localStorage.getItem('kx_token');
+  if (!saved) return;
+  TOKEN = saved;
+  try {
+    const me = await api('/auth/me');
+    if (me && me.id) { currentUser = me; await enterApp(); }
+    else { localStorage.removeItem('kx_token'); TOKEN = ''; }
+  } catch(e) { localStorage.removeItem('kx_token'); TOKEN = ''; }
+});
+
+
+async function verDetallePedido(pedidoNum) {
+  const p = DB_pedidos.find(function(x){ return x.id === pedidoNum; });
+  if (!p) return;
+  const cli = getCliente(p.clienteId);
+
+  document.getElementById('mDetalleTitulo').textContent = 'Pedido ' + p.id;
+  document.getElementById('mDetalleCliente').textContent = (cli ? cli.nombre : p.clienteNombre || '') + (p.zona || (cli ? ' · ' + cli.zona : ''));
+
+  document.getElementById('mDetalleInfo').innerHTML =
+    '<div style="background:var(--bg3);border-radius:8px;padding:12px;">' +
+      '<div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;">Fecha</div>' +
+      '<div style="font-weight:600;margin-top:4px;">' + (p.fecha ? p.fecha.split('T')[0] : '—') + '</div>' +
+    '</div>' +
+    '<div style="background:var(--bg3);border-radius:8px;padding:12px;">' +
+      '<div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;">Despacho</div>' +
+      '<div style="margin-top:4px;">' + estadoDesp(p.estadoDesp).replace(/<[^>]*>/g,'') + '</div>' +
+    '</div>' +
+    '<div style="background:var(--bg3);border-radius:8px;padding:12px;">' +
+      '<div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;">Pago</div>' +
+      '<div style="margin-top:4px;">' + estadoPago(p.estadoPago).replace(/<[^>]*>/g,'') + '</div>' +
+    '</div>';
+
+  document.getElementById('mDetalleItemsBody').innerHTML =
+    '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Cargando productos...</td></tr>';
+  document.getElementById('mDetalleTotales').innerHTML = '';
+  document.getElementById('mDetalleAcciones').innerHTML =
+    '<button class="btn btn-ghost" onclick="closeModal('mDetallePedido')">Cerrar</button>' +
+    '<button class="btn btn-primary" onclick="closeModal('mDetallePedido');cambiarEstado('' + p.id + '')">▶ Avanzar estado</button>';
+
+  openModal('mDetallePedido');
+
+  // Fetch full pedido detail
+  try {
+    const det = await api('/pedidos/' + p.dbId);
+    if (!det) return;
+    const items = det.items || [];
+
+    if (items.length === 0) {
+      document.getElementById('mDetalleItemsBody').innerHTML =
+        '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Sin productos registrados</td></tr>';
+    } else {
+      document.getElementById('mDetalleItemsBody').innerHTML = items.map(function(it) {
+        return '<tr style="border-bottom:1px solid var(--border);">' +
+          '<td style="padding:10px 6px;"><div style="font-weight:500;">' + (it.producto_nombre || it.producto_codigo || '') + '</div>' +
+          '<div style="font-size:11px;color:var(--t3);">' + (it.producto_codigo || '') + '</div></td>' +
+          '<td style="text-align:center;padding:10px 6px;font-family:'DM Mono',monospace;">' + it.cantidad + '</td>' +
+          '<td style="text-align:right;padding:10px 6px;font-family:'DM Mono',monospace;">$' + parseFloat(it.precio_unitario).toLocaleString() + '</td>' +
+          '<td style="text-align:right;padding:10px 6px;font-family:'DM Mono',monospace;font-weight:600;">$' + parseFloat(it.subtotal).toLocaleString() + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    document.getElementById('mDetalleTotales').innerHTML =
+      '<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px;">' +
+        '<span style="color:var(--t2);">Subtotal</span>' +
+        '<span style="font-family:'DM Mono',monospace;">$' + parseFloat(det.subtotal||0).toLocaleString() + '</span>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px;">' +
+        '<span style="color:var(--t2);">IGV (18%)</span>' +
+        '<span style="font-family:'DM Mono',monospace;">$' + parseFloat(det.igv||0).toLocaleString() + '</span>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">' +
+        '<span>Total</span>' +
+        '<span style="color:var(--orange);font-family:'DM Mono',monospace;">$' + parseFloat(det.total||0).toLocaleString() + '</span>' +
+      '</div>' +
+      (det.observaciones ? '<div style="margin-top:12px;font-size:12px;color:var(--t3);font-style:italic;">📝 ' + det.observaciones + '</div>' : '');
+
+  } catch(e) {
+    document.getElementById('mDetalleItemsBody').innerHTML =
+      '<tr><td colspan="4" style="text-align:center;color:var(--red);padding:20px;">Error al cargar detalle: ' + e.message + '</td></tr>';
+  }
 }
 
 function exportarClientes() {
