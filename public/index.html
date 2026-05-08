@@ -680,11 +680,11 @@ textarea { resize:vertical; min-height:65px; }
         </div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi ko"><div class="kpi-label">Ventas del Mes</div><div class="kpi-val">$342,800</div><div class="kpi-sub"><span class="kpi-up">↑8.4%</span> vs mes anterior</div></div>
-        <div class="kpi kr"><div class="kpi-label">Pedidos sin despachar</div><div class="kpi-val">14</div><div class="kpi-sub"><span class="kpi-dn">3 con +3 días</span></div></div>
-        <div class="kpi kg"><div class="kpi-label">Cobranza efectiva</div><div class="kpi-val">78.3%</div><div class="kpi-sub"><span class="kpi-up">↑3.1%</span> este mes</div></div>
-        <div class="kpi kr"><div class="kpi-label">MP Stock Crítico</div><div class="kpi-val">3 items</div><div class="kpi-sub"><span class="kpi-dn">Requieren OC urgente</span></div></div>
-        <div class="kpi ka"><div class="kpi-label">CxC Vencidas</div><div class="kpi-val">$48,200</div><div class="kpi-sub"><span class="kpi-dn">12 facturas en mora</span></div></div>
+        <div class="kpi ko"><div class="kpi-label">Ventas del Mes</div><div class="kpi-val" id="dKpiVentas">—</div><div class="kpi-sub" id="dKpiVentasSub">cargando...</div></div>
+        <div class="kpi kr"><div class="kpi-label">Pedidos sin despachar</div><div class="kpi-val" id="dKpiPedidos">—</div><div class="kpi-sub" id="dKpiPedidosSub">En cola</div></div>
+        <div class="kpi kg"><div class="kpi-label">Cobranza efectiva</div><div class="kpi-val" id="dKpiCobranza">—</div><div class="kpi-sub">este mes</div></div>
+        <div class="kpi kr"><div class="kpi-label">MP Stock Crítico</div><div class="kpi-val" id="dKpiMP">—</div><div class="kpi-sub" id="dKpiMPSub">items críticos</div></div>
+        <div class="kpi ka"><div class="kpi-label">CxC Vencidas</div><div class="kpi-val" id="dKpiCxC">—</div><div class="kpi-sub" id="dKpiCxCSub">facturas en mora</div></div>
       </div>
       <div class="g2x1">
         <div class="card">
@@ -1707,11 +1707,32 @@ async function renderAll() {
 
 /* ── Dashboard ── */
 function renderDashboard() {
+  // KPI cards — calculated from real data
+  var sinDesp   = DB_pedidos.filter(function(p){ return p.estadoDesp !== 'entregado'; }).length;
+  var urgentes  = DB_pedidos.filter(function(p){ return p.estadoDesp !== 'entregado' && p.diasAnt >= 3; }).length;
+  var ventasMes = DB_pedidos.reduce(function(s,p){ return s + (p.total||0); }, 0);
+  var cxcTotal  = DB_facturas.filter(function(f){ return f.mora > 0; }).reduce(function(s,f){ return s + (f.total - f.pagado); }, 0);
+  var cxcCount  = DB_facturas.filter(function(f){ return f.mora > 0; }).length;
+  var mpCrit    = DB_mp.filter(function(m){ return m.stock <= m.min; }).length;
+  var totalFac  = DB_facturas.length;
+  var pagadas   = DB_facturas.filter(function(f){ return f.estado === 'pagada'; }).length;
+  var cobrPct   = totalFac > 0 ? Math.round((pagadas/totalFac)*100) : 0;
+
+  var el;
+  el = document.getElementById('dKpiVentas');   if(el) el.textContent = '$' + ventasMes.toLocaleString();
+  el = document.getElementById('dKpiPedidos');  if(el) el.textContent = sinDesp;
+  el = document.getElementById('dKpiPedidosSub'); if(el) el.innerHTML = urgentes > 0 ? '<span class="kpi-dn">' + urgentes + ' con +3 días</span>' : 'Al día';
+  el = document.getElementById('dKpiCobranza'); if(el) el.textContent = cobrPct + '%';
+  el = document.getElementById('dKpiMP');       if(el) el.textContent = mpCrit + ' items';
+  el = document.getElementById('dKpiMPSub');    if(el) el.innerHTML = mpCrit > 0 ? '<span class="kpi-dn">Requieren OC urgente</span>' : 'Stock OK';
+  el = document.getElementById('dKpiCxC');      if(el) el.textContent = '$' + Math.round(cxcTotal).toLocaleString();
+  el = document.getElementById('dKpiCxCSub');   if(el) el.innerHTML = '<span class="kpi-dn">' + cxcCount + ' facturas en mora</span>';
+
   // Bar chart
   const vals = [42,38,55,61,48,70,67], lbls = ['S1','S2','S3','S4','S5','S6','S7'];
   const maxV = Math.max(...vals);
-  const el = document.getElementById('bcDash');
-  if (el) el.innerHTML = vals.map((v,i) => {
+  var bcEl = document.getElementById('bcDash');
+  if (bcEl) bcEl.innerHTML = vals.map((v,i) => {
     const h = Math.round((v/maxV)*85);
     const clr = i >= 5 ? 'var(--orange)' : 'var(--wire)';
     return `<div class="bc-col"><div class="bc-val">$${v}k</div><div class="bc-bar" style="height:${h}%;background:${clr};"></div><div class="bc-label">${lbls[i]}</div></div>`;
