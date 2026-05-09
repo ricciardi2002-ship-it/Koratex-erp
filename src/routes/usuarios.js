@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', auth, roles('admin'), async (req, res, next) => {
   try {
     const result = await query(`
-      SELECT u.id, u.nombre, u.email, u.activo, u.created_at,
+      SELECT u.id, u.nombre, u.email, u.telefono, u.activo, u.created_at,
              r.id as rol_id, r.nombre as rol, r.descripcion as rol_desc
       FROM usuarios u
       JOIN roles r ON r.id = u.rol_id
@@ -30,7 +30,7 @@ router.get('/roles', auth, roles('admin'), async (req, res, next) => {
 // POST /api/usuarios — crear usuario (admin)
 router.post('/', auth, roles('admin'), async (req, res, next) => {
   try {
-    const { nombre, email, password, rol_id } = req.body;
+    const { nombre, email, password, rol_id, telefono } = req.body;
     if (!nombre || !email || !password || !rol_id) {
       return res.status(400).json({ error: 'Nombre, email, contraseña y rol son requeridos' });
     }
@@ -40,9 +40,9 @@ router.post('/', auth, roles('admin'), async (req, res, next) => {
     }
     const hash = await bcrypt.hash(password, 10);
     const result = await query(
-      `INSERT INTO usuarios (nombre, email, password_hash, rol_id)
-       VALUES ($1, $2, $3, $4) RETURNING id, nombre, email, activo, created_at`,
-      [nombre, email, hash, rol_id]
+      `INSERT INTO usuarios (nombre, email, password_hash, rol_id, telefono)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id, nombre, email, telefono, activo, created_at`,
+      [nombre, email, hash, rol_id, telefono || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) { next(err); }
@@ -51,12 +51,13 @@ router.post('/', auth, roles('admin'), async (req, res, next) => {
 // PATCH /api/usuarios/:id — editar nombre / rol / contraseña (admin)
 router.patch('/:id', auth, roles('admin'), async (req, res, next) => {
   try {
-    const { nombre, email, password, rol_id } = req.body;
+    const { nombre, email, password, rol_id, telefono } = req.body;
     const fields = []; const values = []; let idx = 1;
 
     if (nombre)   { fields.push(`nombre=$${idx++}`);       values.push(nombre); }
     if (email)    { fields.push(`email=$${idx++}`);        values.push(email); }
     if (rol_id)   { fields.push(`rol_id=$${idx++}`);       values.push(rol_id); }
+    if (telefono !== undefined) { fields.push(`telefono=$${idx++}`); values.push(telefono || null); }
     if (password) {
       const hash = await bcrypt.hash(password, 10);
       fields.push(`password_hash=$${idx++}`); values.push(hash);

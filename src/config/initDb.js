@@ -21,6 +21,9 @@ async function initDb() {
     updated_at TIMESTAMPTZ DEFAULT NOW()
   )`);
 
+  // Migración: agregar teléfono a usuarios para integración WhatsApp
+  await query(`ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS telefono VARCHAR(30) UNIQUE`);
+
   await query(`CREATE TABLE IF NOT EXISTS tipos_cliente (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL UNIQUE,
@@ -137,6 +140,19 @@ async function initDb() {
     subtotal NUMERIC(12,2),
     notas TEXT,
     UNIQUE(pedido_id, linea)
+  )`);
+
+  // Auditoría WhatsApp: cada mensaje recibido del bot
+  await query(`CREATE TABLE IF NOT EXISTS whatsapp_log (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    from_phone VARCHAR(30) NOT NULL,
+    vendedor_id UUID REFERENCES usuarios(id),
+    raw_text TEXT NOT NULL,
+    parsed_json JSONB,
+    pedido_id UUID REFERENCES pedidos(id),
+    estado VARCHAR(20) NOT NULL,
+    error TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
   )`);
 
   await query(`CREATE TABLE IF NOT EXISTS facturas (
