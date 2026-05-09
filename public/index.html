@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
 <title>Koratex · ERP Sistema Integral</title>
 
 <style>
@@ -614,21 +617,76 @@ input:focus,select:focus,textarea:focus {
 }
 
 /* ── Responsive ── */
+
+/* Tables: always scrollable horizontally inside cards */
+.card { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.card > table { min-width:560px; }
+
+/* Tablet / iPad (≤1200px) */
+@media(max-width:1200px) {
+  .app { grid-template-columns:240px 1fr; }
+  .g3,.fg3 { grid-template-columns:repeat(2,1fr); }
+  .kpi-grid[style*="repeat(5,1fr)"] { grid-template-columns:repeat(3,1fr) !important; }
+  .kpi-grid[style*="repeat(4,1fr)"] { grid-template-columns:repeat(2,1fr) !important; }
+}
+
+/* Tablet vertical / Mobile grande (≤900px) */
 @media(max-width:900px) {
-  .app { grid-template-columns:1fr; }
   .app { grid-template-columns:0 1fr; }
-  .sidebar { position:fixed; top:0; left:0; transform:translateX(-100%); }
+  .sidebar { position:fixed; top:0; left:0; height:100vh; width:280px; max-width:85vw; transform:translateX(-100%); transition:transform .25s ease; z-index:200; box-shadow:2px 0 24px rgba(0,0,0,.5); }
   .sidebar.open { transform:translateX(0); }
+  .sb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:150; }
+  .sb-overlay.open { display:block; }
   .g2,.g3,.g2x1,.fg2,.fg3 { grid-template-columns:1fr; }
-  .kpi-grid { grid-template-columns:1fr 1fr; }
-  .menu-btn { display:flex !important; }
+  .kpi-grid,
+  .kpi-grid[style*="repeat(5,1fr)"],
+  .kpi-grid[style*="repeat(4,1fr)"] { grid-template-columns:repeat(2,1fr) !important; }
+  .menu-btn { display:flex !important; align-items:center; justify-content:center; min-width:40px; min-height:40px; }
   .page { padding:var(--s-4); }
   .lines-head,.oline { grid-template-columns:22px 1fr 80px 60px 75px 75px 26px; }
+  .ph { flex-direction:column; align-items:flex-start; gap:12px; }
+  .ph-actions { width:100%; display:flex; flex-wrap:wrap; gap:8px; }
+  .ph-actions .btn { flex:1 1 auto; min-height:44px; }
+  .tw-toolbar { flex-direction:column; align-items:stretch; gap:10px; }
+  .tw-toolbar > * { width:100%; }
+  .modal-content { width:min(560px,94vw) !important; max-height:92vh; overflow-y:auto; }
+  /* Touch targets */
+  .btn,.tb-alert,.sb-item { min-height:40px; }
+  /* Tables more compact */
+  table th, table td { padding:10px 8px; font-size:12.5px; }
 }
+
+/* Móvil (≤640px) */
 @media(max-width:640px) {
-  .kpi-val { font-size:36px; }
-  .ph { flex-direction:column; align-items:flex-start; }
-  .kpi-grid { grid-template-columns:1fr; }
+  .topbar { padding:10px 12px; }
+  .tb-title { font-size:14px; }
+  .tb-clock { display:none; }
+  .page { padding:14px 12px; }
+  .kpi-val { font-size:30px; }
+  .kpi-grid,
+  .kpi-grid[style*="repeat(5,1fr)"],
+  .kpi-grid[style*="repeat(4,1fr)"] { grid-template-columns:1fr !important; }
+  .ph h2 { font-size:20px; }
+  .ph p { font-size:12px; }
+  /* Pedido lines: ocultar SKU pequeño y ajustar */
+  .lines-head,.oline { grid-template-columns:1fr 60px 60px 70px 26px; font-size:11px; }
+  .lines-head > :nth-child(1),.oline > :nth-child(1),
+  .lines-head > :nth-child(4),.oline > :nth-child(4) { display:none; }
+  /* Modales full-width */
+  .modal-content { width:100vw !important; max-width:100vw !important; height:100vh; max-height:100vh; border-radius:0 !important; }
+  /* Cards menos padding */
+  .card { padding:14px 12px; }
+  /* Botones bloque */
+  .btn { padding:10px 14px; font-size:13px; }
+  .ph-actions .btn { width:100%; }
+  /* Form inputs táctiles */
+  input, select, textarea { font-size:16px !important; min-height:42px; } /* 16px evita zoom iOS */
+}
+
+/* Móvil pequeño (≤380px) */
+@media(max-width:380px) {
+  .kpi-val { font-size:26px; }
+  .sb-item { font-size:13px; }
 }
 </style>
 
