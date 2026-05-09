@@ -131,73 +131,111 @@ a:hover { opacity:0.85; }
 
 /* ── Sidebar ── */
 .sidebar {
-  width: var(--sb-w);
-  min-height: 100vh;
-  background: var(--bg-elev);
-  border-right: 1px solid var(--border-subtle);
-  padding: var(--s-4) var(--s-3);
-  display: flex;
-  flex-direction: column;
-  position: fixed; top:0; left:0; z-index:200;
-  overflow-y: auto;
-  transition: transform var(--t-slow);
+  position:sticky; top:0; height:100vh;
+  width:var(--sb-w);
+  background:linear-gradient(180deg,#0b0b0d 0%,#050507 100%);
+  border-right:1px solid var(--border-subtle);
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  overflow:hidden;
+  z-index:200;
 }
 .sb-brand {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  padding: var(--s-2) var(--s-2) var(--s-5);
+  display:flex; align-items:center; gap:12px;
+  padding:18px 16px;
+  border-bottom:1px solid var(--border-subtle);
 }
-.sb-logo { width:34px; height:34px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
-.sb-title { font-size:15px; font-weight:700; letter-spacing:1px; text-transform:uppercase; line-height:1; color:var(--text); }
-.sb-title small { display:block; font-size:9px; color:var(--text-3); letter-spacing:1px; font-weight:400; margin-top:3px; text-transform:uppercase; }
+.sb-brand img,.sb-brand svg { width:32px; height:32px; border-radius:8px; }
+.sb-brand .sb-brand-text { display:flex; flex-direction:column; line-height:1.1; }
+.sb-brand .sb-brand-text strong { font-size:14px; letter-spacing:.02em; color:var(--text); }
+.sb-brand .sb-brand-text span { font-size:10px; letter-spacing:.18em; color:var(--text-3); text-transform:uppercase; }
 
-.sb-nav { flex:1; display:flex; flex-direction:column; gap:2px; padding:var(--s-2) 0; }
-.sb-section { font-size:10px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-3); padding:var(--s-4) var(--s-2) var(--s-1); }
+.sb-nav { overflow-y:auto; padding:12px 10px 20px; scrollbar-gutter:stable; }
+.sb-nav::-webkit-scrollbar { width:4px; }
+.sb-nav::-webkit-scrollbar-thumb { background:#1a1a1c; border:0; }
+
+.sb-group { margin-bottom:4px; }
+.sb-group-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px 6px;
+  font-size:10.5px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text-3); cursor:pointer; user-select:none;
+  border-radius:6px; transition:color .15s ease;
+}
+.sb-group-header:hover { color:var(--text-2); }
+.sb-group-header .chev { width:14px; height:14px; transition:transform .25s cubic-bezier(.2,.7,.2,1); opacity:.6; }
+.sb-group.collapsed .chev { transform:rotate(-90deg); }
+.sb-group-items { display:grid; grid-template-rows:1fr; transition:grid-template-rows .28s cubic-bezier(.2,.7,.2,1), opacity .2s ease; }
+.sb-group-items > div { overflow:hidden; }
+.sb-group.collapsed .sb-group-items { grid-template-rows:0fr; opacity:0; }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  padding: 8px var(--s-3);
-  border-radius: var(--r-md);
-  color: var(--text-2);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  transition: background var(--t), color var(--t);
-  margin-bottom: 1px;
+  position:relative;
+  display:flex; align-items:center; gap:12px;
+  padding:9px 12px; margin:2px 0;
+  border-radius:10px;
+  color:var(--text-2);
+  font-size:13.5px; font-weight:500;
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease;
 }
-.nav-ic { font-size:14px; width:18px; text-align:center; flex-shrink:0; }
-.nav-item:hover { background:#ffffff08; color:var(--text); }
-.nav-item.active { background:var(--accent-soft); color:var(--accent); font-weight:600; }
-.nav-badge { margin-left:auto; background:var(--red); color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:8px; font-family:var(--font-mono); }
+.nav-item .icon-chip {
+  width:28px; height:28px; flex:0 0 auto;
+  display:grid; place-items:center;
+  border-radius:8px;
+  background:#15151a; border:1px solid #1f1f24;
+  transition:background .15s ease, border-color .15s ease;
+  font-size:14px;
+}
+.nav-item:hover { background:#ffffff06; color:var(--text); }
+.nav-item:hover .icon-chip { background:#1c1c22; border-color:#2a2a30; }
+.nav-item.active {
+  background:linear-gradient(90deg,rgba(0,113,227,.18) 0%,rgba(0,113,227,.04) 100%);
+  color:#5ab0ff;
+  box-shadow:inset 0 0 0 1px rgba(0,113,227,.18);
+}
+.nav-item.active::before {
+  content:""; position:absolute; left:-2px; top:8px; bottom:8px;
+  width:3px; border-radius:0 3px 3px 0;
+  background:var(--accent); box-shadow:0 0 12px rgba(0,113,227,.6);
+}
+.nav-item.active .icon-chip { background:rgba(0,113,227,.18); border-color:rgba(0,113,227,.35); }
+.nav-badge { margin-left:auto; font-size:10.5px; font-weight:600; padding:1px 7px; border-radius:999px; background:#1c1c22; color:var(--text-2); font-variant-numeric:tabular-nums; }
+.nav-item.active .nav-badge { background:rgba(0,113,227,.2); color:#7cc0ff; }
 
-.sb-user {
-  padding: var(--s-3) var(--s-2);
-  border-top: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  margin-top: auto;
+.sb-footer {
+  border-top:1px solid var(--border-subtle);
+  padding:10px;
+  background:linear-gradient(180deg,transparent 0%,#050507 60%);
+  display:flex; flex-direction:column; gap:4px;
 }
-.sb-av {
-  width:32px; height:32px; border-radius:var(--r-md);
-  background: linear-gradient(135deg, var(--ko), var(--kb));
-  display:flex; align-items:center; justify-content:center;
-  font-size:11px; font-weight:700; color:#fff; flex-shrink:0;
+.sb-user { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; }
+.sb-av,.sb-user .avatar {
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg,#0071e3,#5ab0ff);
+  display:grid; place-items:center;
+  font-size:12px; font-weight:600; color:#fff; flex-shrink:0;
 }
-.sb-uname { font-size:12px; font-weight:600; color:var(--text); }
-.sb-urole { font-size:10px; color:var(--text-3); }
-.sb-out { margin-left:auto; background:none; border:none; color:var(--text-3); cursor:pointer; font-size:15px; padding:3px; border-radius:5px; transition:all var(--t); }
-.sb-out:hover { background:var(--red-l); color:var(--red); }
+.sb-uname,.sb-user .meta strong { font-size:13px; color:var(--text); font-weight:600; display:block; }
+.sb-urole,.sb-user .meta span { font-size:11px; color:var(--text-3); display:block; }
+.sb-user .meta { display:flex; flex-direction:column; line-height:1.2; min-width:0; }
+.sb-out,.sb-logout {
+  display:flex; align-items:center; gap:10px;
+  width:100%; padding:9px 12px;
+  background:transparent; border:1px solid var(--border);
+  color:var(--text-2); border-radius:10px;
+  font-size:13px; font-weight:500; font-family:inherit;
+  cursor:pointer; transition:all .15s ease;
+}
+.sb-out:hover,.sb-logout:hover { background:rgba(255,69,58,.08); border-color:rgba(255,69,58,.3); color:#ff6b61; }
+.sb-logout svg { width:16px; height:16px; }
 
 .sb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:199; }
 .sb-overlay.open { display:block; }
 
 /* ── Main ── */
-.main { margin-left:var(--sb-w); flex:1; display:flex; flex-direction:column; min-width:0; background:var(--bg); }
+.main { flex:1; display:flex; flex-direction:column; min-width:0; background:var(--bg); overflow-x:hidden; }
 
 /* ── Topbar ── */
 .topbar {
@@ -578,9 +616,9 @@ input:focus,select:focus,textarea:focus {
 /* ── Responsive ── */
 @media(max-width:900px) {
   .app { grid-template-columns:1fr; }
-  .sidebar { transform:translateX(-100%); }
+  .app { grid-template-columns:0 1fr; }
+  .sidebar { position:fixed; top:0; left:0; transform:translateX(-100%); }
   .sidebar.open { transform:translateX(0); }
-  .main { margin-left:0; }
   .g2,.g3,.g2x1,.fg2,.fg3 { grid-template-columns:1fr; }
   .kpi-grid { grid-template-columns:1fr 1fr; }
   .menu-btn { display:flex !important; }
@@ -634,14 +672,25 @@ input:focus,select:focus,textarea:focus {
 <div class="app" id="appShell" style="display:none;">
   <nav class="sidebar" id="sidebar">
     <div class="sb-brand">
-      <img id="_sbLogo" style="width:34px;height:34px;object-fit:contain;background:transparent;border-radius:0;" alt="Koratex">
-      <div class="sb-title">KORATEX <small>Mortero Seco</small></div>
+      <img id="_sbLogo" style="width:32px;height:32px;object-fit:contain;background:transparent;border-radius:8px;" alt="Koratex">
+      <div class="sb-brand-text">
+        <strong>KORATEX</strong>
+        <span>Mortero Seco</span>
+      </div>
     </div>
-    <div class="sb-nav" id="sbNav"></div>
-    <div class="sb-user">
-      <div class="sb-av" id="sbAv">AD</div>
-      <div><div class="sb-uname" id="sbName">Admin</div><div class="sb-urole" id="sbRole">Administrador</div></div>
-      <button class="sb-out" onclick="logout()">⎋</button>
+    <nav class="sb-nav" id="sbNav"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-av" id="sbAv">AD</div>
+        <div class="meta">
+          <strong id="sbName">Admin</strong>
+          <span id="sbRole">Administrador</span>
+        </div>
+      </div>
+      <button class="sb-logout" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Cerrar sesión
+      </button>
     </div>
   </nav>
 
@@ -1668,14 +1717,29 @@ function logout() {
 }
 function buildNav(role) {
   const navEl = document.getElementById('sbNav');
-  let html = ''; let lastGroup = '';
+  // Group items by group name preserving order
+  const groups = {};
+  const groupOrder = [];
   ROLES[role].nav.forEach(id => {
     const item = NAV[id]; if (!item) return;
-    if (item.group !== lastGroup) { html += `<div class="sb-section">${item.group}</div>`; lastGroup = item.group; }
-    html += `<div class="nav-item" id="nav-${id}" onclick="navigate('${id}')">
-      <span class="nav-ic">${item.icon}</span>${item.label}
-      ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
-    </div>`;
+    if (!groups[item.group]) { groups[item.group] = []; groupOrder.push(item.group); }
+    groups[item.group].push({ id, ...item });
+  });
+  let html = '';
+  groupOrder.forEach(grp => {
+    html += `<div class="sb-group">
+      <div class="sb-group-header" onclick="this.parentElement.classList.toggle('collapsed')">
+        ${grp}
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sb-group-items"><div>`;
+    groups[grp].forEach(({ id, icon, label, badge }) => {
+      html += `<div class="nav-item" id="nav-${id}" onclick="navigate('${id}')">
+        <span class="icon-chip">${icon}</span>${label}
+        ${badge ? `<span class="nav-badge">${badge}</span>` : ''}
+      </div>`;
+    });
+    html += `</div></div></div>`;
   });
   navEl.innerHTML = html;
 }
