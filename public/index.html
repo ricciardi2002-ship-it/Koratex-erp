@@ -571,6 +571,7 @@ input:focus,select:focus,textarea:focus {
   gap:5px; padding:6px 8px; background:var(--surface-2); border-radius:var(--r-sm);
   font-size:9.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--text-3); margin-bottom:4px;
 }
+.lines-head > div { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .oline {
   display:grid; grid-template-columns:26px 1fr 110px 75px 90px 90px 30px;
   gap:5px; align-items:center; padding:4px 7px; border-radius:var(--r-sm);
@@ -859,7 +860,7 @@ input:focus,select:focus,textarea:focus {
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title">Productos del Pedido <span style="font-size:10px;color:var(--t3);text-transform:none;font-weight:400;">(máx. 15 líneas)</span></div>
         <div class="lines-head">
-          <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio unit.</div><div>Subtotal</div><div></div>
+          <div>#</div><div>Producto</div><div>Present.</div><div>Cant.</div><div>Precio</div><div>Subtotal</div><div></div>
         </div>
         <div id="npLines"></div>
         <div class="ototal">
@@ -1462,7 +1463,7 @@ input:focus,select:focus,textarea:focus {
       </div>
       <div class="fs">
         <div class="fs-title">Líneas de producto (máx. 15)</div>
-        <div class="lines-head"><div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio unit.</div><div>Subtotal</div><div></div></div>
+        <div class="lines-head"><div>#</div><div>Producto</div><div>Present.</div><div>Cant.</div><div>Precio</div><div>Subtotal</div><div></div></div>
         <div id="mpLines"></div>
         <div class="ototal">
           <div><div class="ototal-label">Total del pedido (+ IGV 18%)</div><div id="mpCount" style="font-size:10px;color:var(--orange);opacity:.7;">0 ítems</div></div>
