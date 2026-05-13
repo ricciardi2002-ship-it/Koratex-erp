@@ -52,6 +52,12 @@ cobranzaRouter.get('/:id', auth, async (req, res, next) => {
 cobranzaRouter.post('/', auth, roles('admin', 'finanzas'), async (req, res, next) => {
   try {
     const { numero, pedido_id, cliente_id, monto_total, fecha_vencimiento } = req.body;
+    if (pedido_id) {
+      const dup = await query(`SELECT numero FROM facturas WHERE pedido_id = $1`, [pedido_id]);
+      if (dup.rows.length) {
+        return res.status(409).json({ error: `El pedido ya tiene la factura ${dup.rows[0].numero}` });
+      }
+    }
     const result = await query(
       `INSERT INTO facturas (numero, pedido_id, cliente_id, monto_total, fecha_vencimiento)
        VALUES ($1,$2,$3,$4,$5) RETURNING *`,

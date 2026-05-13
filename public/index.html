@@ -1684,6 +1684,7 @@ async function loadData() {
         ? Math.floor((Date.now() - new Date(venc).getTime()) / 86400000) : 0;
       return { id: f.id, num: f.numero, clienteId: f.cliente_id,
         clienteNombre: f.cliente_nombre,
+        pedidoId: f.pedido_id,
         total: parseFloat(f.monto_total) || 0, pagado: parseFloat(f.monto_pagado) || 0,
         estado: f.estado === 'pagada' ? 'pagada' : 'pendiente',
         venc: venc, mora: mora,
@@ -2277,7 +2278,12 @@ function renderCola() {
       <td>${estadoPago(p.estadoPago)}</td>
       <td onclick="event.stopPropagation()" style="display:flex;gap:4px;">
         <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">&#9654;</button>
-        <button class="btn btn-cyan btn-xs" onclick="crearFactura('${p.id}','${p.dbId}')" title="Generar factura">🧾</button>
+        ${(function(){
+          var fExist = DB_facturas.find(function(f){ return f.pedidoId === p.dbId; });
+          return fExist
+            ? '<button class="btn btn-xs" style="background:var(--green-l);color:var(--green);border:1px solid var(--green);cursor:default;" title="Factura '+fExist.num+' ya generada" disabled>✓ '+fExist.num+'</button>'
+            : '<button class="btn btn-cyan btn-xs" onclick="crearFactura(\''+p.id+'\',\''+p.dbId+'\')" title="Generar factura">🧾 Facturar</button>';
+        })()}
       </td>
     </tr>`;
   }).join('');
