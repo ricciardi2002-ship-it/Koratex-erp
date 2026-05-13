@@ -669,10 +669,15 @@ input:focus,select:focus,textarea:focus {
   .ph h2 { font-size:20px; }
   .ph p { font-size:12px; }
   /* Pedido lines en móvil: ocultar # y Presentación, mostrar Producto/Cant/Precio/Sub/✕ */
-  .lines-head,.oline { grid-template-columns:1fr 55px 65px 62px 26px; font-size:11px; }
+  .lines-head,.oline { grid-template-columns:1fr 44px 56px 52px 22px; font-size:9.5px; gap:3px; }
   .lines-head > :nth-child(1),.oline > :nth-child(1),
   .lines-head > :nth-child(3),.oline > :nth-child(3) { display:none; }
-  .oline select,.oline input { padding:4px 6px; font-size:11px; }
+  .oline select,.oline input { padding:3px 4px; font-size:9.5px; }
+  .oline { padding:3px 4px; }
+  .osub { font-size:10px; }
+  .oclear { width:20px; height:20px; font-size:10px; }
+  /* Modal: reducir padding lateral para ganar espacio */
+  .modal-body { padding:14px 12px; }
   /* Modales full-width en móvil */
   .modal-content { width:100vw !important; max-width:100vw !important; height:100vh; max-height:100vh; border-radius:0 !important; }
   /* Cards menos padding */
