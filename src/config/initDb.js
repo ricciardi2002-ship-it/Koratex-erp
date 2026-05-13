@@ -28,6 +28,20 @@ async function initDb() {
     lista_precios VARCHAR(5) NOT NULL
   )`);
 
+  // Migración: renombrar zonas genéricas a zonas reales de operación
+  await query(`UPDATE zonas SET nombre='Catia'         WHERE nombre='Norte'`);
+  await query(`UPDATE zonas SET nombre='La Guaira'     WHERE nombre='Sur'`);
+  await query(`UPDATE zonas SET nombre='La California' WHERE nombre='Este'`);
+  await query(`UPDATE zonas SET nombre='La Yaguara'    WHERE nombre='Oeste'`);
+  await query(`UPDATE zonas SET nombre='Mariche'       WHERE nombre='Centro'`);
+  await query(`UPDATE zonas SET nombre='Guatire'       WHERE nombre='Cono'`);
+  // Zonas adicionales
+  await query(`INSERT INTO zonas (nombre, km_ref) VALUES
+    ('Guarenas',35),('Baruta',18),('Boleita Norte',14),
+    ('Los Teques',32),('Catia La Mar',22),('Sabana Grande',10),
+    ('San Martín',12),('Bello Monte',15)
+    ON CONFLICT (nombre) DO NOTHING`);
+
   await query(`CREATE TABLE IF NOT EXISTS zonas (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE,
@@ -260,7 +274,11 @@ async function seedData() {
     ON CONFLICT DO NOTHING`);
 
   await query(`INSERT INTO zonas (nombre, km_ref) VALUES
-    ('Norte',12),('Sur',18),('Este',22),('Oeste',15),('Centro',8),('Cono',28)
+    ('Catia',12),('La Guaira',28),('La California',18),
+    ('La Yaguara',15),('Mariche',22),('Guatire',45),
+    ('Guarenas',35),('Baruta',18),('Boleita Norte',14),
+    ('Los Teques',32),('Catia La Mar',22),('Sabana Grande',10),
+    ('San Martín',12),('Bello Monte',15)
     ON CONFLICT DO NOTHING`);
 
   await query(`INSERT INTO tipos_producto (nombre) VALUES
