@@ -8,12 +8,15 @@ const cobranzaRouter = express.Router();
 // GET /api/cobranza  — facturas
 cobranzaRouter.get('/', auth, async (req, res, next) => {
   try {
+    const isComercial = req.user.rol === 'comercial';
     const result = await query(
       `SELECT f.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo
        FROM facturas f
        JOIN clientes c ON c.id = f.cliente_id
+       ${isComercial ? 'WHERE c.vendedor_id = $1' : ''}
        ORDER BY f.fecha_emision DESC
-       LIMIT 200`
+       LIMIT 200`,
+      isComercial ? [req.user.id] : []
     );
     res.json(result.rows);
   } catch (err) {
@@ -52,6 +55,12 @@ cobranzaRouter.get('/:id', auth, async (req, res, next) => {
 cobranzaRouter.post('/', auth, roles('admin', 'finanzas'), async (req, res, next) => {
   try {
     const { numero, pedido_id, cliente_id, monto_total, fecha_vencimiento } = req.body;
+    if (pedido_id) {
+      const dup = await query(`SELECT numero FROM facturas WHERE pedido_id = $1`, [pedido_id]);
+      if (dup.rows.length) {
+        return res.status(409).json({ error: `El pedido ya tiene la factura ${dup.rows[0].numero}` });
+      }
+    }
     const result = await query(
       `INSERT INTO facturas (numero, pedido_id, cliente_id, monto_total, fecha_vencimiento)
        VALUES ($1,$2,$3,$4,$5) RETURNING *`,
@@ -81,7 +90,7 @@ cobranzaRouter.post('/:id/pagos', auth, roles('admin', 'finanzas'), async (req, 
     );
 
     const nuevoPagado = parseFloat(factura.monto_pagado) + parseFloat(monto);
-    const estado = nuevoPagado >= parseFloat(factura.monto_total) ? 'pagada' : 'vigente';
+    const estado = nuevoPagado >= parseFloat(factura.monto_total) - 0.001 ? 'pagada' : 'abonado';
     await query(
       `UPDATE facturas SET monto_pagado = $1, estado = $2 WHERE id = $3`,
       [nuevoPagado, estado, factura.id]
@@ -96,14 +105,17 @@ cobranzaRouter.post('/:id/pagos', auth, roles('admin', 'finanzas'), async (req, 
 // GET /api/cobranza/resumen/vencidas
 cobranzaRouter.get('/resumen/vencidas', auth, async (req, res, next) => {
   try {
+    const isComercial = req.user.rol === 'comercial';
     const result = await query(
       `SELECT f.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo,
               (f.monto_total - f.monto_pagado) as saldo_pendiente,
               (CURRENT_DATE - f.fecha_vencimiento) as dias_vencida
        FROM facturas f
        JOIN clientes c ON c.id = f.cliente_id
-       WHERE f.estado = 'vigente' AND f.fecha_vencimiento < CURRENT_DATE
-       ORDER BY dias_vencida DESC`
+       WHERE f.estado IN ('pendiente','abonado') AND f.fecha_vencimiento < CURRENT_DATE
+         ${isComercial ? 'AND c.vendedor_id = $1' : ''}
+       ORDER BY dias_vencida DESC`,
+      isComercial ? [req.user.id] : []
     );
     res.json(result.rows);
   } catch (err) {
@@ -126,6 +138,16 @@ despachoRouter.get('/', auth, async (req, res, next) => {
        ORDER BY rd.fecha DESC, rd.created_at DESC
        LIMIT 100`
     );
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /api/despacho/vehiculos/lista  — must be before /:id
+despachoRouter.get('/vehiculos/lista', auth, async (req, res, next) => {
+  try {
+    const result = await query(`SELECT * FROM vehiculos WHERE activo = TRUE ORDER BY placa`);
     res.json(result.rows);
   } catch (err) {
     next(err);
@@ -198,16 +220,6 @@ despachoRouter.patch('/:id/estado', auth, roles('admin', 'logistica'), async (re
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Ruta no encontrada' });
     res.json(result.rows[0]);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// GET /api/despacho/vehiculos/lista
-despachoRouter.get('/vehiculos/lista', auth, async (req, res, next) => {
-  try {
-    const result = await query(`SELECT * FROM vehiculos WHERE activo = TRUE ORDER BY placa`);
-    res.json(result.rows);
   } catch (err) {
     next(err);
   }
