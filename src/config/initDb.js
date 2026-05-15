@@ -28,6 +28,13 @@ async function initDb() {
     lista_precios VARCHAR(5) NOT NULL
   )`);
 
+  await query(`CREATE TABLE IF NOT EXISTS zonas (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    km_ref NUMERIC(8,2),
+    activa BOOLEAN DEFAULT TRUE
+  )`);
+
   // Migración: renombrar zonas genéricas a zonas reales de operación
   await query(`UPDATE zonas SET nombre='Catia'         WHERE nombre='Norte'`);
   await query(`UPDATE zonas SET nombre='La Guaira'     WHERE nombre='Sur'`);
@@ -41,13 +48,6 @@ async function initDb() {
     ('Los Teques',32),('Catia La Mar',22),('Sabana Grande',10),
     ('San Martín',12),('Bello Monte',15)
     ON CONFLICT (nombre) DO NOTHING`);
-
-  await query(`CREATE TABLE IF NOT EXISTS zonas (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL UNIQUE,
-    km_ref NUMERIC(8,2),
-    activa BOOLEAN DEFAULT TRUE
-  )`);
 
   await query(`CREATE TABLE IF NOT EXISTS clientes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

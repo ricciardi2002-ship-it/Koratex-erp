@@ -1067,11 +1067,20 @@ textarea { resize:vertical; min-height:65px; }
             </select>
             <select id="cliZonaFiltro" style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" onchange="filtrarClientes()">
               <option value="">Todas las zonas</option>
-              <option value="Norte">Norte</option>
-              <option value="Sur">Sur</option>
-              <option value="Este">Este</option>
-              <option value="Oeste">Oeste</option>
-              <option value="Centro">Centro</option>
+              <option value="Catia">Catia</option>
+              <option value="La Guaira">La Guaira</option>
+              <option value="La California">La California</option>
+              <option value="La Yaguara">La Yaguara</option>
+              <option value="Mariche">Mariche</option>
+              <option value="Guatire">Guatire</option>
+              <option value="Guarenas">Guarenas</option>
+              <option value="Baruta">Baruta</option>
+              <option value="Boleita Norte">Boleita Norte</option>
+              <option value="Los Teques">Los Teques</option>
+              <option value="Catia La Mar">Catia La Mar</option>
+              <option value="Sabana Grande">Sabana Grande</option>
+              <option value="San Martín">San Martín</option>
+              <option value="Bello Monte">Bello Monte</option>
             </select>
           </div>
         </div>
@@ -1464,6 +1473,7 @@ async function loadData() {
       api('/inventario/alertas'),
       api('/despacho/vehiculos/lista'),
       api('/pedidos/ventas-anuales'),
+      api('/clientes/zonas/lista'),
     ]);
     const clientes    = (results[0].status==='fulfilled' && results[0].value) || [];
     const productos   = (results[1].status==='fulfilled' && results[1].value) || [];
@@ -1474,7 +1484,9 @@ async function loadData() {
     const alertasAPI  = (results[6].status==='fulfilled' && results[6].value) || [];
     const vehiculos   = (results[7].status==='fulfilled' && results[7].value) || [];
     const ventasAnual = (results[8].status==='fulfilled' && results[8].value) || [];
+    const zonas       = (results[9].status==='fulfilled' && results[9].value) || [];
     console.log('[KX] loadData:', clientes.length,'clientes,', productos.length,'productos,', pedidos.length,'pedidos');
+    if (zonas.length) DB_zonas = zonas;
     DB_ventasDia = ventasDia;
     DB_alertas = alertasAPI;
     DB_vehiculos = vehiculos;
@@ -1604,6 +1616,7 @@ async function enterApp() {
 
 // ─── DATA ───
 let DB_clientes = [];
+let DB_zonas = [];
 
 let DB_productos = [];
 
@@ -1767,6 +1780,15 @@ function populateSelects() {
       var cli = getCliente(p.clienteId);
       return '<option value="'+p.dbId+'">'+p.id+' · '+(cli?cli.nombre:p.clienteNombre||'')+' · $'+p.total.toLocaleString()+'</option>';
     }).join('');
+  }
+  // Zonas: poblar dropdowns de zona en formulario cliente y filtro
+  if (DB_zonas.length) {
+    var zonaOpts = DB_zonas.map(function(z){ return '<option value="'+z.nombre+'">'+z.nombre+'</option>'; }).join('');
+    var zonaFiltroOpts = '<option value="">Todas las zonas</option>' + zonaOpts;
+    var selZona = document.getElementById('cliZona');
+    if (selZona) { var curZona = selZona.value; selZona.innerHTML = zonaOpts; if (curZona) selZona.value = curZona; }
+    var selZonaF = document.getElementById('cliZonaFiltro');
+    if (selZonaF) { var curZonaF = selZonaF.value; selZonaF.innerHTML = zonaFiltroOpts; if (curZonaF) selZonaF.value = curZonaF; }
   }
   // Cobranza urgentes panel: populate mcFactura select
   var mcF = document.getElementById('mcFactura');
@@ -2741,13 +2763,13 @@ async function guardarCliente() {
   if (!nombre) { alert('El nombre del cliente es obligatorio'); return; }
   if (!tipo)   { alert('Selecciona el tipo de cliente'); return; }
   const tipoMap = {oro:1, plata:2, bronce:3};
-  const zonaMap = {Norte:1, Sur:2, Este:3, Oeste:4, Centro:5, Cono:6};
-  const zona = document.getElementById('cliZona') ? document.getElementById('cliZona').value : 'Centro';
+  const zona = document.getElementById('cliZona') ? document.getElementById('cliZona').value : '';
+  const zonaObj = DB_zonas.find(function(z){ return z.nombre === zona; });
   const payload = {
     nombre: nombre,
     ruc:           document.getElementById('cliRif') ? document.getElementById('cliRif').value || null : null,
     tipo_id:       tipoMap[tipo] || 3,
-    zona_id:       zonaMap[zona] || 5,
+    zona_id:       zonaObj ? zonaObj.id : null,
     direccion:     document.getElementById('cliDir') ? document.getElementById('cliDir').value || '' : '',
     telefono:      document.getElementById('cliTel') ? document.getElementById('cliTel').value || '' : '',
     email:         document.getElementById('cliEmail') ? document.getElementById('cliEmail').value || '' : '',
@@ -3091,7 +3113,7 @@ function editarCliente(id) {
   document.getElementById('cliEmail').value   = c.email || '';
   document.getElementById('cliDir').value     = c.direccion || '';
   document.getElementById('cliCiudad').value  = c.ciudad || '';
-  document.getElementById('cliZona').value    = c.zona || 'Centro';
+  document.getElementById('cliZona').value    = c.zona || '';
   document.getElementById('cliLimite').value  = c.limCredit || '';
   document.getElementById('cliDescuento').value = c.descuento || 0;
   document.getElementById('cliObs').value     = c.obs || '';
@@ -3106,13 +3128,13 @@ async function toggleCliente(id) {
   if (!c) return;
   var nuevoActivo = !c.activo;
   var tipoMap = {oro:1, plata:2, bronce:3};
-  var zonaMap = {Norte:1,Sur:2,Este:3,Oeste:4,Centro:5,Cono:6};
+  var zonaObj2 = DB_zonas.find(function(z){ return z.nombre === c.zona; });
   try {
     await api('/clientes/' + id, { method: 'PUT',
       body: JSON.stringify({
         nombre: c.nombre, ruc: c.rif||'',
         tipo_id: tipoMap[c.tipo] || 3,
-        zona_id: zonaMap[c.zona] || 5,
+        zona_id: zonaObj2 ? zonaObj2.id : null,
         direccion: c.direccion||'', telefono: c.telefono||'',
         email: c.email||'', limite_credito: c.limCredit||0,
         activo: nuevoActivo
@@ -3472,12 +3494,20 @@ document.querySelector('#loginScreen img') && (document.getElementById('_sbLogo'
           <div class="fg">
             <label>Zona de despacho</label>
             <select id="cliZona">
-              <option value="Norte">Norte</option>
-              <option value="Sur">Sur</option>
-              <option value="Este">Este</option>
-              <option value="Oeste">Oeste</option>
-              <option value="Centro">Centro</option>
-              <option value="Cono">Cono</option>
+              <option value="Catia">Catia</option>
+              <option value="La Guaira">La Guaira</option>
+              <option value="La California">La California</option>
+              <option value="La Yaguara">La Yaguara</option>
+              <option value="Mariche">Mariche</option>
+              <option value="Guatire">Guatire</option>
+              <option value="Guarenas">Guarenas</option>
+              <option value="Baruta">Baruta</option>
+              <option value="Boleita Norte">Boleita Norte</option>
+              <option value="Los Teques">Los Teques</option>
+              <option value="Catia La Mar">Catia La Mar</option>
+              <option value="Sabana Grande">Sabana Grande</option>
+              <option value="San Martín">San Martín</option>
+              <option value="Bello Monte">Bello Monte</option>
             </select>
           </div>
         </div>

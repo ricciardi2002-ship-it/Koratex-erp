@@ -115,6 +115,14 @@ clientesRouter.get('/', auth, async (req, res, next) => {
   }
 });
 
+// GET /api/clientes/zonas/lista — lista de zonas activas (debe ir antes de /:id)
+clientesRouter.get('/zonas/lista', auth, async (req, res, next) => {
+  try {
+    const result = await query(`SELECT id, nombre FROM zonas WHERE activa = TRUE ORDER BY nombre`);
+    res.json(result.rows);
+  } catch (err) { next(err); }
+});
+
 // GET /api/clientes/:id
 clientesRouter.get('/:id', auth, async (req, res, next) => {
   try {
