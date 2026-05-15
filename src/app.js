@@ -16,6 +16,7 @@ const { productosRouter, clientesRouter } = require('./routes/productos');
 const { cobranzaRouter, despachoRouter  } = require('./routes/cobranza');
 const exportRouter                        = require('./routes/export');
 const usuariosRouter                      = require('./routes/usuarios');
+const cobrosRouter                        = require('./routes/cobros');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ app.use('/api/despacho',   despachoRouter);
 app.use('/api/dashboard',  dashboardRouter);
 app.use('/api/export',     exportRouter);
 app.use('/api/usuarios',   usuariosRouter);
+app.use('/api/cobros',     cobrosRouter);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', app: 'Koratex ERP', version: '1.0.0' });
