@@ -23,6 +23,14 @@ productosRouter.get('/', auth, async (req, res, next) => {
   }
 });
 
+// GET /api/productos/tipos/lista — debe ir ANTES de /:id para evitar shadowing
+productosRouter.get('/tipos/lista', auth, async (req, res, next) => {
+  try {
+    const result = await query(`SELECT * FROM tipos_producto ORDER BY nombre`);
+    res.json(result.rows);
+  } catch (err) { next(err); }
+});
+
 // GET /api/productos/:id
 productosRouter.get('/:id', auth, async (req, res, next) => {
   try {
@@ -84,15 +92,6 @@ productosRouter.put('/:id', auth, roles('admin'), async (req, res, next) => {
   }
 });
 
-// GET /api/productos/tipos/lista
-productosRouter.get('/tipos/lista', auth, async (req, res, next) => {
-  try {
-    const result = await query(`SELECT * FROM tipos_producto ORDER BY nombre`);
-    res.json(result.rows);
-  } catch (err) {
-    next(err);
-  }
-});
 
 // ── Clientes ─────────────────────────────────────────────────────────────────
 const clientesRouter = express.Router();
@@ -106,8 +105,7 @@ clientesRouter.get('/', auth, async (req, res, next) => {
        FROM clientes c
        JOIN tipos_cliente tc ON tc.id = c.tipo_id
        LEFT JOIN zonas z ON z.id = c.zona_id
-       WHERE c.activo = TRUE
-       ORDER BY c.codigo`
+       ORDER BY c.activo DESC, c.codigo`
     );
     res.json(result.rows);
   } catch (err) {

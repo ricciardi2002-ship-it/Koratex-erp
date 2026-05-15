@@ -39,7 +39,7 @@ router.get('/', auth, async (req, res, next) => {
           COALESCE(SUM(monto_total - monto_pagado), 0) as por_cobrar,
           COUNT(*) FILTER (WHERE fecha_vencimiento < CURRENT_DATE) as vencidas
         FROM facturas
-        WHERE estado = 'vigente'
+        WHERE estado IN ('pendiente','abonado')
       `),
     ]);
 

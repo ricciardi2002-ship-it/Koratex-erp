@@ -1330,10 +1330,10 @@ textarea { resize:vertical; min-height:65px; }
         <div class="fg"><label>Factura</label><select id="mcFactura" onchange="onMcFacturaChange()"><option>F001-00224 · Ferretería Central</option><option>F001-00238 · Distrib. Roca</option><option>F001-00244 · Maderas SRL</option></select></div>
         <div class="fg"><label>Saldo</label><input type="text" id="mcSaldo" readonly placeholder="Auto"></div>
         <div class="fg"><label>Monto</label><input type="number" id="mcMonto" placeholder="0.00" step="0.01"></div>
-        <div class="fg"><label>Tipo de pago</label><select><option>Transferencia</option><option>Efectivo</option><option>Cheque</option><option>Yape</option></select></div>
-        <div class="fg"><label>N° Referencia</label><input type="text" placeholder="Op. bancaria"></div>
-        <div class="fg"><label>Fecha</label><input type="date"></div>
-        <div class="fg full"><label>Notas</label><textarea placeholder="Observaciones del cobro..."></textarea></div>
+        <div class="fg"><label>Tipo de pago</label><select id="mcTipoPago"><option value="transferencia">Transferencia</option><option value="efectivo">Efectivo</option><option value="cheque">Cheque</option></select></div>
+        <div class="fg"><label>N° Referencia</label><input type="text" id="mcReferencia" placeholder="Op. bancaria"></div>
+        <div class="fg"><label>Fecha</label><input type="date" id="mcFecha"></div>
+        <div class="fg full"><label>Notas</label><textarea id="mcNotas" placeholder="Observaciones del cobro..."></textarea></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-ghost" onclick="closeModal('mCobro')">Cancelar</button>
@@ -1526,12 +1526,14 @@ async function loadData() {
 
     DB_facturas = facturas.map(function(f) {
       var venc = f.fecha_vencimiento ? f.fecha_vencimiento.split('T')[0] : '';
-      var mora = venc && new Date(venc) < new Date() && f.estado !== 'pagada'
-        ? Math.floor((Date.now() - new Date(venc).getTime()) / 86400000) : 0;
+      var vencDate = venc ? new Date(venc + 'T12:00:00') : null;
+      var mora = vencDate && vencDate < new Date() && f.estado !== 'pagada'
+        ? Math.floor((Date.now() - vencDate.getTime()) / 86400000) : 0;
       return { id: f.id, num: f.numero, clienteId: f.cliente_id,
         clienteNombre: f.cliente_nombre,
+        pedidoId: f.pedido_id || null,
         total: parseFloat(f.monto_total) || 0, pagado: parseFloat(f.monto_pagado) || 0,
-        estado: f.estado === 'pagada' ? 'pagada' : 'pendiente',
+        estado: f.estado || 'pendiente',
         venc: venc, mora: mora,
       };
     });
@@ -1928,7 +1930,11 @@ function onFacturaChange() {
 }
 
 function onMcFacturaChange() {
-  document.getElementById('mcSaldo').value = '$' + [4200,6800,2100][document.getElementById('mcFactura').selectedIndex].toLocaleString();
+  var factId = document.getElementById('mcFactura').value;
+  var f = DB_facturas.find(function(x){ return x.id === factId; });
+  document.getElementById('mcSaldo').value = f ? '$' + (f.total - f.pagado).toLocaleString() : '';
+  var montoEl = document.getElementById('mcMonto');
+  if (montoEl && f) montoEl.value = (f.total - f.pagado).toFixed(2);
 }
 
 /* ════════ RENDER ALL ════════ */
@@ -2037,6 +2043,15 @@ function renderDashboard() {
 }
 
 /* ── Cola ── */
+var _colaZonaFiltro = '';
+function filtrarColaZona(zona) {
+  _colaZonaFiltro = zona;
+  document.querySelectorAll('#zonaFiltros .btn').forEach(function(b){
+    b.classList.toggle('btn-primary', b.textContent === (zona || 'Todas'));
+    b.classList.toggle('btn-ghost', b.textContent !== (zona || 'Todas'));
+  });
+  renderCola();
+}
 function renderCola() {
   const t = document.getElementById('colaTable');
   if (!t) return;
@@ -2054,12 +2069,16 @@ function renderCola() {
   // Filtros de zona
   const zf = document.getElementById('zonaFiltros');
   if (zf) {
-    const zonas = [...new Set(DB_clientes.map(c => c.zona))];
-    zf.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="renderCola()">Todas</button>` +
-      zonas.map(z => `<button class="btn btn-ghost btn-sm" onclick="">${z}</button>`).join('');
+    const zonas = [...new Set(DB_clientes.map(c => c.zona))].filter(Boolean).sort();
+    zf.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="filtrarColaZona('')">Todas</button>` +
+      zonas.map(z => `<button class="btn btn-ghost btn-sm" onclick="filtrarColaZona('${z.replace(/'/g,"\\'")}')">${z}</button>`).join('');
   }
 
-  t.innerHTML = DB_pedidos.map(p => {
+  const pedidosFiltrados = _colaZonaFiltro
+    ? DB_pedidos.filter(p => { const cli = getCliente(p.clienteId); return (p.zona||(cli?cli.zona:'')) === _colaZonaFiltro; })
+    : DB_pedidos;
+
+  t.innerHTML = pedidosFiltrados.map(p => {
     const cli = getCliente(p.clienteId);
     const zona = p.zona || (cli ? cli.zona : '');
     return `<tr style="cursor:pointer;" onclick="verDetallePedido('${p.id}')">
@@ -2445,9 +2464,27 @@ async function registrarPago() {
   } catch(e) { alert('Error: ' + e.message); }
 }
 
-function saveCobro() {
-  DB_traz.unshift({t:'g',ev:'Pago registrado',desc:'Cobro aplicado a factura',time:'Hace un momento'});
-  renderTrazabilidad(); renderCobranza(); closeModal('mCobro');
+async function saveCobro() {
+  var factId = document.getElementById('mcFactura').value;
+  var monto  = parseFloat(document.getElementById('mcMonto').value);
+  var fecha  = document.getElementById('mcFecha').value;
+  if (!factId) { alert('Selecciona una factura'); return; }
+  if (!monto || monto <= 0) { alert('Ingresa un monto válido'); return; }
+  if (!fecha) { alert('Ingresa la fecha del pago'); return; }
+  var f = DB_facturas.find(function(x){ return x.id === factId; });
+  try {
+    await api('/cobranza/' + factId + '/pagos', { method: 'POST', body: JSON.stringify({
+      monto: monto,
+      tipo_pago: document.getElementById('mcTipoPago').value,
+      referencia: document.getElementById('mcReferencia').value || null,
+      fecha_pago: fecha,
+      notas: document.getElementById('mcNotas').value || null,
+    })});
+    DB_traz.unshift({t:'g',ev:'Pago registrado',desc:'$'+monto.toLocaleString()+' · '+(f?f.num:''),time:'Hace un momento'});
+    await loadData(); populateSelects(); renderAll();
+    closeModal('mCobro');
+    alert('✅ Pago registrado correctamente');
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 async function registrarStock() {
@@ -3277,7 +3314,7 @@ function renderVentas() {
   if (!tb) return;
   tb.innerHTML = pageRows.map(function(v) {
     var fechaFmt = v.fecha ? v.fecha.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '—';
-    return '<tr onclick="abrirDetallePedido(\''+v.dbId+'\')" style="cursor:pointer;">' +
+    return '<tr onclick="verDetallePedido(\''+v.id+'\')" style="cursor:pointer;">' +
       '<td>'+fechaFmt+'</td>' +
       '<td><strong>'+v.id+'</strong></td>' +
       '<td>'+v.clienteNombre+'</td>' +
@@ -3312,8 +3349,10 @@ async function crearFactura(pedidoNum, pedidoDbId) {
   var existente = DB_facturas.find(function(f){ return f.pedidoId===pedidoDbId || f.pedidoId===p.dbId; });
   if (existente) { alert('Este pedido ya tiene la factura '+existente.num); return; }
   if (!confirm('Generar factura para el pedido '+pedidoNum+' por $'+p.total.toLocaleString()+'?')) return;
+  var cli = getCliente(p.clienteId);
+  var diasCredito = (cli && cli.diasCredito) ? cli.diasCredito : 30;
   var hoy = new Date();
-  var venc = new Date(hoy.getTime() + (30 * 86400000)); // 30 días
+  var venc = new Date(hoy.getTime() + (diasCredito * 86400000));
   var fechaV = venc.toISOString().split('T')[0];
   var numF = 'F001-' + String(Date.now()).slice(-5);
   try {

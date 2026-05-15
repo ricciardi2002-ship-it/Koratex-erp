@@ -87,7 +87,7 @@ cobranzaRouter.post('/:id/pagos', auth, roles('admin', 'finanzas'), async (req, 
     );
 
     const nuevoPagado = parseFloat(factura.monto_pagado) + parseFloat(monto);
-    const estado = nuevoPagado >= parseFloat(factura.monto_total) ? 'pagada' : 'vigente';
+    const estado = nuevoPagado >= parseFloat(factura.monto_total) - 0.001 ? 'pagada' : 'abonado';
     await query(
       `UPDATE facturas SET monto_pagado = $1, estado = $2 WHERE id = $3`,
       [nuevoPagado, estado, factura.id]
@@ -108,7 +108,7 @@ cobranzaRouter.get('/resumen/vencidas', auth, async (req, res, next) => {
               (CURRENT_DATE - f.fecha_vencimiento) as dias_vencida
        FROM facturas f
        JOIN clientes c ON c.id = f.cliente_id
-       WHERE f.estado = 'vigente' AND f.fecha_vencimiento < CURRENT_DATE
+       WHERE f.estado IN ('pendiente','abonado') AND f.fecha_vencimiento < CURRENT_DATE
        ORDER BY dias_vencida DESC`
     );
     res.json(result.rows);

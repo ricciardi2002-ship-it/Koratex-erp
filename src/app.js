@@ -52,15 +52,16 @@ app.get('*', (req, res) => {
 app.use(errorHandler);
 
 async function start() {
-  app.listen(PORT, () => {
-    console.log(`🏗️  Koratex ERP corriendo en puerto ${PORT}`);
-  });
   try {
     await initDb();
     console.log('✅ Base de datos lista');
   } catch (err) {
-    console.error('⚠️  DB no disponible al arrancar:', err.message);
+    console.error('❌ Error crítico al inicializar BD:', err.message);
+    process.exit(1);
   }
+  app.listen(PORT, () => {
+    console.log(`🏗️  Koratex ERP corriendo en puerto ${PORT}`);
+  });
 }
 
 start();

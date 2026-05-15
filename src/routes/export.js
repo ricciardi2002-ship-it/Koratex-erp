@@ -113,7 +113,7 @@ router.get('/clientes', auth, roles('admin', 'finanzas'), async (req, res, next)
         COALESCE(SUM(f.monto_pagado), 0)              AS monto_cobrado,
         COALESCE(SUM(f.monto_total - f.monto_pagado), 0) AS saldo_pendiente,
         COUNT(f.id) FILTER (
-          WHERE f.estado = 'vigente' AND f.fecha_vencimiento < CURRENT_DATE
+          WHERE f.estado IN ('pendiente','abonado') AND f.fecha_vencimiento < CURRENT_DATE
         )                                             AS facturas_en_mora,
         c.telefono,
         c.email

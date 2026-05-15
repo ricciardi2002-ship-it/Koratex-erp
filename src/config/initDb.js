@@ -153,7 +153,21 @@ async function initDb() {
     UNIQUE(pedido_id, linea)
   )`);
 
-  // Migración: renombrar estado 'vigente' → 'pendiente' en facturas existentes
+  // facturas debe crearse ANTES que cobros y cobros_aplicaciones (FK dependencies)
+  await query(`CREATE TABLE IF NOT EXISTS facturas (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    numero VARCHAR(20) NOT NULL UNIQUE,
+    pedido_id UUID REFERENCES pedidos(id),
+    cliente_id UUID NOT NULL REFERENCES clientes(id),
+    monto_total NUMERIC(12,2) NOT NULL,
+    monto_pagado NUMERIC(12,2) DEFAULT 0,
+    fecha_emision DATE NOT NULL DEFAULT CURRENT_DATE,
+    fecha_vencimiento DATE NOT NULL,
+    estado VARCHAR(20) DEFAULT 'pendiente',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  )`);
+
+  // Migración: unificar estado 'vigente' → 'pendiente'
   await query(`UPDATE facturas SET estado = 'pendiente' WHERE estado = 'vigente'`);
 
   await query(`CREATE TABLE IF NOT EXISTS cobros (
@@ -174,19 +188,6 @@ async function initDb() {
     factura_id      UUID NOT NULL REFERENCES facturas(id),
     monto_aplicado  NUMERIC(12,2) NOT NULL,
     created_at      TIMESTAMPTZ DEFAULT NOW()
-  )`);
-
-  await query(`CREATE TABLE IF NOT EXISTS facturas (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    numero VARCHAR(20) NOT NULL UNIQUE,
-    pedido_id UUID REFERENCES pedidos(id),
-    cliente_id UUID NOT NULL REFERENCES clientes(id),
-    monto_total NUMERIC(12,2) NOT NULL,
-    monto_pagado NUMERIC(12,2) DEFAULT 0,
-    fecha_emision DATE NOT NULL DEFAULT CURRENT_DATE,
-    fecha_vencimiento DATE NOT NULL,
-    estado VARCHAR(20) DEFAULT 'vigente',
-    created_at TIMESTAMPTZ DEFAULT NOW()
   )`);
 
   await query(`CREATE TABLE IF NOT EXISTS pagos (
