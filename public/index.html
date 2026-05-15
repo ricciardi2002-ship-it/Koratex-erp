@@ -810,11 +810,10 @@ textarea { resize:vertical; min-height:65px; }
           <div class="tw-title">Pedidos Pendientes</div>
           <div style="display:flex;gap:7px;flex-wrap:wrap;">
             <div class="search-box">🔍<input type="text" placeholder="Buscar..."></div>
-            <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;"><option>Todos los estados</option><option>Pendiente</option><option>Preparación</option><option>Despachado</option><option>Entregado</option></select>
           </div>
         </div>
         <table>
-          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Productos</th><th>Total</th><th>Antigüedad</th><th>Despacho</th><th>Pago</th><th></th></tr></thead>
+          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Productos</th><th>Total</th><th>Antigüedad</th><th>Estado</th><th>Acción</th></tr></thead>
           <tbody id="colaTable"></tbody>
         </table>
       </div>
@@ -1736,9 +1735,8 @@ function diasChip(d) {
   return `<span class="dias-chip dias-2">${d}d ⚠️</span>`;
 }
 function estadoDesp(e) {
-  const m = {pendiente:'bs',preparacion:'bo',despachado:'bb',entregado:'bg'};
-  const l = {pendiente:'Pendiente',preparacion:'Preparación',despachado:'En ruta',entregado:'Entregado'};
-  return `<span class="badge ${m[e]||'bs'}">${l[e]||e}</span>`;
+  if (e === 'entregado') return '<span class="badge bg">Entregado</span>';
+  return '<span class="badge bs">Pendiente</span>';
 }
 function estadoPago(e) {
   const m = {al_dia:'bg',pendiente:'ba',mora:'br'};
@@ -2081,20 +2079,31 @@ function renderCola() {
   t.innerHTML = pedidosFiltrados.map(p => {
     const cli = getCliente(p.clienteId);
     const zona = p.zona || (cli ? cli.zona : '');
-    return `<tr style="cursor:pointer;" onclick="verDetallePedido('${p.id}')">
-      <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
-      <td><div style="font-weight:600;">${cli?cli.nombre:p.clienteNombre||''}</div><div style="font-size:10px;color:var(--t3);">${zona}</div></td>
-      <td><span class="badge bb">${zona}</span></td>
-      <td style="color:var(--t2);">${p.items} ítem${p.items!==1?'s':''}</td>
-      <td style="font-family:'DM Mono',monospace;font-weight:500;">$${p.total.toLocaleString()}</td>
-      <td>${diasChip(p.diasAnt)}</td>
-      <td>${estadoDesp(p.estadoDesp)}</td>
-      <td>${estadoPago(p.estadoPago)}</td>
-      <td onclick="event.stopPropagation()" style="display:flex;gap:4px;">
-        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">&#9654;</button>
-        <button class="btn btn-cyan btn-xs" onclick="crearFactura('${p.id}','${p.dbId}')" title="Generar factura">🧾</button>
-      </td>
-    </tr>`;
+    var factExist = DB_facturas.find(function(f){ return f.pedidoId === p.dbId; });
+    var accionCell;
+    if (p.estadoDesp === 'entregado') {
+      accionCell = '<td style="padding:6px 8px;">' +
+        '<div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;">' +
+          '<span class="badge bg" style="font-size:10px;">✅ Entregado</span>' +
+          (factExist ? '<span style="font-size:9px;color:var(--text-3);font-family:var(--font-mono);">🧾 ' + factExist.num + '</span>' : '') +
+        '</div></td>';
+    } else {
+      accionCell = '<td onclick="event.stopPropagation()" style="padding:6px 8px;">' +
+        '<button class="btn btn-primary btn-sm" onclick="entregarPedido(\'' + p.dbId + '\',\'' + p.id + '\')" ' +
+          'style="white-space:nowrap;font-size:11px;padding:5px 10px;">📦 Entregar</button>' +
+        '</td>';
+    }
+    return '<tr style="cursor:pointer;" onclick="verDetallePedido(\'' + p.id + '\')">' +
+      '<td><strong style="color:var(--orange);font-family:var(--font-mono);">' + p.id + '</strong></td>' +
+      '<td><div style="font-weight:600;">' + (cli?cli.nombre:p.clienteNombre||'') + '</div>' +
+        '<div style="font-size:10px;color:var(--t3);">' + zona + '</div></td>' +
+      '<td><span class="badge bb">' + zona + '</span></td>' +
+      '<td style="color:var(--t2);">' + p.items + ' ítem' + (p.items!==1?'s':'') + '</td>' +
+      '<td style="font-family:var(--font-mono);font-weight:500;">$' + p.total.toLocaleString() + '</td>' +
+      '<td>' + diasChip(p.diasAnt) + '</td>' +
+      '<td>' + estadoDesp(p.estadoDesp) + '</td>' +
+      accionCell +
+    '</tr>';
   }).join('');
 }
 
@@ -2583,21 +2592,19 @@ function reoptimizar() {
   alert(msg);
 }
 
-async function cambiarEstado(id) {
-  const p = DB_pedidos.find(function(x){ return x.id === id; });
-  if (!p) return;
-  const estados = ['pendiente','preparacion','despachado','entregado'];
-  const idx = estados.indexOf(p.estadoDesp);
-  if (idx >= 0 && idx < estados.length - 1) {
-    const nuevoEstado = estados[idx + 1];
-    try {
-      await api('/pedidos/' + p.dbId + '/estado', { method: 'PATCH',
-        body: JSON.stringify({ estado_despacho: nuevoEstado }) });
-      DB_traz.unshift({t:'o',ev:'Estado actualizado',
-        desc:id + ' → ' + nuevoEstado, time:'Hace un momento'});
-      await loadData(); renderAll();
-    } catch(e) { alert('Error: ' + e.message); }
-  }
+async function entregarPedido(dbId, numPedido) {
+  if (!confirm('¿Marcar el pedido ' + numPedido + ' como ENTREGADO?\n\nEsto generará la factura automáticamente y la registrará en Cuentas por Cobrar.')) return;
+  try {
+    var result = await api('/pedidos/' + dbId + '/estado', {
+      method: 'PATCH',
+      body: JSON.stringify({ estado_despacho: 'entregado' })
+    });
+    var factNum = result.factura ? result.factura.numero : '—';
+    DB_traz.unshift({t:'g', ev:'Pedido entregado · Factura generada',
+      desc: numPedido + ' · ' + factNum, time:'Hace un momento'});
+    await loadData(); populateSelects(); renderAll();
+    alert('✅ Pedido ' + numPedido + ' marcado como entregado.\nFactura ' + factNum + ' generada y registrada en Cobranza.');
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 function imprimirFormato() {
@@ -3443,9 +3450,12 @@ async function verDetallePedido(pedidoNum) {
   document.getElementById('mDetalleItemsBody').innerHTML =
     '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Cargando productos...</td></tr>';
   document.getElementById('mDetalleTotales').innerHTML = '';
+  var accionDetalle = p.estadoDesp === 'entregado'
+    ? '<span class="badge bg">✅ Entregado</span>'
+    : '<button class="btn btn-primary" onclick="closeModal(\'mDetallePedido\');entregarPedido(\'' + p.dbId + '\',\'' + p.id + '\')">📦 Marcar como Entregado</button>';
   document.getElementById('mDetalleAcciones').innerHTML =
     '<button class="btn btn-ghost" onclick="closeModal(\'mDetallePedido\')">Cerrar</button>' +
-    '<button class="btn btn-primary" onclick="closeModal(\'mDetallePedido\');cambiarEstado(\'' + p.id + '\')">&#9654; Avanzar estado</button>';
+    accionDetalle;
 
   openModal('mDetallePedido');
 

@@ -148,43 +148,76 @@ router.patch('/:id/estado', auth, roles('admin', 'logistica', 'finanzas', 'comer
   try {
     await client.query('BEGIN');
 
-    const { estado_pago, estado_despacho } = req.body;
-    const fields = [];
-    const values = [];
-    let idx = 1;
-    if (estado_pago !== undefined)     { fields.push(`estado_pago=$${idx++}`);     values.push(estado_pago); }
-    if (estado_despacho !== undefined) { fields.push(`estado_despacho=$${idx++}`); values.push(estado_despacho); }
-    if (!fields.length) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Nada que actualizar' }); }
+    const { estado_despacho } = req.body;
+    if (estado_despacho !== 'entregado') {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Solo se acepta estado_despacho: entregado' });
+    }
 
-    values.push(req.params.id);
     const result = await client.query(
-      `UPDATE pedidos SET ${fields.join(', ')}, updated_at=NOW() WHERE id=$${idx} RETURNING *`,
-      values
+      `UPDATE pedidos SET estado_despacho='entregado', updated_at=NOW()
+       WHERE id=$1 AND estado_despacho != 'entregado' RETURNING *`,
+      [req.params.id]
     );
-    if (!result.rows.length) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Pedido no encontrado' }); }
+    if (!result.rows.length) {
+      await client.query('ROLLBACK');
+      // Puede ya estar entregado — devolver el pedido actual
+      const existing = await pool.query(`SELECT * FROM pedidos WHERE id=$1`, [req.params.id]);
+      if (!existing.rows.length) return res.status(404).json({ error: 'Pedido no encontrado' });
+      const factCheck = await pool.query(`SELECT * FROM facturas WHERE pedido_id=$1`, [req.params.id]);
+      return res.json({ pedido: existing.rows[0], factura: factCheck.rows[0] || null });
+    }
 
     const pedido = result.rows[0];
 
-    // Al entregar: descontar stock_total y liberar stock_reservado
-    if (estado_despacho === 'entregado') {
-      const items = await client.query(
-        `SELECT producto_id, cantidad FROM pedido_items WHERE pedido_id = $1`,
-        [pedido.id]
+    // Descontar stock al entregar
+    const items = await client.query(
+      `SELECT producto_id, cantidad FROM pedido_items WHERE pedido_id = $1`,
+      [pedido.id]
+    );
+    for (const item of items.rows) {
+      await client.query(
+        `UPDATE inventario_pt
+         SET stock_total     = GREATEST(0, stock_total - $1),
+             stock_reservado = GREATEST(0, stock_reservado - $1),
+             updated_at      = NOW()
+         WHERE producto_id = $2`,
+        [item.cantidad, item.producto_id]
       );
-      for (const item of items.rows) {
-        await client.query(
-          `UPDATE inventario_pt
-           SET stock_total     = GREATEST(0, stock_total - $1),
-               stock_reservado = GREATEST(0, stock_reservado - $1),
-               updated_at      = NOW()
-           WHERE producto_id = $2`,
-          [item.cantidad, item.producto_id]
-        );
-      }
+    }
+
+    // Generar factura automáticamente (si no existe ya)
+    let factura = null;
+    const dupCheck = await client.query(
+      `SELECT * FROM facturas WHERE pedido_id = $1`, [pedido.id]
+    );
+    if (!dupCheck.rows.length) {
+      const seqRes = await client.query(`SELECT nextval('factura_seq') as n`);
+      const factNumero = `F001-${String(seqRes.rows[0].n).padStart(5, '0')}`;
+
+      const cliRes = await client.query(
+        `SELECT tc.dias_credito FROM clientes c
+         JOIN tipos_cliente tc ON tc.id = c.tipo_id
+         WHERE c.id = $1`,
+        [pedido.cliente_id]
+      );
+      const diasCredito = cliRes.rows[0]?.dias_credito || 30;
+      const fechaVenc = new Date();
+      fechaVenc.setDate(fechaVenc.getDate() + diasCredito);
+      const fechaVencStr = fechaVenc.toISOString().split('T')[0];
+
+      const factResult = await client.query(
+        `INSERT INTO facturas (numero, pedido_id, cliente_id, monto_total, fecha_vencimiento, estado)
+         VALUES ($1,$2,$3,$4,$5,'pendiente') RETURNING *`,
+        [factNumero, pedido.id, pedido.cliente_id, pedido.total, fechaVencStr]
+      );
+      factura = factResult.rows[0];
+    } else {
+      factura = dupCheck.rows[0];
     }
 
     await client.query('COMMIT');
-    res.json(pedido);
+    res.json({ pedido, factura });
   } catch (err) {
     await client.query('ROLLBACK');
     next(err);

@@ -268,6 +268,7 @@ async function initDb() {
   )`);
 
   await query(`CREATE SEQUENCE IF NOT EXISTS pedido_seq START 50`);
+  await query(`CREATE SEQUENCE IF NOT EXISTS factura_seq START 1`);
 
   await seedData();
   console.log('✅ Base de datos lista.');
