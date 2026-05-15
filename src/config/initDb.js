@@ -139,6 +139,29 @@ async function initDb() {
     UNIQUE(pedido_id, linea)
   )`);
 
+  // Migración: renombrar estado 'vigente' → 'pendiente' en facturas existentes
+  await query(`UPDATE facturas SET estado = 'pendiente' WHERE estado = 'vigente'`);
+
+  await query(`CREATE TABLE IF NOT EXISTS cobros (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cliente_id  UUID NOT NULL REFERENCES clientes(id),
+    usuario_id  UUID REFERENCES usuarios(id),
+    monto       NUMERIC(12,2) NOT NULL,
+    tipo_pago   VARCHAR(30) DEFAULT 'efectivo',
+    referencia  VARCHAR(100),
+    fecha_pago  DATE NOT NULL DEFAULT CURRENT_DATE,
+    notas       TEXT,
+    created_at  TIMESTAMPTZ DEFAULT NOW()
+  )`);
+
+  await query(`CREATE TABLE IF NOT EXISTS cobros_aplicaciones (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cobro_id        UUID NOT NULL REFERENCES cobros(id) ON DELETE CASCADE,
+    factura_id      UUID NOT NULL REFERENCES facturas(id),
+    monto_aplicado  NUMERIC(12,2) NOT NULL,
+    created_at      TIMESTAMPTZ DEFAULT NOW()
+  )`);
+
   await query(`CREATE TABLE IF NOT EXISTS facturas (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     numero VARCHAR(20) NOT NULL UNIQUE,

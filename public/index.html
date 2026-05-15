@@ -2776,77 +2776,305 @@ function verCliente(id) {
   var c = DB_clientes.find(function(x){ return x.id === id; });
   if (!c) return;
 
-  var ico    = getTipoIcon(c.tipo);
-  var bdg    = getTipoBadge(c.tipo);
-  var lista  = getLista(c.tipo);
-  var dias   = getDias(c.tipo);
-  var color  = getTipoColor(c.tipo);
-  var peds   = DB_pedidos.filter(function(p){ return p.clienteId === c.id; });
-  var total  = peds.reduce(function(s,p){ return s + p.total; }, 0);
+  var ico   = getTipoIcon(c.tipo);
+  var bdg   = getTipoBadge(c.tipo);
+  var lista = getLista(c.tipo);
+  var dias  = getDias(c.tipo);
+  var color = getTipoColor(c.tipo);
+  var peds  = DB_pedidos.filter(function(p){ return p.clienteId === c.id; });
+  var total = peds.reduce(function(s,p){ return s + p.total; }, 0);
   var ticket = peds.length ? '$' + Math.round(total/peds.length).toLocaleString() : '—';
-  var nombre = c.nombre || '';
-  var rif    = c.rif || '—';
-  var ciudad = c.ciudad || 'Caracas';
-  var zona   = c.zona || '';
-  var tel    = c.telefono || '—';
-  var email  = c.email || '—';
-  var lim    = c.limCredit ? '$' + c.limCredit.toLocaleString() : 'Sin límite';
-  var desc   = (c.descuento || 0) + '%';
-  var activo = c.activo
-    ? '<span class="badge bg">Activo</span>'
-    : '<span class="badge br">Inactivo</span>';
 
-  document.getElementById('mVerTitle').textContent = '👥 ' + nombre;
+  document.getElementById('mVerTitle').textContent = '👥 ' + (c.nombre || '');
 
-  var html = '';
-  html += '<div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:14px;background:var(--bg3);border-radius:var(--r);">';
-  html +=   '<div style="font-size:40px;">' + ico + '</div>';
-  html +=   '<div style="flex:1;">';
-  html +=     '<div style="font-size:16px;font-weight:700;">' + nombre + '</div>';
-  html +=     '<div style="font-size:11px;color:var(--t3);margin-top:3px;">' + rif + ' · ' + ciudad + '</div>';
-  html +=     '<div style="margin-top:6px;display:flex;gap:6px;">';
-  html +=       '<span class="badge ' + bdg + '">' + c.tipo.toUpperCase() + '</span>';
-  html +=       '<span class="badge bb">' + zona + '</span>';
-  html +=       activo;
-  html +=     '</div>';
-  html +=   '</div>';
-  html += '</div>';
+  // ── Encabezado del cliente ──
+  var header =
+    '<div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface-2);border-radius:var(--r-md);margin-bottom:16px;">' +
+      '<div style="font-size:36px;">' + ico + '</div>' +
+      '<div style="flex:1;">' +
+        '<div style="font-size:16px;font-weight:700;">' + (c.nombre||'') + '</div>' +
+        '<div style="font-size:11px;color:var(--text-3);margin-top:2px;">' + (c.rif||'—') + ' · ' + (c.zona||'') + '</div>' +
+        '<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">' +
+          '<span class="badge ' + bdg + '">' + c.tipo.toUpperCase() + '</span>' +
+          '<span class="badge bb">' + (c.zona||'—') + '</span>' +
+          (c.activo ? '<span class="badge bg">Activo</span>' : '<span class="badge br">Inactivo</span>') +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:right;">' +
+        '<button class="btn btn-ghost btn-sm" onclick="closeModal(\'mVerCliente\');editarCliente(\'' + id + '\')">✏️ Editar</button>' +
+      '</div>' +
+    '</div>';
 
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">';
+  // ── Pestañas ──
+  var tabs =
+    '<div style="display:flex;gap:2px;margin-bottom:16px;background:var(--surface-2);border-radius:var(--r-md);padding:4px;" id="cliTabs">' +
+      '<button class="cli-tab active" onclick="cliTab(\'resumen\')" data-tab="resumen" style="flex:1;padding:8px;border-radius:var(--r-sm);border:none;background:var(--surface);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;">📋 Resumen</button>' +
+      '<button class="cli-tab" onclick="cliTab(\'cxc\')" data-tab="cxc" style="flex:1;padding:8px;border-radius:var(--r-sm);border:none;background:transparent;color:var(--text-3);font-size:12px;font-weight:600;cursor:pointer;">💰 Cuenta por Cobrar</button>' +
+      '<button class="cli-tab" onclick="cliTab(\'historial\')" data-tab="historial" style="flex:1;padding:8px;border-radius:var(--r-sm);border:none;background:transparent;color:var(--text-3);font-size:12px;font-weight:600;cursor:pointer;">📜 Historial de Pagos</button>' +
+    '</div>';
 
-  html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;">';
-  html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Condiciones Comerciales</div>';
-  html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Lista de precios</span><span style="font-weight:700;color:' + color + ';">' + lista + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Días de crédito</span><span style="font-weight:700;">' + dias + ' días</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Límite de crédito</span><span style="font-weight:700;">' + lim + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Descuento especial</span><span style="font-weight:700;">' + desc + '</span></div>';
-  html += '</div></div>';
+  // ── Tab: Resumen ──
+  var tabResumen =
+    '<div id="cliTab-resumen">' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">' +
+        '<div style="background:var(--surface-2);border-radius:var(--r-md);padding:13px;">' +
+          '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">Condiciones Comerciales</div>' +
+          '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">' +
+            '<div style="display:flex;justify-content:space-between;"><span style="color:var(--text-3);">Lista de precios</span><span style="font-weight:700;color:' + color + ';">' + lista + '</span></div>' +
+            '<div style="display:flex;justify-content:space-between;"><span style="color:var(--text-3);">Días de crédito</span><span style="font-weight:700;">' + dias + ' días</span></div>' +
+            '<div style="display:flex;justify-content:space-between;"><span style="color:var(--text-3);">Límite de crédito</span><span style="font-weight:700;">' + (c.limCredit ? '$'+c.limCredit.toLocaleString() : 'Sin límite') + '</span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="background:var(--surface-2);border-radius:var(--r-md);padding:13px;">' +
+          '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">Contacto</div>' +
+          '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">' +
+            '<div style="display:flex;justify-content:space-between;"><span style="color:var(--text-3);">Teléfono</span><span>' + (c.telefono||'—') + '</span></div>' +
+            '<div style="display:flex;justify-content:space-between;"><span style="color:var(--text-3);">Email</span><span style="font-size:11px;">' + (c.email||'—') + '</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="background:var(--surface-2);border-radius:var(--r-md);padding:13px;">' +
+        '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);margin-bottom:10px;">Actividad</div>' +
+        '<div style="display:flex;gap:16px;">' +
+          '<div style="text-align:center;flex:1;"><div style="font-family:var(--font-mono);font-size:22px;color:var(--orange);">' + peds.length + '</div><div style="font-size:10px;color:var(--text-3);">Pedidos</div></div>' +
+          '<div style="text-align:center;flex:1;"><div style="font-family:var(--font-mono);font-size:22px;color:var(--green);">$' + total.toLocaleString() + '</div><div style="font-size:10px;color:var(--text-3);">Compras totales</div></div>' +
+          '<div style="text-align:center;flex:1;"><div style="font-family:var(--font-mono);font-size:22px;">' + ticket + '</div><div style="font-size:10px;color:var(--text-3);">Ticket promedio</div></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
 
-  html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;">';
-  html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">Contacto</div>';
-  html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Teléfono</span><span>' + tel + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Email</span><span style="font-size:11px;">' + email + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;"><span style="color:var(--t3);">Zona despacho</span><span class="badge bb">' + zona + '</span></div>';
-  html += '</div></div>';
-  html += '</div>';
+  // ── Tab: Cuenta por Cobrar ──
+  var tabCxC =
+    '<div id="cliTab-cxc" style="display:none;">' +
+      '<div id="cxcLoading" style="text-align:center;padding:32px;color:var(--text-3);">Cargando cuenta...</div>' +
+      '<div id="cxcContent" style="display:none;">' +
+        // Saldo total banner
+        '<div id="cxcSaldo" style="background:var(--orange-b);border:1px solid rgba(255,138,61,.25);border-radius:var(--r-md);padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">' +
+          '<div>' +
+            '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:2px;">Saldo Total Pendiente</div>' +
+            '<div style="font-size:11px;color:var(--text-3);">Suma de todas las facturas sin cobrar</div>' +
+          '</div>' +
+          '<div id="cxcSaldoVal" style="font-family:var(--font-mono);font-size:28px;font-weight:600;color:var(--orange);">$0.00</div>' +
+        '</div>' +
+        // Botón registrar cobro
+        '<div style="margin-bottom:12px;display:flex;justify-content:flex-end;">' +
+          '<button class="btn btn-primary btn-sm" onclick="abrirFormCobro(\'' + id + '\')">＋ Registrar Cobro</button>' +
+        '</div>' +
+        // Tabla facturas
+        '<div style="overflow-x:auto;">' +
+          '<table style="width:100%;border-collapse:collapse;font-size:12px;">' +
+            '<thead><tr style="background:var(--surface-2);">' +
+              '<th style="padding:8px;text-align:left;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Factura</th>' +
+              '<th style="padding:8px;text-align:left;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Emisión</th>' +
+              '<th style="padding:8px;text-align:left;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Vence</th>' +
+              '<th style="padding:8px;text-align:right;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Total</th>' +
+              '<th style="padding:8px;text-align:right;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Pagado</th>' +
+              '<th style="padding:8px;text-align:right;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Saldo</th>' +
+              '<th style="padding:8px;text-align:center;font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);">Estado</th>' +
+            '</tr></thead>' +
+            '<tbody id="cxcTabla"></tbody>' +
+          '</table>' +
+        '</div>' +
+        // Form cobro (oculto)
+        '<div id="formCobro" style="display:none;margin-top:16px;background:var(--surface-2);border-radius:var(--r-md);padding:16px;">' +
+          '<div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;">Registrar Cobro — se aplica automáticamente (FIFO)</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
+            '<div class="fg"><label>Fecha del cobro</label><input type="date" id="cobroFecha" value="' + new Date().toISOString().split('T')[0] + '"></div>' +
+            '<div class="fg"><label>Monto recibido ($)</label><input type="number" id="cobroMonto" placeholder="0.00" min="0.01" step="0.01"></div>' +
+            '<div class="fg"><label>Forma de pago</label>' +
+              '<select id="cobroTipo">' +
+                '<option value="efectivo">Efectivo</option>' +
+                '<option value="transferencia">Transferencia</option>' +
+                '<option value="cheque">Cheque</option>' +
+              '</select>' +
+            '</div>' +
+            '<div class="fg"><label>N° de referencia (opcional)</label><input type="text" id="cobroRef" placeholder="Nro. de transferencia..."></div>' +
+          '</div>' +
+          '<div class="fg" style="margin-bottom:12px;"><label>Notas (opcional)</label><input type="text" id="cobroNotas" placeholder="Observaciones..."></div>' +
+          '<div style="display:flex;gap:8px;justify-content:flex-end;">' +
+            '<button class="btn btn-ghost btn-sm" onclick="cerrarFormCobro()">Cancelar</button>' +
+            '<button class="btn btn-primary btn-sm" onclick="guardarCobro(\'' + id + '\')">💾 Confirmar Cobro</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
 
-  html += '<div style="background:var(--bg3);border-radius:var(--r);padding:13px;margin-bottom:14px;">';
-  html += '<div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:10px;">Historial de Compras</div>';
-  html += '<div style="display:flex;gap:16px;">';
-  html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;color:var(--orange);">' + peds.length + '</div><div style="font-size:10px;color:var(--t3);">Pedidos totales</div></div>';
-  html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;color:var(--green);">$' + total.toLocaleString() + '</div><div style="font-size:10px;color:var(--t3);">Compras acumuladas</div></div>';
-  html += '<div style="text-align:center;flex:1;"><div style="font-family:monospace;font-size:22px;">' + ticket + '</div><div style="font-size:10px;color:var(--t3);">Ticket promedio</div></div>';
-  html += '</div></div>';
+  // ── Tab: Historial de Pagos ──
+  var tabHistorial =
+    '<div id="cliTab-historial" style="display:none;">' +
+      '<div id="histLoading" style="text-align:center;padding:32px;color:var(--text-3);">Cargando historial...</div>' +
+      '<div id="histContent" style="display:none;"></div>' +
+    '</div>';
 
-  html += '<div style="display:flex;gap:8px;justify-content:flex-end;">';
-  html += "<button class=\"btn btn-ghost\" onclick=\"closeModal('mVerCliente')\">Cerrar</button>";
-  html += "<button class=\"btn btn-primary\" onclick=\"closeModal('mVerCliente');editarCliente('" + id + "')\">✏️ Editar</button>";
-  html += '</div>';
-
-  document.getElementById('mVerBody').innerHTML = html;
+  document.getElementById('mVerBody').innerHTML = header + tabs + tabResumen + tabCxC + tabHistorial;
   openModal('mVerCliente');
+
+  // Cargar datos de CxC en background (la tab empieza en Resumen)
+  cargarCxC(id);
+}
+
+function cliTab(tab) {
+  ['resumen','cxc','historial'].forEach(function(t) {
+    var el = document.getElementById('cliTab-' + t);
+    if (el) el.style.display = t === tab ? '' : 'none';
+  });
+  document.querySelectorAll('.cli-tab').forEach(function(btn) {
+    var active = btn.dataset.tab === tab;
+    btn.style.background = active ? 'var(--surface)' : 'transparent';
+    btn.style.color = active ? 'var(--text)' : 'var(--text-3)';
+  });
+  if (tab === 'historial') cargarHistorial(window._cliVerActual);
+}
+
+async function cargarCxC(clienteId) {
+  window._cliVerActual = clienteId;
+  try {
+    var data = await api('/cobros/cliente/' + clienteId);
+    var saldo = data.saldo_total || 0;
+    document.getElementById('cxcSaldoVal').textContent = '$' + saldo.toFixed(2);
+
+    var tbody = document.getElementById('cxcTabla');
+    if (!data.facturas || !data.facturas.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-3);">Sin facturas registradas</td></tr>';
+    } else {
+      tbody.innerHTML = data.facturas.map(function(f) {
+        var hoy = new Date(); hoy.setHours(0,0,0,0);
+        var venc = f.fecha_vencimiento ? new Date(f.fecha_vencimiento) : null;
+        var diasV = venc ? Math.round((venc - hoy) / 86400000) : null;
+        var dot, estadoLbl, rowBg = '';
+
+        if (f.estado === 'pagada') {
+          dot = '🟢'; estadoLbl = '<span class="badge bg">Pagada</span>';
+        } else if (diasV !== null && diasV < 0) {
+          dot = '🔴'; estadoLbl = '<span class="badge br">' + (f.estado === 'abonado' ? 'Abonado' : 'Vencida') + '</span>';
+          rowBg = 'background:rgba(255,80,80,.04);';
+        } else if (diasV !== null && diasV <= 7) {
+          dot = '🟡'; estadoLbl = '<span class="badge" style="background:var(--amber-l);color:var(--amber);">' + (f.estado === 'abonado' ? 'Abonado' : 'Por vencer') + '</span>';
+          rowBg = 'background:rgba(255,200,0,.04);';
+        } else {
+          dot = '🟢'; estadoLbl = '<span class="badge bg">' + (f.estado === 'abonado' ? 'Abonado' : 'Pendiente') + '</span>';
+        }
+
+        var emision = f.fecha_emision ? f.fecha_emision.split('T')[0] : '—';
+        var vencStr = f.fecha_vencimiento ? f.fecha_vencimiento.split('T')[0] : '—';
+
+        return '<tr style="border-bottom:1px solid var(--border);' + rowBg + '">' +
+          '<td style="padding:9px 8px;">' + dot + ' <span style="font-family:var(--font-mono);color:var(--orange);">' + f.numero + '</span></td>' +
+          '<td style="padding:9px 8px;color:var(--text-2);">' + emision + '</td>' +
+          '<td style="padding:9px 8px;color:var(--text-2);">' + vencStr + (diasV !== null && diasV < 0 ? ' <span style="color:var(--red);font-size:10px;">(' + Math.abs(diasV) + 'd venc.)</span>' : '') + '</td>' +
+          '<td style="padding:9px 8px;text-align:right;font-family:var(--font-mono);">$' + f.monto_total.toFixed(2) + '</td>' +
+          '<td style="padding:9px 8px;text-align:right;font-family:var(--font-mono);color:var(--green);">$' + f.monto_pagado.toFixed(2) + '</td>' +
+          '<td style="padding:9px 8px;text-align:right;font-family:var(--font-mono);font-weight:700;color:' + (f.saldo > 0 ? 'var(--red)' : 'var(--text-3)') + ';">$' + f.saldo.toFixed(2) + '</td>' +
+          '<td style="padding:9px 8px;text-align:center;">' + estadoLbl + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+    document.getElementById('cxcLoading').style.display = 'none';
+    document.getElementById('cxcContent').style.display = '';
+  } catch(e) {
+    document.getElementById('cxcLoading').textContent = 'Error al cargar cuenta: ' + e.message;
+  }
+}
+
+async function cargarHistorial(clienteId) {
+  if (!clienteId) return;
+  var cont = document.getElementById('histContent');
+  var load = document.getElementById('histLoading');
+  if (!cont || !load) return;
+  load.style.display = ''; cont.style.display = 'none';
+  load.textContent = 'Cargando historial...';
+  try {
+    var cobros = await api('/cobros/cliente/' + clienteId + '/historial');
+    if (!cobros.length) {
+      cont.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-3);">Sin cobros registrados</div>';
+    } else {
+      cont.innerHTML = cobros.map(function(co, idx) {
+        var appsHtml = co.aplicaciones.map(function(a) {
+          return '<div style="display:flex;justify-content:space-between;padding:5px 10px;font-size:11px;border-top:1px solid var(--border);">' +
+            '<span style="color:var(--text-2);">→ Factura <span style="font-family:var(--font-mono);color:var(--orange);">' + a.factura_numero + '</span></span>' +
+            '<span style="font-family:var(--font-mono);color:var(--green);">$' + a.monto_aplicado.toFixed(2) + '</span>' +
+          '</div>';
+        }).join('');
+
+        var metodoMap = {efectivo:'💵 Efectivo', transferencia:'🏦 Transferencia', cheque:'📝 Cheque'};
+        return '<div style="background:var(--surface-2);border-radius:var(--r-md);margin-bottom:10px;overflow:hidden;">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;" onclick="toggleHistItem(' + idx + ')">' +
+            '<div>' +
+              '<div style="font-size:13px;font-weight:600;font-family:var(--font-mono);color:var(--green);">$' + co.monto.toFixed(2) + '</div>' +
+              '<div style="font-size:10px;color:var(--text-3);margin-top:2px;">' +
+                (co.fecha_pago||'').split('T')[0] + ' · ' + (metodoMap[co.tipo_pago] || co.tipo_pago) +
+                (co.referencia ? ' · Ref: ' + co.referencia : '') +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px;">' +
+              '<span style="font-size:10px;color:var(--text-3);">' + co.aplicaciones.length + ' factura' + (co.aplicaciones.length!==1?'s':'') + '</span>' +
+              '<span id="histChevron-' + idx + '" style="color:var(--text-3);transition:.2s;">▼</span>' +
+            '</div>' +
+          '</div>' +
+          '<div id="histItem-' + idx + '" style="display:none;">' + appsHtml + '</div>' +
+        '</div>';
+      }).join('');
+    }
+    load.style.display = 'none'; cont.style.display = '';
+  } catch(e) {
+    load.textContent = 'Error al cargar historial: ' + e.message;
+  }
+}
+
+function toggleHistItem(idx) {
+  var el = document.getElementById('histItem-' + idx);
+  var ch = document.getElementById('histChevron-' + idx);
+  if (!el) return;
+  var open = el.style.display === 'none';
+  el.style.display = open ? '' : 'none';
+  if (ch) ch.textContent = open ? '▲' : '▼';
+}
+
+function abrirFormCobro(clienteId) {
+  var form = document.getElementById('formCobro');
+  if (form) { form.style.display = ''; form.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+
+function cerrarFormCobro() {
+  var form = document.getElementById('formCobro');
+  if (form) form.style.display = 'none';
+}
+
+async function guardarCobro(clienteId) {
+  var monto = parseFloat(document.getElementById('cobroMonto').value);
+  var fecha = document.getElementById('cobroFecha').value;
+  var tipo  = document.getElementById('cobroTipo').value;
+  var ref   = document.getElementById('cobroRef').value.trim();
+  var notas = document.getElementById('cobroNotas').value.trim();
+
+  if (!monto || monto <= 0) { alert('El monto debe ser mayor a 0'); return; }
+  if (!fecha) { alert('Indica la fecha del cobro'); return; }
+
+  var btn = document.querySelector('#formCobro .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
+
+  try {
+    var result = await api('/cobros', { method:'POST', body: JSON.stringify({
+      cliente_id: clienteId, monto: monto, tipo_pago: tipo,
+      referencia: ref||null, fecha_pago: fecha, notas: notas||null
+    })});
+
+    var resumen = result.aplicaciones.map(function(a) {
+      return '  • Factura ' + a.factura_numero + ': $' + a.monto_aplicado.toFixed(2);
+    }).join('\n');
+    alert('✅ Cobro registrado correctamente\n\nAplicado a:\n' + resumen);
+
+    cerrarFormCobro();
+    document.getElementById('cobroMonto').value = '';
+    document.getElementById('cobroRef').value = '';
+    document.getElementById('cobroNotas').value = '';
+    await loadData();
+    cargarCxC(clienteId);
+  } catch(e) {
+    alert('Error al registrar cobro: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Confirmar Cobro'; }
+  }
 }
 
 /* ── Editar cliente ── */
