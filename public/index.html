@@ -2950,6 +2950,7 @@ function verCliente(id) {
             '<div class="fg"><label>N° de referencia (opcional)</label><input type="text" id="cobroRef" placeholder="Nro. de transferencia..."></div>' +
           '</div>' +
           '<div class="fg" style="margin-bottom:12px;"><label>Notas (opcional)</label><input type="text" id="cobroNotas" placeholder="Observaciones..."></div>' +
+          '<div id="cobroError" style="display:none;margin-bottom:10px;padding:10px 12px;background:rgba(255,80,80,.1);border:1px solid rgba(255,80,80,.3);border-radius:8px;color:var(--red);font-size:12px;"></div>' +
           '<div style="display:flex;gap:8px;justify-content:flex-end;">' +
             '<button class="btn btn-ghost btn-sm" onclick="cerrarFormCobro()">Cancelar</button>' +
             '<button class="btn btn-primary btn-sm" onclick="guardarCobro(\'' + id + '\')">💾 Confirmar Cobro</button>' +
@@ -3100,23 +3101,36 @@ function cerrarFormCobro() {
 }
 
 async function guardarCobro(clienteId) {
-  var monto = parseFloat(document.getElementById('cobroMonto').value);
-  var fecha = document.getElementById('cobroFecha').value;
-  var tipo  = document.getElementById('cobroTipo').value;
-  var ref   = document.getElementById('cobroRef').value.trim();
-  var notas = document.getElementById('cobroNotas').value.trim();
-
-  if (!monto || monto <= 0) { alert('El monto debe ser mayor a 0'); return; }
-  if (!fecha) { alert('Indica la fecha del cobro'); return; }
-
   var btn = document.querySelector('#formCobro .btn-primary');
-  if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
+  var errEl = document.getElementById('cobroError');
+  if (errEl) errEl.style.display = 'none';
 
   try {
+    var montoEl = document.getElementById('cobroMonto');
+    var fechaEl = document.getElementById('cobroFecha');
+    var tipoEl  = document.getElementById('cobroTipo');
+    var refEl   = document.getElementById('cobroRef');
+    var notasEl = document.getElementById('cobroNotas');
+
+    if (!montoEl || !fechaEl) { throw new Error('Formulario no encontrado. Cierra y vuelve a abrir la ventana del cliente.'); }
+
+    var monto = parseFloat(montoEl.value);
+    var fecha = fechaEl.value;
+    var tipo  = tipoEl ? tipoEl.value : 'efectivo';
+    var ref   = refEl ? refEl.value.trim() : '';
+    var notas = notasEl ? notasEl.value.trim() : '';
+
+    if (!monto || monto <= 0) { throw new Error('El monto debe ser mayor a 0'); }
+    if (!fecha) { throw new Error('Indica la fecha del cobro'); }
+
+    if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
+
     var result = await api('/cobros', { method:'POST', body: JSON.stringify({
       cliente_id: clienteId, monto: monto, tipo_pago: tipo,
       referencia: ref||null, fecha_pago: fecha, notas: notas||null
     })});
+
+    if (!result || !result.aplicaciones) throw new Error('Respuesta inesperada del servidor');
 
     var resumen = result.aplicaciones.map(function(a) {
       return '  • Factura ' + a.factura_numero + ': $' + a.monto_aplicado.toFixed(2);
@@ -3124,13 +3138,18 @@ async function guardarCobro(clienteId) {
     alert('✅ Cobro registrado correctamente\n\nAplicado a:\n' + resumen);
 
     cerrarFormCobro();
-    document.getElementById('cobroMonto').value = '';
-    document.getElementById('cobroRef').value = '';
-    document.getElementById('cobroNotas').value = '';
+    if (montoEl) montoEl.value = '';
+    if (refEl)   refEl.value = '';
+    if (notasEl) notasEl.value = '';
     await loadData();
     cargarCxC(clienteId);
   } catch(e) {
-    alert('Error al registrar cobro: ' + e.message);
+    if (errEl) {
+      errEl.textContent = '⚠️ ' + e.message;
+      errEl.style.display = '';
+    } else {
+      alert('Error al registrar cobro: ' + e.message);
+    }
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = '💾 Confirmar Cobro'; }
   }
