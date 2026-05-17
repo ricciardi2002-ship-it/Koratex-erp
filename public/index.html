@@ -1735,8 +1735,8 @@ function estadoDesp(e) {
   return '<span class="badge bs">Pendiente</span>';
 }
 function estadoPago(e) {
-  const m = {al_dia:'bg',pendiente:'ba',mora:'br'};
-  const l = {al_dia:'Al día',pendiente:'Pendiente',mora:'En mora'};
+  const m = {pendiente:'ba', abonado:'bb', pagada:'bg', al_dia:'bg', mora:'br'};
+  const l = {pendiente:'Pendiente', abonado:'Abonado', pagada:'Pagada', al_dia:'Al día', mora:'En mora'};
   return `<span class="badge ${m[e]||'bs'}">${l[e]||e}</span>`;
 }
 function tipoBadge(t) {

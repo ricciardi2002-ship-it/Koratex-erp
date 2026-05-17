@@ -12,14 +12,16 @@ router.get('/', auth, async (req, res, next) => {
       `SELECT p.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo,
               c.zona_id, z.nombre as zona_nombre,
               u.nombre as vendedor_nombre,
-              COUNT(pi.id) as item_count
+              COUNT(pi.id) as item_count,
+              COALESCE(f.estado, 'pendiente') AS estado_pago
        FROM pedidos p
        JOIN clientes c ON c.id = p.cliente_id
        LEFT JOIN zonas z ON z.id = c.zona_id
        LEFT JOIN usuarios u ON u.id = p.vendedor_id
        LEFT JOIN pedido_items pi ON pi.pedido_id = p.id
+       LEFT JOIN facturas f ON f.pedido_id = p.id
        ${isComercial ? 'WHERE p.vendedor_id = $1' : ''}
-       GROUP BY p.id, c.nombre, c.codigo, c.zona_id, z.nombre, u.nombre
+       GROUP BY p.id, c.nombre, c.codigo, c.zona_id, z.nombre, u.nombre, f.estado
        ORDER BY p.created_at DESC
        LIMIT 200`,
       isComercial ? [req.user.id] : []
@@ -37,7 +39,8 @@ router.get('/ventas-anuales', auth, async (req, res, next) => {
     const result = await pool.query(
       `SELECT p.id, p.numero, p.fecha_pedido,
              p.subtotal, p.igv, p.total,
-             p.estado_pago, p.estado_despacho, p.lista_precios,
+             p.estado_despacho, p.lista_precios,
+             COALESCE(f.estado, 'pendiente') AS estado_pago,
              c.nombre  AS cliente_nombre,
              c.codigo  AS cliente_codigo,
              tc.nombre AS tipo_cliente,
@@ -51,11 +54,12 @@ router.get('/ventas-anuales', auth, async (req, res, next) => {
       LEFT JOIN zonas z    ON z.id  = c.zona_id
       LEFT JOIN usuarios u ON u.id  = p.vendedor_id
       LEFT JOIN pedido_items pi ON pi.pedido_id = p.id
+      LEFT JOIN facturas f ON f.pedido_id = p.id
       WHERE p.estado_despacho IN ('despachado','entregado')
         AND p.fecha_pedido >= CURRENT_DATE - INTERVAL '12 months'
         ${isComercial ? 'AND p.vendedor_id = $1' : ''}
       GROUP BY p.id, p.numero, p.fecha_pedido, p.subtotal, p.igv, p.total,
-               p.estado_pago, p.estado_despacho, p.lista_precios,
+               p.estado_despacho, p.lista_precios, f.estado,
                c.nombre, c.codigo, tc.nombre, z.nombre, u.nombre
       ORDER BY p.fecha_pedido DESC`,
       isComercial ? [req.user.id] : []
