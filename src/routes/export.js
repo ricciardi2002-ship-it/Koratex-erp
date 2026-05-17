@@ -132,34 +132,75 @@ router.get('/clientes', auth, roles('admin', 'finanzas'), async (req, res, next)
 });
 
 // ── GET /api/export/productos  ──────────────────────────────────────────────
-// One row per product with sales performance
+// One row per product with sales performance, margin and utility by price list
 router.get('/productos', auth, roles('admin', 'finanzas'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT
         pr.codigo,
         pr.nombre,
-        tp.nombre                                     AS categoria,
+        tp.nombre                                              AS categoria,
         pr.presentacion,
+        pr.costo_produccion,
+
+        -- Precios por lista
         pr.precio_lista_a,
         pr.precio_lista_b,
         pr.precio_lista_c,
-        pr.costo_produccion,
-        ROUND((pr.precio_lista_a - pr.costo_produccion) / NULLIF(pr.precio_lista_a,0) * 100, 1) AS margen_pct,
+
+        -- Margen absoluto por lista (precio - costo)
+        ROUND(pr.precio_lista_a - pr.costo_produccion, 2)     AS margen_abs_lista_a,
+        ROUND(pr.precio_lista_b - pr.costo_produccion, 2)     AS margen_abs_lista_b,
+        ROUND(pr.precio_lista_c - pr.costo_produccion, 2)     AS margen_abs_lista_c,
+
+        -- Margen porcentual por lista
+        ROUND((pr.precio_lista_a - pr.costo_produccion) / NULLIF(pr.precio_lista_a,0) * 100, 1) AS margen_pct_lista_a,
+        ROUND((pr.precio_lista_b - pr.costo_produccion) / NULLIF(pr.precio_lista_b,0) * 100, 1) AS margen_pct_lista_b,
+        ROUND((pr.precio_lista_c - pr.costo_produccion) / NULLIF(pr.precio_lista_c,0) * 100, 1) AS margen_pct_lista_c,
+
+        -- Unidades vendidas por lista de precios
+        COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'A'), 0) AS unidades_lista_a,
+        COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'B'), 0) AS unidades_lista_b,
+        COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'C'), 0) AS unidades_lista_c,
+        COALESCE(SUM(pi.cantidad), 0)                                       AS unidades_total,
+
+        -- Utilidad por lista (unidades × margen_abs)
+        ROUND(COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'A'), 0)
+              * (pr.precio_lista_a - pr.costo_produccion), 2)  AS utilidad_lista_a,
+        ROUND(COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'B'), 0)
+              * (pr.precio_lista_b - pr.costo_produccion), 2)  AS utilidad_lista_b,
+        ROUND(COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'C'), 0)
+              * (pr.precio_lista_c - pr.costo_produccion), 2)  AS utilidad_lista_c,
+
+        -- Utilidad total combinada
+        ROUND(
+          COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'A'), 0)
+            * (pr.precio_lista_a - pr.costo_produccion)
+          + COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'B'), 0)
+            * (pr.precio_lista_b - pr.costo_produccion)
+          + COALESCE(SUM(pi.cantidad) FILTER (WHERE p.lista_precios = 'C'), 0)
+            * (pr.precio_lista_c - pr.costo_produccion)
+        , 2)                                                   AS utilidad_total,
+
+        -- Monto facturado total (precio real cobrado con descuentos)
+        COALESCE(SUM(pi.subtotal), 0)                          AS monto_facturado,
+        COALESCE(AVG(pi.descuento_pct), 0)                     AS descuento_promedio_pct,
+
+        -- Stock
         pr.peso_kg,
-        COALESCE(i.stock_total, 0)                    AS stock_total,
-        COALESCE(i.stock_reservado, 0)                AS stock_reservado,
-        COALESCE(i.stock_total - i.stock_reservado,0) AS stock_disponible,
-        COUNT(DISTINCT pi.pedido_id)                  AS num_pedidos,
-        COALESCE(SUM(pi.cantidad), 0)                 AS unidades_vendidas,
-        COALESCE(SUM(pi.subtotal), 0)                 AS monto_vendido,
-        COALESCE(AVG(pi.descuento_pct), 0)            AS descuento_promedio_pct,
+        COALESCE(i.stock_total, 0)                             AS stock_total,
+        COALESCE(i.stock_reservado, 0)                         AS stock_reservado,
+        COALESCE(i.stock_total - i.stock_reservado, 0)         AS stock_disponible,
+
+        -- Actividad reciente
+        COUNT(DISTINCT pi.pedido_id)                           AS num_pedidos,
         COALESCE(SUM(pi.cantidad) FILTER (
           WHERE p.fecha_pedido >= CURRENT_DATE - INTERVAL '30 days'
-        ), 0)                                         AS unidades_ultimos_30d,
+        ), 0)                                                  AS unidades_ultimos_30d,
         COALESCE(SUM(pi.cantidad) FILTER (
           WHERE p.fecha_pedido >= CURRENT_DATE - INTERVAL '90 days'
-        ), 0)                                         AS unidades_ultimos_90d
+        ), 0)                                                  AS unidades_ultimos_90d
+
       FROM productos pr
       JOIN tipos_producto tp ON tp.id = pr.tipo_id
       LEFT JOIN inventario_pt i ON i.producto_id = pr.id
@@ -169,9 +210,9 @@ router.get('/productos', auth, roles('admin', 'finanzas'), async (req, res, next
       GROUP BY pr.id, pr.codigo, pr.nombre, tp.nombre, pr.presentacion,
                pr.precio_lista_a, pr.precio_lista_b, pr.precio_lista_c,
                pr.costo_produccion, pr.peso_kg, i.stock_total, i.stock_reservado
-      ORDER BY monto_vendido DESC
+      ORDER BY utilidad_total DESC NULLS LAST
     `);
-    sendCSV(res, 'koratex_productos_akkio.csv', toCSV(result.rows));
+    sendCSV(res, 'koratex_productos_rendimiento.csv', toCSV(result.rows));
   } catch (err) { next(err); }
 });
 
