@@ -99,13 +99,16 @@ const clientesRouter = express.Router();
 // GET /api/clientes
 clientesRouter.get('/', auth, async (req, res, next) => {
   try {
+    const isComercial = req.user.rol === 'comercial';
     const result = await query(
       `SELECT c.*, tc.nombre as tipo_nombre, tc.lista_precios, tc.dias_credito,
               z.nombre as zona_nombre
        FROM clientes c
        JOIN tipos_cliente tc ON tc.id = c.tipo_id
        LEFT JOIN zonas z ON z.id = c.zona_id
-       ORDER BY c.activo DESC, c.codigo`
+       ${isComercial ? 'WHERE c.vendedor_id = $1' : ''}
+       ORDER BY c.activo DESC, c.codigo`,
+      isComercial ? [req.user.id] : []
     );
     res.json(result.rows);
   } catch (err) {
@@ -145,12 +148,13 @@ clientesRouter.post('/', auth, roles('admin', 'comercial'), async (req, res, nex
   try {
     const { codigo, nombre, ruc, tipo_id, zona_id, direccion, telefono,
             email, lat, lng, limite_credito } = req.body;
+    const vendedor_id = req.user.id;
     const result = await query(
       `INSERT INTO clientes (codigo, nombre, ruc, tipo_id, zona_id, direccion,
-        telefono, email, lat, lng, limite_credito)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+        telefono, email, lat, lng, limite_credito, vendedor_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
       [codigo, nombre, ruc, tipo_id, zona_id, direccion,
-       telefono, email, lat, lng, limite_credito]
+       telefono, email, lat, lng, limite_credito, vendedor_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -161,6 +165,10 @@ clientesRouter.post('/', auth, roles('admin', 'comercial'), async (req, res, nex
 // PUT /api/clientes/:id
 clientesRouter.put('/:id', auth, roles('admin', 'comercial'), async (req, res, next) => {
   try {
+    if (req.user.rol === 'comercial') {
+      const own = await query(`SELECT id FROM clientes WHERE id=$1 AND vendedor_id=$2`, [req.params.id, req.user.id]);
+      if (!own.rows.length) return res.status(403).json({ error: 'Acceso denegado' });
+    }
     const { nombre, ruc, tipo_id, zona_id, direccion, telefono,
             email, lat, lng, limite_credito, activo } = req.body;
     const result = await query(

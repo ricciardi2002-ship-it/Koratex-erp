@@ -131,12 +131,13 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 /* KORATEX brand accent line on sidebar top */
 /* SIDEBAR */
 .sidebar {
-  width:220px; min-height:100vh;
+  width:220px; height:100vh;
   background:var(--bg2);
   border-right:1px solid var(--border);
   box-shadow:2px 0 12px rgba(15,23,42,.06);
   display:flex; flex-direction:column;
   position:fixed; top:0; left:0; z-index:200;
+  overflow:hidden;
   transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
 .sb-brand {
@@ -626,11 +627,6 @@ textarea { resize:vertical; min-height:65px; }
       <div class="login-name" style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;color:#f0f0f0;">KORATEX</div>
     </div>
     <div class="login-sub" style="font-size:10px;letter-spacing:2px;color:#555;">MORTERO SECO, C.A. &nbsp;·&nbsp; J-30805882-3 &nbsp;·&nbsp; SISTEMA ERP</div>
-    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
-      <div class="fg"><label>Usuario</label><input type="email" value="[admin@koratex.com](mailto:admin@koratex.com)" placeholder="[usuario@koratex.com](mailto:usuario@koratex.com)"></div>
-      <div class="fg"><label>Contraseña</label><input type="password" value="••••••••"></div>
-    </div>
-    <div class="login-sep"></div>
     <form onsubmit="event.preventDefault();doLogin();" style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
       <div class="fg"><label>Usuario</label><input id="loginEmail" type="email" value="admin@koratex.com" placeholder="usuario@koratex.com" required></div>
       <div class="fg"><label>Contraseña</label><input id="loginPass" type="password" value="koratex2025" required></div>
@@ -1983,7 +1979,7 @@ function renderDashboard() {
         var v = parseFloat(d.total)||0;
         var h = Math.max(Math.round((v/maxV)*85), 2);
         var clr = i >= chart.length-2 ? 'var(--orange)' : 'var(--wire)';
-        var lbl = d.fecha ? String(d.fecha).slice(5) : '';
+        var lbl = d.fecha ? String(d.fecha).split('T')[0].slice(5) : '';
         return '<div class="bc-col"><div class="bc-val">$'+Math.round(v/1000)+'k</div>' +
           '<div class="bc-bar" style="height:'+h+'%;background:'+clr+';"></div>' +
           '<div class="bc-label">'+lbl+'</div></div>';

@@ -7,6 +7,7 @@ const router = express.Router();
 // GET /api/pedidos
 router.get('/', auth, async (req, res, next) => {
   try {
+    const isComercial = req.user.rol === 'comercial';
     const result = await pool.query(
       `SELECT p.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo,
               c.zona_id, z.nombre as zona_nombre,
@@ -17,9 +18,11 @@ router.get('/', auth, async (req, res, next) => {
        LEFT JOIN zonas z ON z.id = c.zona_id
        LEFT JOIN usuarios u ON u.id = p.vendedor_id
        LEFT JOIN pedido_items pi ON pi.pedido_id = p.id
+       ${isComercial ? 'WHERE p.vendedor_id = $1' : ''}
        GROUP BY p.id, c.nombre, c.codigo, c.zona_id, z.nombre, u.nombre
        ORDER BY p.created_at DESC
-       LIMIT 200`
+       LIMIT 200`,
+      isComercial ? [req.user.id] : []
     );
     res.json(result.rows);
   } catch (err) {
@@ -30,8 +33,9 @@ router.get('/', auth, async (req, res, next) => {
 // GET /api/pedidos/ventas-anuales
 router.get('/ventas-anuales', auth, async (req, res, next) => {
   try {
-    const result = await pool.query(`
-      SELECT p.id, p.numero, p.fecha_pedido,
+    const isComercial = req.user.rol === 'comercial';
+    const result = await pool.query(
+      `SELECT p.id, p.numero, p.fecha_pedido,
              p.subtotal, p.igv, p.total,
              p.estado_pago, p.estado_despacho, p.lista_precios,
              c.nombre  AS cliente_nombre,
@@ -49,11 +53,13 @@ router.get('/ventas-anuales', auth, async (req, res, next) => {
       LEFT JOIN pedido_items pi ON pi.pedido_id = p.id
       WHERE p.estado_despacho IN ('despachado','entregado')
         AND p.fecha_pedido >= CURRENT_DATE - INTERVAL '12 months'
+        ${isComercial ? 'AND p.vendedor_id = $1' : ''}
       GROUP BY p.id, p.numero, p.fecha_pedido, p.subtotal, p.igv, p.total,
                p.estado_pago, p.estado_despacho, p.lista_precios,
                c.nombre, c.codigo, tc.nombre, z.nombre, u.nombre
-      ORDER BY p.fecha_pedido DESC
-    `);
+      ORDER BY p.fecha_pedido DESC`,
+      isComercial ? [req.user.id] : []
+    );
     res.json(result.rows);
   } catch (err) { next(err); }
 });
@@ -161,7 +167,6 @@ router.patch('/:id/estado', auth, roles('admin', 'logistica', 'finanzas', 'comer
     );
     if (!result.rows.length) {
       await client.query('ROLLBACK');
-      // Puede ya estar entregado — devolver el pedido actual
       const existing = await pool.query(`SELECT * FROM pedidos WHERE id=$1`, [req.params.id]);
       if (!existing.rows.length) return res.status(404).json({ error: 'Pedido no encontrado' });
       const factCheck = await pool.query(`SELECT * FROM facturas WHERE pedido_id=$1`, [req.params.id]);

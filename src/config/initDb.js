@@ -66,6 +66,9 @@ async function initDb() {
     created_at TIMESTAMPTZ DEFAULT NOW()
   )`);
 
+  // Migración: asignar vendedor_id a clientes (para aislamiento por rol)
+  await query(`ALTER TABLE clientes ADD COLUMN IF NOT EXISTS vendedor_id UUID REFERENCES usuarios(id)`);
+
   await query(`CREATE TABLE IF NOT EXISTS tipos_producto (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(60) NOT NULL UNIQUE

@@ -8,12 +8,15 @@ const cobranzaRouter = express.Router();
 // GET /api/cobranza  — facturas
 cobranzaRouter.get('/', auth, async (req, res, next) => {
   try {
+    const isComercial = req.user.rol === 'comercial';
     const result = await query(
       `SELECT f.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo
        FROM facturas f
        JOIN clientes c ON c.id = f.cliente_id
+       ${isComercial ? 'WHERE c.vendedor_id = $1' : ''}
        ORDER BY f.fecha_emision DESC
-       LIMIT 200`
+       LIMIT 200`,
+      isComercial ? [req.user.id] : []
     );
     res.json(result.rows);
   } catch (err) {
@@ -102,6 +105,7 @@ cobranzaRouter.post('/:id/pagos', auth, roles('admin', 'finanzas'), async (req, 
 // GET /api/cobranza/resumen/vencidas
 cobranzaRouter.get('/resumen/vencidas', auth, async (req, res, next) => {
   try {
+    const isComercial = req.user.rol === 'comercial';
     const result = await query(
       `SELECT f.*, c.nombre as cliente_nombre, c.codigo as cliente_codigo,
               (f.monto_total - f.monto_pagado) as saldo_pendiente,
@@ -109,7 +113,9 @@ cobranzaRouter.get('/resumen/vencidas', auth, async (req, res, next) => {
        FROM facturas f
        JOIN clientes c ON c.id = f.cliente_id
        WHERE f.estado IN ('pendiente','abonado') AND f.fecha_vencimiento < CURRENT_DATE
-       ORDER BY dias_vencida DESC`
+         ${isComercial ? 'AND c.vendedor_id = $1' : ''}
+       ORDER BY dias_vencida DESC`,
+      isComercial ? [req.user.id] : []
     );
     res.json(result.rows);
   } catch (err) {
