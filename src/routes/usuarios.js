@@ -30,11 +30,12 @@ router.get('/roles', auth, roles('admin'), async (req, res, next) => {
 // POST /api/usuarios — crear usuario (admin)
 router.post('/', auth, roles('admin'), async (req, res, next) => {
   try {
-    const { nombre, email, password, rol_id } = req.body;
+    let { nombre, email, password, rol_id } = req.body;
     if (!nombre || !email || !password || !rol_id) {
       return res.status(400).json({ error: 'Nombre, email, contraseña y rol son requeridos' });
     }
-    const exists = await query('SELECT id FROM usuarios WHERE email = $1', [email]);
+    email = email.trim().toLowerCase();
+    const exists = await query('SELECT id FROM usuarios WHERE LOWER(email) = $1', [email]);
     if (exists.rows.length) {
       return res.status(409).json({ error: 'Ya existe un usuario con ese email' });
     }
@@ -55,7 +56,7 @@ router.patch('/:id', auth, roles('admin'), async (req, res, next) => {
     const fields = []; const values = []; let idx = 1;
 
     if (nombre)   { fields.push(`nombre=$${idx++}`);       values.push(nombre); }
-    if (email)    { fields.push(`email=$${idx++}`);        values.push(email); }
+    if (email)    { fields.push(`email=$${idx++}`);        values.push(email.trim().toLowerCase()); }
     if (rol_id)   { fields.push(`rol_id=$${idx++}`);       values.push(rol_id); }
     if (password) {
       const hash = await bcrypt.hash(password, 10);

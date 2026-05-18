@@ -297,6 +297,9 @@ async function seedData() {
     ('Rosa Finanzas','finanzas@koratex.com',$1,4)
     ON CONFLICT DO NOTHING`,[hash]);
 
+  // Normalizar emails existentes a minúsculas (idempotente)
+  await query(`UPDATE usuarios SET email = LOWER(email) WHERE email <> LOWER(email)`);
+
   await query(`INSERT INTO tipos_cliente (nombre, dias_credito, lista_precios) VALUES
     ('oro',60,'A'),('plata',30,'B'),('bronce',15,'C')
     ON CONFLICT DO NOTHING`);
