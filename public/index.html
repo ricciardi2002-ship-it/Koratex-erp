@@ -160,7 +160,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t1); mi
 .sb-title { font-size:17px; font-weight:800; letter-spacing:2px; text-transform:uppercase; line-height:1; }
 .sb-title small { display:block; font-size:8px; color:var(--t3); letter-spacing:1.5px; font-weight:400; margin-top:2px; }
 
-.sb-nav { flex:1; padding:6px 7px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.sb-nav { flex:1; padding:6px 7px; overflow-y:auto; }
 .sb-section { font-size:8.5px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--t3); padding:13px 9px 4px; }
 .nav-item {
   display:flex; align-items:center; gap:9px;
@@ -547,21 +547,6 @@ textarea { resize:vertical; min-height:65px; }
   box-shadow:var(--sh);
 }
 .pago-rapido-title { font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
-.cxc-tab-btn { padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s; }
-.cxc-tab-btn.active { color:var(--orange);border-bottom-color:var(--orange); }
-.cxc-cli-card { background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden; }
-.cxc-cli-header { display:flex;justify-content:space-between;align-items:center;padding:13px 16px;cursor:pointer;transition:background .15s; }
-.cxc-cli-header:hover { background:var(--bg3); }
-.cxc-cli-nombre { font-size:14px;font-weight:700;color:var(--t1); }
-.cxc-cli-sub { font-size:11px;color:var(--t3);margin-top:2px; }
-.cxc-cli-saldo { font-size:16px;font-weight:800;color:var(--orange);font-family:'DM Mono',monospace; }
-.cxc-cli-body { border-top:1px solid var(--border); }
-.cxc-fac-row { border-bottom:1px solid var(--border);padding:10px 16px; }
-.cxc-fac-row:last-child { border-bottom:none; }
-.cxc-fac-top { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
-.cxc-fac-num { font-family:'DM Mono',monospace;color:var(--cyan);font-size:12px;font-weight:700;min-width:90px; }
-.cxc-fac-btns { display:flex;gap:6px;margin-top:8px; }
-.cxc-pago-form { background:var(--bg3);border-top:1px solid var(--border);padding:12px 16px;display:none; }
 
 /* ══════════════════════════
    TIMELINE
@@ -821,10 +806,11 @@ textarea { resize:vertical; min-height:65px; }
           <div class="tw-title">Pedidos Pendientes</div>
           <div style="display:flex;gap:7px;flex-wrap:wrap;">
             <div class="search-box">🔍<input type="text" placeholder="Buscar..."></div>
+            <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;"><option>Todos los estados</option><option>Pendiente</option><option>Preparación</option><option>Despachado</option><option>Entregado</option></select>
           </div>
         </div>
         <table>
-          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Productos</th><th>Total</th><th>Antigüedad</th><th>Estado</th><th>Acción</th></tr></thead>
+          <thead><tr><th>#Pedido</th><th>Cliente</th><th>Zona</th><th>Productos</th><th>Total</th><th>Antigüedad</th><th>Despacho</th><th>Pago</th><th></th></tr></thead>
           <tbody id="colaTable"></tbody>
         </table>
       </div>
@@ -923,77 +909,71 @@ textarea { resize:vertical; min-height:65px; }
     <!-- ══ COBRANZA (Problema 4) ══ -->
     <div class="page" id="page-cobranza">
       <div class="ph">
-        <div class="ph-text"><h2>Cobranza</h2><p>Cartera · Abonos · Historial de cobros</p></div>
+        <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Registro en 2 toques · Alertas automáticas · Sin olvidar pagos</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" onclick="openModal('mCobro')">💳 Registrar Pago</button>
+        </div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi ko"><div class="kpi-label">Por cobrar</div><div class="kpi-val" id="cKpiTotal">—</div><div class="kpi-sub" id="cKpiTotalSub">—</div></div>
-        <div class="kpi kr"><div class="kpi-label">En mora</div><div class="kpi-val" id="cKpiMora">—</div><div class="kpi-sub" id="cKpiMoraSub">—</div></div>
-        <div class="kpi kg"><div class="kpi-label">Cobrado total</div><div class="kpi-val" id="cKpiCobrado">—</div><div class="kpi-sub" id="cKpiCobradoSub">—</div></div>
-        <div class="kpi ka"><div class="kpi-label">Facturas pend.</div><div class="kpi-val" id="cKpiPend">—</div><div class="kpi-sub" id="cKpiPendSub">—</div></div>
+        <div class="kpi ko"><div class="kpi-label">Total por cobrar</div><div class="kpi-val" id="cKpiTotal">—</div><div class="kpi-sub" id="cKpiTotalSub">Corriente + vencido</div></div>
+        <div class="kpi kr"><div class="kpi-label">Facturas en mora</div><div class="kpi-val" id="cKpiMora">—</div><div class="kpi-sub" id="cKpiMoraSub">—</div></div>
+        <div class="kpi kg"><div class="kpi-label">Cobrado acumulado</div><div class="kpi-val" id="cKpiCobrado">—</div><div class="kpi-sub" id="cKpiCobradoSub">—</div></div>
+        <div class="kpi ka"><div class="kpi-label">Facturas pendientes</div><div class="kpi-val" id="cKpiPend">—</div><div class="kpi-sub" id="cKpiPendSub">—</div></div>
       </div>
-      <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);">
-        <button id="cxcTab0" class="cxc-tab-btn active" onclick="cxcSetTab(0)">📋 Cartera</button>
-        <button id="cxcTab1" class="cxc-tab-btn" onclick="cxcSetTab(1)">💳 Registrar Cobro</button>
-        <button id="cxcTab2" class="cxc-tab-btn" onclick="cxcSetTab(2)">📜 Historial</button>
-      </div>
-      <div id="cxcPane0">
-        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-          <input type="text" id="cxcSearch" placeholder="🔍 Buscar cliente..." oninput="renderCartera()"
-            style="flex:1;min-width:180px;padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);">
-          <select id="cxcFiltro" onchange="renderCartera()"
-            style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);">
-            <option value="">Todas</option>
-            <option value="mora">En mora</option>
-            <option value="vigente">Al día</option>
-            <option value="pagada">Pagadas</option>
-          </select>
-        </div>
-        <div id="cxcCartera"></div>
-      </div>
-      <div id="cxcPane1" style="display:none;">
-        <div class="card" style="max-width:520px;">
-          <div class="card-title">💳 Registrar Cobro — distribución automática (FIFO)</div>
-          <div style="font-size:12px;color:var(--t3);margin-bottom:14px;">El monto se aplica a las facturas más antiguas primero.</div>
-          <div style="display:flex;flex-direction:column;gap:11px;">
-            <div class="fg"><label>Cliente</label>
-              <select id="fifoCliente" onchange="onFifoClienteChange()" style="width:100%;"><option value="">— Seleccionar cliente —</option></select>
-            </div>
-            <div class="fg"><label>Saldo pendiente</label>
-              <input type="text" id="fifoSaldo" readonly style="color:var(--orange);font-weight:700;">
-            </div>
-            <div class="fg"><label>Monto a cobrar</label>
-              <input type="number" id="fifoMonto" placeholder="0.00" step="0.01" style="width:100%;">
-            </div>
-            <div class="fg2">
-              <div class="fg"><label>Forma de pago</label>
-                <select id="fifoTipo" style="width:100%;">
-                  <option value="transferencia">Transferencia</option>
-                  <option value="efectivo">Efectivo</option>
-                  <option value="cheque">Cheque</option>
-                  <option value="zelle">Zelle</option>
+
+      <div class="g2">
+        <div>
+          <!-- REGISTRAR PAGO RÁPIDO -->
+          <div class="pago-rapido" style="margin-bottom:14px;">
+            <div class="pago-rapido-title">💳 Pago rápido — 2 toques</div>
+            <div class="fg2" style="margin-bottom:10px;">
+              <div class="fg">
+                <label>Factura / Cliente</label>
+                <select id="prFactura" onchange="onFacturaChange()">
+                  <option value="">— Seleccionar factura —</option>
                 </select>
               </div>
-              <div class="fg"><label>Referencia</label><input type="text" id="fifoRef" placeholder="Nro. referencia"></div>
+              <div class="fg">
+                <label>Saldo pendiente</label>
+                <input type="text" id="prSaldo" readonly placeholder="Auto">
+              </div>
+              <div class="fg">
+                <label>Monto a pagar</label>
+                <input type="number" id="prMonto" placeholder="0.00" step="0.01">
+              </div>
+              <div class="fg">
+                <label>Tipo de pago</label>
+                <select id="prTipo"><option>Transferencia</option><option>Efectivo</option><option>Cheque</option><option>Yape</option></select>
+              </div>
             </div>
-            <div class="fg"><label>Fecha</label><input type="date" id="fifoFecha"></div>
-            <div id="fifoError" style="color:#e8200a;font-size:12px;min-height:16px;"></div>
-            <button class="btn btn-primary" onclick="registrarCobroFIFO()">✅ Registrar Cobro</button>
+            <button class="btn btn-green btn-block" onclick="registrarPago()">✅ Registrar Pago Ahora</button>
+          </div>
+
+          <!-- FACTURAS URGENTES -->
+          <div class="card">
+            <div class="card-title">🚨 Urgentes — Mora y próximas a vencer</div>
+            <div id="cobrosUrgentes"></div>
           </div>
         </div>
-      </div>
-      <div id="cxcPane2" style="display:none;">
+
         <div class="tw">
           <div class="tw-toolbar">
-            <div class="tw-title">Historial de Cobros</div>
-            <button class="btn btn-ghost btn-sm" onclick="loadHistorialCobros()">🔄 Actualizar</button>
+            <div class="tw-title">Todas las Facturas</div>
+            <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" id="filtroCobranza" onchange="renderCobranza()">
+              <option value="">Todas</option>
+              <option value="mora">En mora</option>
+              <option value="vigente">Vigentes</option>
+              <option value="pagada">Pagadas</option>
+            </select>
           </div>
           <table>
-            <thead><tr><th>Fecha</th><th>Cliente</th><th>Monto</th><th>Forma</th><th>Ref.</th><th>Aplicado a</th><th>Registró</th></tr></thead>
-            <tbody id="cxcHistorial"><tr><td colspan="7" style="text-align:center;color:var(--t3);padding:20px;">Presiona Actualizar para cargar</td></tr></tbody>
+            <thead><tr><th>Factura</th><th>Cliente</th><th>Monto</th><th>Saldo</th><th>Vence</th><th>Mora</th><th>Estado</th></tr></thead>
+            <tbody id="cobranzaTable"></tbody>
           </table>
         </div>
       </div>
     </div>
+
 
     <!-- ══ CLIENTES ══ -->
     <div class="page" id="page-clientes">
@@ -1083,20 +1063,11 @@ textarea { resize:vertical; min-height:65px; }
             </select>
             <select id="cliZonaFiltro" style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" onchange="filtrarClientes()">
               <option value="">Todas las zonas</option>
-              <option value="Catia">Catia</option>
-              <option value="La Guaira">La Guaira</option>
-              <option value="La California">La California</option>
-              <option value="La Yaguara">La Yaguara</option>
-              <option value="Mariche">Mariche</option>
-              <option value="Guatire">Guatire</option>
-              <option value="Guarenas">Guarenas</option>
-              <option value="Baruta">Baruta</option>
-              <option value="Boleita Norte">Boleita Norte</option>
-              <option value="Los Teques">Los Teques</option>
-              <option value="Catia La Mar">Catia La Mar</option>
-              <option value="Sabana Grande">Sabana Grande</option>
-              <option value="San Martín">San Martín</option>
-              <option value="Bello Monte">Bello Monte</option>
+              <option value="Norte">Norte</option>
+              <option value="Sur">Sur</option>
+              <option value="Este">Este</option>
+              <option value="Oeste">Oeste</option>
+              <option value="Centro">Centro</option>
             </select>
           </div>
         </div>
@@ -1388,10 +1359,10 @@ textarea { resize:vertical; min-height:65px; }
         <div class="fg"><label>Factura</label><select id="mcFactura" onchange="onMcFacturaChange()"><option>F001-00224 · Ferretería Central</option><option>F001-00238 · Distrib. Roca</option><option>F001-00244 · Maderas SRL</option></select></div>
         <div class="fg"><label>Saldo</label><input type="text" id="mcSaldo" readonly placeholder="Auto"></div>
         <div class="fg"><label>Monto</label><input type="number" id="mcMonto" placeholder="0.00" step="0.01"></div>
-        <div class="fg"><label>Tipo de pago</label><select id="mcTipoPago"><option value="transferencia">Transferencia</option><option value="efectivo">Efectivo</option><option value="cheque">Cheque</option></select></div>
-        <div class="fg"><label>N° Referencia</label><input type="text" id="mcReferencia" placeholder="Op. bancaria"></div>
-        <div class="fg"><label>Fecha</label><input type="date" id="mcFecha"></div>
-        <div class="fg full"><label>Notas</label><textarea id="mcNotas" placeholder="Observaciones del cobro..."></textarea></div>
+        <div class="fg"><label>Tipo de pago</label><select><option>Transferencia</option><option>Efectivo</option><option>Cheque</option><option>Yape</option></select></div>
+        <div class="fg"><label>N° Referencia</label><input type="text" placeholder="Op. bancaria"></div>
+        <div class="fg"><label>Fecha</label><input type="date"></div>
+        <div class="fg full"><label>Notas</label><textarea placeholder="Observaciones del cobro..."></textarea></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-ghost" onclick="closeModal('mCobro')">Cancelar</button>
@@ -1502,6 +1473,62 @@ textarea { resize:vertical; min-height:65px; }
   </div>
 </div>
 
+<!-- Modal Editar Pedido -->
+<div class="modal-overlay" id="mEditarPedido">
+  <div class="modal" style="max-width:880px;width:96%;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="epTitulo">Editar Pedido</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px;">Solo pedidos no entregados · Recalcula totales y ajusta stock reservado</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('mEditarPedido')">✕</button>
+    </div>
+    <div style="padding:20px 24px;">
+      <input type="hidden" id="epPedidoId">
+      <div class="fs">
+        <div class="fg2">
+          <div class="fg full">
+            <label>Cliente</label>
+            <select id="epCliente"><option value="">— Seleccionar cliente —</option></select>
+          </div>
+          <div class="fg">
+            <label>Lista de precios</label>
+            <select id="epLista">
+              <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Fecha de entrega</label>
+            <input type="date" id="epFecha">
+          </div>
+          <div class="fg full">
+            <label>Observaciones</label>
+            <textarea id="epObs" placeholder="Instrucciones especiales, horario, etc."></textarea>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="card-title" style="margin-bottom:8px;">Productos del Pedido <span style="font-size:10px;color:var(--t3);text-transform:none;font-weight:400;">(máx. 15 líneas)</span></div>
+        <div class="lines-head">
+          <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio unit.</div><div>Subtotal</div><div></div>
+        </div>
+        <div id="epLines"></div>
+        <div class="ototal">
+          <div>
+            <div class="ototal-label">Total del pedido (+ IGV 18%)</div>
+            <div id="epCount" style="font-size:10px;color:var(--orange);opacity:.7;">0 ítems</div>
+          </div>
+          <div class="ototal-val" id="epTotal">$0.00</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+        <button class="btn btn-ghost" onclick="closeModal('mEditarPedido')">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarEdicionPedido()">💾 Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 
 /* ════════ API LAYER ════════ */
@@ -1531,7 +1558,6 @@ async function loadData() {
       api('/inventario/alertas'),
       api('/despacho/vehiculos/lista'),
       api('/pedidos/ventas-anuales'),
-      api('/clientes/zonas/lista'),
     ]);
     const clientes    = (results[0].status==='fulfilled' && results[0].value) || [];
     const productos   = (results[1].status==='fulfilled' && results[1].value) || [];
@@ -1542,9 +1568,7 @@ async function loadData() {
     const alertasAPI  = (results[6].status==='fulfilled' && results[6].value) || [];
     const vehiculos   = (results[7].status==='fulfilled' && results[7].value) || [];
     const ventasAnual = (results[8].status==='fulfilled' && results[8].value) || [];
-    const zonas       = (results[9].status==='fulfilled' && results[9].value) || [];
     console.log('[KX] loadData:', clientes.length,'clientes,', productos.length,'productos,', pedidos.length,'pedidos');
-    if (zonas.length) DB_zonas = zonas;
     DB_ventasDia = ventasDia;
     DB_alertas = alertasAPI;
     DB_vehiculos = vehiculos;
@@ -1584,14 +1608,12 @@ async function loadData() {
 
     DB_facturas = facturas.map(function(f) {
       var venc = f.fecha_vencimiento ? f.fecha_vencimiento.split('T')[0] : '';
-      var vencDate = venc ? new Date(venc + 'T12:00:00') : null;
-      var mora = vencDate && vencDate < new Date() && f.estado !== 'pagada'
-        ? Math.floor((Date.now() - vencDate.getTime()) / 86400000) : 0;
+      var mora = venc && new Date(venc) < new Date() && f.estado !== 'pagada'
+        ? Math.floor((Date.now() - new Date(venc).getTime()) / 86400000) : 0;
       return { id: f.id, num: f.numero, clienteId: f.cliente_id,
         clienteNombre: f.cliente_nombre,
-        pedidoId: f.pedido_id || null,
         total: parseFloat(f.monto_total) || 0, pagado: parseFloat(f.monto_pagado) || 0,
-        estado: f.estado || 'pendiente',
+        estado: f.estado === 'pagada' ? 'pagada' : 'pendiente',
         venc: venc, mora: mora,
       };
     });
@@ -1676,7 +1698,6 @@ async function enterApp() {
 
 // ─── DATA ───
 let DB_clientes = [];
-let DB_zonas = [];
 
 let DB_productos = [];
 
@@ -1796,12 +1817,13 @@ function diasChip(d) {
   return `<span class="dias-chip dias-2">${d}d ⚠️</span>`;
 }
 function estadoDesp(e) {
-  if (e === 'entregado') return '<span class="badge bg">Entregado</span>';
-  return '<span class="badge bs">Pendiente</span>';
+  const m = {pendiente:'bs',preparacion:'bo',despachado:'bb',entregado:'bg'};
+  const l = {pendiente:'Pendiente',preparacion:'Preparación',despachado:'En ruta',entregado:'Entregado'};
+  return `<span class="badge ${m[e]||'bs'}">${l[e]||e}</span>`;
 }
 function estadoPago(e) {
-  const m = {pendiente:'ba', abonado:'bb', pagada:'bg', al_dia:'bg', mora:'br'};
-  const l = {pendiente:'Pendiente', abonado:'Abonado', pagada:'Pagada', al_dia:'Al día', mora:'En mora'};
+  const m = {al_dia:'bg',pendiente:'ba',mora:'br'};
+  const l = {al_dia:'Al día',pendiente:'Pendiente',mora:'En mora'};
   return `<span class="badge ${m[e]||'bs'}">${l[e]||e}</span>`;
 }
 function tipoBadge(t) {
@@ -1810,7 +1832,7 @@ function tipoBadge(t) {
 
 /* ════════ POPULATE SELECTS ════════ */
 function populateSelects() {
-  ['npCliente','mpCliente'].forEach(id => {
+  ['npCliente','mpCliente','epCliente'].forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     el.innerHTML = '<option value="">— Seleccionar cliente —</option>' +
       DB_clientes.map(c => `<option value="${c.id}">${c.nombre} · ${c.tipo.toUpperCase()}</option>`).join('');
@@ -1841,15 +1863,6 @@ function populateSelects() {
       var cli = getCliente(p.clienteId);
       return '<option value="'+p.dbId+'">'+p.id+' · '+(cli?cli.nombre:p.clienteNombre||'')+' · $'+p.total.toLocaleString()+'</option>';
     }).join('');
-  }
-  // Zonas: poblar dropdowns de zona en formulario cliente y filtro
-  if (DB_zonas.length) {
-    var zonaOpts = DB_zonas.map(function(z){ return '<option value="'+z.nombre+'">'+z.nombre+'</option>'; }).join('');
-    var zonaFiltroOpts = '<option value="">Todas las zonas</option>' + zonaOpts;
-    var selZona = document.getElementById('cliZona');
-    if (selZona) { var curZona = selZona.value; selZona.innerHTML = zonaOpts; if (curZona) selZona.value = curZona; }
-    var selZonaF = document.getElementById('cliZonaFiltro');
-    if (selZonaF) { var curZonaF = selZonaF.value; selZonaF.innerHTML = zonaFiltroOpts; if (curZonaF) selZonaF.value = curZonaF; }
   }
   // Cobranza urgentes panel: populate mcFactura select
   var mcF = document.getElementById('mcFactura');
@@ -1890,6 +1903,7 @@ function buildLines(containerId, totalId, countId) {
 function buildAllLines() {
   buildLines('npLines', 'npTotal', 'npCount');
   buildLines('mpLines', 'mpTotal', 'mpCount');
+  buildLines('epLines', 'epTotal', 'epCount');
 }
 
 function onLineChange(cid, tid, cnid, i, tipoOverride) {
@@ -1989,11 +2003,7 @@ function onFacturaChange() {
 }
 
 function onMcFacturaChange() {
-  var factId = document.getElementById('mcFactura').value;
-  var f = DB_facturas.find(function(x){ return x.id === factId; });
-  document.getElementById('mcSaldo').value = f ? '$' + (f.total - f.pagado).toLocaleString() : '';
-  var montoEl = document.getElementById('mcMonto');
-  if (montoEl && f) montoEl.value = (f.total - f.pagado).toFixed(2);
+  document.getElementById('mcSaldo').value = '$' + [4200,6800,2100][document.getElementById('mcFactura').selectedIndex].toLocaleString();
 }
 
 /* ════════ RENDER ALL ════════ */
@@ -2102,15 +2112,6 @@ function renderDashboard() {
 }
 
 /* ── Cola ── */
-var _colaZonaFiltro = '';
-function filtrarColaZona(zona) {
-  _colaZonaFiltro = zona;
-  document.querySelectorAll('#zonaFiltros .btn').forEach(function(b){
-    b.classList.toggle('btn-primary', b.textContent === (zona || 'Todas'));
-    b.classList.toggle('btn-ghost', b.textContent !== (zona || 'Todas'));
-  });
-  renderCola();
-}
 function renderCola() {
   const t = document.getElementById('colaTable');
   if (!t) return;
@@ -2128,43 +2129,28 @@ function renderCola() {
   // Filtros de zona
   const zf = document.getElementById('zonaFiltros');
   if (zf) {
-    const zonas = [...new Set(DB_clientes.map(c => c.zona))].filter(Boolean).sort();
-    zf.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="filtrarColaZona('')">Todas</button>` +
-      zonas.map(z => `<button class="btn btn-ghost btn-sm" onclick="filtrarColaZona('${z.replace(/'/g,"\\'")}')">${z}</button>`).join('');
+    const zonas = [...new Set(DB_clientes.map(c => c.zona))];
+    zf.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="renderCola()">Todas</button>` +
+      zonas.map(z => `<button class="btn btn-ghost btn-sm" onclick="">${z}</button>`).join('');
   }
 
-  const pedidosFiltrados = _colaZonaFiltro
-    ? DB_pedidos.filter(p => { const cli = getCliente(p.clienteId); return (p.zona||(cli?cli.zona:'')) === _colaZonaFiltro; })
-    : DB_pedidos;
-
-  t.innerHTML = pedidosFiltrados.map(p => {
+  t.innerHTML = DB_pedidos.map(p => {
     const cli = getCliente(p.clienteId);
     const zona = p.zona || (cli ? cli.zona : '');
-    var factExist = DB_facturas.find(function(f){ return f.pedidoId === p.dbId; });
-    var accionCell;
-    if (p.estadoDesp === 'entregado') {
-      accionCell = '<td style="padding:6px 8px;">' +
-        '<div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;">' +
-          '<span class="badge bg" style="font-size:10px;">✅ Entregado</span>' +
-          (factExist ? '<span style="font-size:9px;color:var(--text-3);font-family:var(--font-mono);">🧾 ' + factExist.num + '</span>' : '') +
-        '</div></td>';
-    } else {
-      accionCell = '<td onclick="event.stopPropagation()" style="padding:6px 8px;">' +
-        '<button class="btn btn-primary btn-sm" onclick="entregarPedido(\'' + p.dbId + '\',\'' + p.id + '\')" ' +
-          'style="white-space:nowrap;font-size:11px;padding:5px 10px;">📦 Entregar</button>' +
-        '</td>';
-    }
-    return '<tr style="cursor:pointer;" onclick="verDetallePedido(\'' + p.id + '\')">' +
-      '<td><strong style="color:var(--orange);font-family:var(--font-mono);">' + p.id + '</strong></td>' +
-      '<td><div style="font-weight:600;">' + (cli?cli.nombre:p.clienteNombre||'') + '</div>' +
-        '<div style="font-size:10px;color:var(--t3);">' + zona + '</div></td>' +
-      '<td><span class="badge bb">' + zona + '</span></td>' +
-      '<td style="color:var(--t2);">' + p.items + ' ítem' + (p.items!==1?'s':'') + '</td>' +
-      '<td style="font-family:var(--font-mono);font-weight:500;">$' + p.total.toLocaleString() + '</td>' +
-      '<td>' + diasChip(p.diasAnt) + '</td>' +
-      '<td>' + estadoDesp(p.estadoDesp) + '</td>' +
-      accionCell +
-    '</tr>';
+    return `<tr style="cursor:pointer;" onclick="verDetallePedido('${p.id}')">
+      <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
+      <td><div style="font-weight:600;">${cli?cli.nombre:p.clienteNombre||''}</div><div style="font-size:10px;color:var(--t3);">${zona}</div></td>
+      <td><span class="badge bb">${zona}</span></td>
+      <td style="color:var(--t2);">${p.items} ítem${p.items!==1?'s':''}</td>
+      <td style="font-family:'DM Mono',monospace;font-weight:500;">$${p.total.toLocaleString()}</td>
+      <td>${diasChip(p.diasAnt)}</td>
+      <td>${estadoDesp(p.estadoDesp)}</td>
+      <td>${estadoPago(p.estadoPago)}</td>
+      <td onclick="event.stopPropagation()" style="display:flex;gap:4px;">
+        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">&#9654;</button>
+        <button class="btn btn-cyan btn-xs" onclick="crearFactura('${p.id}','${p.dbId}')" title="Generar factura">🧾</button>
+      </td>
+    </tr>`;
   }).join('');
 }
 
@@ -2298,43 +2284,7 @@ function renderMP() {
 }
 
 /* ── Cobranza ── */
-function cxcSetTab(n) {
-  [0,1,2].forEach(function(i) {
-    var btn = document.getElementById('cxcTab'+i);
-    var pane = document.getElementById('cxcPane'+i);
-    if (btn) btn.classList.toggle('active', i===n);
-    if (pane) pane.style.display = i===n ? '' : 'none';
-  });
-  if (n===2) loadHistorialCobros();
-  if (n===1) populateFifoClientes();
-}
-
-function renderCartera() {
-  var search = (document.getElementById('cxcSearch')||{value:''}).value.toLowerCase();
-  var filtro = (document.getElementById('cxcFiltro')||{value:''}).value;
-
-  // group facturas by client
-  var byClient = {};
-  DB_facturas.forEach(function(f) {
-    if (filtro === 'pagada'  && f.estado !== 'pagada') return;
-    if (filtro === 'mora'    && (f.mora <= 0 || f.estado === 'pagada')) return;
-    if (filtro === 'vigente' && (f.mora > 0 || f.estado === 'pagada')) return;
-    if (!byClient[f.clienteId]) {
-      byClient[f.clienteId] = { nombre: f.clienteNombre, facturas: [], saldo: 0, mora: false };
-    }
-    byClient[f.clienteId].facturas.push(f);
-    byClient[f.clienteId].saldo += Math.max(0, f.total - f.pagado);
-    if (f.mora > 0 && f.estado !== 'pagada') byClient[f.clienteId].mora = true;
-  });
-
-  var clients = Object.entries(byClient)
-    .filter(function(e) { return !search || e[1].nombre.toLowerCase().includes(search); })
-    .sort(function(a,b) { return (b[1].mora - a[1].mora) || (b[1].saldo - a[1].saldo); });
-
-  var el = document.getElementById('cxcCartera');
-  if (!el) return;
-
-  // KPIs
+function renderCobranza() {
   var totalPorCobrar = DB_facturas.filter(function(f){ return f.estado!=='pagada'; }).reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
   var enMora    = DB_facturas.filter(function(f){ return f.mora>0 && f.estado!=='pagada'; });
   var moraMonto = enMora.reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
@@ -2342,215 +2292,60 @@ function renderCartera() {
   var pendCount = DB_facturas.filter(function(f){ return f.estado!=='pagada'; }).length;
   var totalF    = DB_facturas.length;
   var pct       = totalF > 0 ? Math.round(DB_facturas.filter(function(f){ return f.estado==='pagada'; }).length/totalF*100) : 0;
-  var q; q=document.getElementById('cKpiTotal');     if(q) q.textContent='$'+Math.round(totalPorCobrar).toLocaleString();
-  q=document.getElementById('cKpiTotalSub');  if(q) q.textContent=pendCount+' factura'+(pendCount!==1?'s':'')+' por cobrar';
-  q=document.getElementById('cKpiMora');      if(q) q.textContent='$'+Math.round(moraMonto).toLocaleString();
-  q=document.getElementById('cKpiMoraSub');   if(q) q.innerHTML=enMora.length>0?'<span class="kpi-dn">'+enMora.length+' en mora</span>':'Sin mora';
-  q=document.getElementById('cKpiCobrado');   if(q) q.textContent='$'+Math.round(cobrado).toLocaleString();
-  q=document.getElementById('cKpiCobradoSub');if(q) q.innerHTML='<span class="kpi-up">'+pct+'% cobrado</span>';
-  q=document.getElementById('cKpiPend');      if(q) q.textContent=pendCount;
-  q=document.getElementById('cKpiPendSub');   if(q) q.textContent=totalF+' facturas totales';
-
-  if (!clients.length) {
-    el.innerHTML = '<div style="color:var(--t3);text-align:center;padding:40px;">Sin facturas que mostrar</div>';
-    return;
+  var el;
+  el=document.getElementById('cKpiTotal');     if(el) el.textContent='$'+Math.round(totalPorCobrar).toLocaleString();
+  el=document.getElementById('cKpiTotalSub');  if(el) el.textContent=pendCount+' factura'+(pendCount!==1?'s':'')+' por cobrar';
+  el=document.getElementById('cKpiMora');      if(el) el.textContent='$'+Math.round(moraMonto).toLocaleString();
+  el=document.getElementById('cKpiMoraSub');   if(el) el.innerHTML=enMora.length>0?'<span class="kpi-dn">'+enMora.length+' en mora</span>':'Sin mora';
+  el=document.getElementById('cKpiCobrado');   if(el) el.textContent='$'+Math.round(cobrado).toLocaleString();
+  el=document.getElementById('cKpiCobradoSub');if(el) el.innerHTML='<span class="kpi-up">'+pct+'% cobrado</span>';
+  el=document.getElementById('cKpiPend');      if(el) el.textContent=pendCount;
+  el=document.getElementById('cKpiPendSub');   if(el) el.textContent=totalF+' facturas totales';
+  // Urgentes
+  const cu = document.getElementById('cobrosUrgentes');
+  if (cu) {
+    const urgentes = DB_facturas.filter(f => f.estado !== 'pagada' && (f.mora > 0 || f.total - f.pagado > 0));
+    cu.innerHTML = urgentes.map(f => {
+      const cli = getCliente(f.clienteId);
+      const saldo = f.total - f.pagado;
+      const cls = f.mora > 15 ? 'cobro-mora' : f.mora > 0 ? 'cobro-mora' : 'cobro-vence';
+      return `<div class="cobro-card ${cls}">
+        <div class="cobro-info">
+          <div class="cobro-cliente">${cli?cli.nombre:''}</div>
+          <div class="cobro-fac">${f.num} · Vence: ${f.venc}</div>
+        </div>
+        <div class="cobro-right">
+          <div class="cobro-saldo" style="color:${f.mora>0?'var(--red)':'var(--amber)'};">$${saldo.toLocaleString()}</div>
+          <div class="cobro-dias">${f.mora > 0 ? `<span class="badge br">${f.mora}d mora</span>` : '<span class="badge ba">Próxima</span>'}</div>
+        </div>
+        <button class="btn btn-primary btn-xs" style="flex-shrink:0;" onclick="openModal('mCobro')">Cobrar</button>
+      </div>`;
+    }).join('');
   }
 
-  el.innerHTML = clients.map(function(entry) {
-    var cliId = entry[0]; var c = entry[1];
-    var moraCount = c.facturas.filter(function(f){ return f.mora>0 && f.estado!=='pagada'; }).length;
-    var rows = c.facturas.map(function(f) {
-      var saldo = Math.max(0, f.total - f.pagado);
-      var pagada = f.estado === 'pagada';
-      var moraBadge = pagada ? '<span class="badge bg">Pagada</span>'
-        : f.mora > 0 ? '<span class="badge br">'+f.mora+'d mora</span>'
-        : f.estado === 'abonado' ? '<span class="badge bb">Abonado</span>'
-        : '<span class="badge ba">Al día</span>';
-      return '<div class="cxc-fac-row" id="facRow_'+f.id+'">' +
-        '<div class="cxc-fac-top">' +
-          '<span class="cxc-fac-num">'+f.num+'</span>' +
-          '<span style="color:var(--t2);font-size:12px;">Total: <b>$'+f.total.toLocaleString()+'</b></span>' +
-          (f.pagado > 0 ? '<span style="color:var(--t3);font-size:12px;">Abonado: $'+f.pagado.toLocaleString()+'</span>' : '') +
-          '<span style="font-size:12px;">Saldo: <b style="color:'+(saldo>0?'var(--orange)':'var(--green)')+'">$'+saldo.toLocaleString()+'</b></span>' +
-          '<span style="color:var(--t3);font-size:11px;">Vence: '+f.venc+'</span>' +
-          moraBadge +
-        '</div>' +
-        (!pagada ? '<div class="cxc-fac-btns">' +
-          '<button class="btn btn-ghost btn-xs" onclick="mostrarFormPago(\''+f.id+'\','+saldo+',\''+f.num+'\',false)">💵 Abonar</button>' +
-          '<button class="btn btn-primary btn-xs" onclick="mostrarFormPago(\''+f.id+'\','+saldo+',\''+f.num+'\',true)">✅ Pagar nota completa</button>' +
-        '</div>' : '') +
-        '<div class="cxc-pago-form" id="pagoForm_'+f.id+'"></div>' +
-      '</div>';
-    }).join('');
-    return '<div class="cxc-cli-card">' +
-      '<div class="cxc-cli-header" onclick="toggleCxcCli(\'body_'+cliId+'\')">' +
-        '<div>' +
-          '<div class="cxc-cli-nombre">'+c.nombre+'</div>' +
-          '<div class="cxc-cli-sub">'+c.facturas.length+' factura'+(c.facturas.length!==1?'s':'')+
-            (moraCount > 0 ? ' · <span style="color:#e8200a;">'+moraCount+' en mora</span>' : ' · Al día') +
-          '</div>' +
-        '</div>' +
-        '<div style="text-align:right;">' +
-          '<div class="cxc-cli-saldo">$'+Math.round(c.saldo).toLocaleString()+'</div>' +
-          '<div style="font-size:10px;color:var(--t3);">pendiente ▾</div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="cxc-cli-body" id="body_'+cliId+'" style="display:none;">'+rows+'</div>' +
-    '</div>';
+  // Tabla
+  const ct = document.getElementById('cobranzaTable');
+  if (!ct) return;
+  const filtro = document.getElementById('filtroCobranza');
+  const f = filtro ? filtro.value : '';
+  const facturas = f ? DB_facturas.filter(x => x.estado === f) : DB_facturas;
+  ct.innerHTML = facturas.map(f => {
+    const cli = getCliente(f.clienteId);
+    const saldo = f.total - f.pagado;
+    const moraSem = f.mora > 15 ? 'sem-crit' : f.mora > 0 ? 'sem-warn' : 'sem-ok';
+    const estBadge = f.estado === 'pagada' ? 'bg' : f.mora > 0 ? 'br' : 'ba';
+    const estLabel = f.estado === 'pagada' ? 'Pagada' : f.mora > 0 ? 'En mora' : 'Vigente';
+    return `<tr>
+      <td style="font-family:'DM Mono',monospace;color:var(--cyan);">${f.num}</td>
+      <td style="font-weight:600;">${cli?cli.nombre:''} ${tipoBadge(cli?cli.tipo:'')}</td>
+      <td style="font-family:'DM Mono',monospace;">$${f.total.toLocaleString()}</td>
+      <td style="font-family:'DM Mono',monospace;color:${saldo>0?'var(--red)':'var(--green)'};">$${saldo.toLocaleString()}</td>
+      <td style="color:var(--t2);">${f.venc}</td>
+      <td>${f.mora > 0 ? `<span class="sem ${moraSem}"><span class="sem-dot"></span>${f.mora}d</span>` : '<span style="color:var(--t3);">—</span>'}</td>
+      <td><span class="badge ${estBadge}">${estLabel}</span></td>
+    </tr>`;
   }).join('');
 }
-
-function toggleCxcCli(bodyId) {
-  var el = document.getElementById(bodyId);
-  if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
-}
-
-function mostrarFormPago(factId, saldo, num, completo) {
-  var formEl = document.getElementById('pagoForm_'+factId);
-  if (!formEl) return;
-  if (formEl.style.display !== 'none' && formEl.dataset.open === factId) {
-    formEl.style.display = 'none'; formEl.dataset.open = ''; return;
-  }
-  var hoy = new Date().toISOString().split('T')[0];
-  var montoVal = completo ? saldo.toFixed(2) : '';
-  formEl.innerHTML =
-    '<div style="display:flex;flex-direction:column;gap:9px;">' +
-      '<div style="font-size:12px;font-weight:700;color:var(--cyan);">' +
-        (completo ? '✅ Pagar nota completa — '+num : '💵 Abonar a '+num) +
-      '</div>' +
-      '<div class="fg2">' +
-        '<div class="fg"><label>Monto</label>' +
-          '<input type="number" id="pmonto_'+factId+'" value="'+montoVal+'" placeholder="0.00" step="0.01"' +
-          (completo ? ' readonly' : '') + '>' +
-        '</div>' +
-        '<div class="fg"><label>Forma de pago</label>' +
-          '<select id="ptipo_'+factId+'">' +
-            '<option value="transferencia">Transferencia</option>' +
-            '<option value="efectivo">Efectivo</option>' +
-            '<option value="cheque">Cheque</option>' +
-            '<option value="zelle">Zelle</option>' +
-          '</select>' +
-        '</div>' +
-      '</div>' +
-      '<div class="fg2">' +
-        '<div class="fg"><label>Referencia</label><input type="text" id="pref_'+factId+'" placeholder="Nro. ref."></div>' +
-        '<div class="fg"><label>Fecha</label><input type="date" id="pfecha_'+factId+'" value="'+hoy+'"></div>' +
-      '</div>' +
-      '<div id="perr_'+factId+'" style="color:#e8200a;font-size:12px;min-height:14px;"></div>' +
-      '<div style="display:flex;gap:8px;">' +
-        '<button class="btn btn-primary btn-sm" onclick="enviarPagoDirecto(\''+factId+'\')">Confirmar</button>' +
-        '<button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'pagoForm_'+factId+'\').style.display=\'none\'">Cancelar</button>' +
-      '</div>' +
-    '</div>';
-  formEl.style.display = '';
-  formEl.dataset.open = factId;
-}
-
-async function enviarPagoDirecto(factId) {
-  try {
-    var monto   = parseFloat((document.getElementById('pmonto_'+factId)||{}).value || '0');
-    var tipo    = (document.getElementById('ptipo_'+factId)||{}).value || 'transferencia';
-    var ref     = (document.getElementById('pref_'+factId)||{}).value || '';
-    var fecha   = (document.getElementById('pfecha_'+factId)||{}).value || new Date().toISOString().split('T')[0];
-    var errEl   = document.getElementById('perr_'+factId);
-    if (monto <= 0) { if(errEl) errEl.textContent='Ingresa un monto válido'; return; }
-    if(errEl) errEl.textContent='';
-    var r = await fetch('/api/cobros/factura/'+factId, {
-      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
-      body: JSON.stringify({ monto, tipo_pago:tipo, referencia:ref, fecha_pago:fecha })
-    });
-    var data = await r.json();
-    if (!r.ok) { if(errEl) errEl.textContent = data.error || 'Error al registrar'; return; }
-    // Update local DB_facturas
-    var idx = DB_facturas.findIndex(function(f){ return f.id === factId; });
-    if (idx >= 0) {
-      DB_facturas[idx].pagado = parseFloat(data.factura.monto_pagado) || DB_facturas[idx].pagado;
-      DB_facturas[idx].estado = data.factura.estado;
-    }
-    renderCartera();
-  } catch(e) {
-    var errEl = document.getElementById('perr_'+factId);
-    if(errEl) errEl.textContent = 'Error de conexión';
-  }
-}
-
-function populateFifoClientes() {
-  var sel = document.getElementById('fifoCliente');
-  if (!sel) return;
-  var clientes = [...new Map(
-    DB_facturas.filter(function(f){ return f.estado !== 'pagada'; })
-    .map(function(f){ return [f.clienteId, {id:f.clienteId, nombre:f.clienteNombre}]; })
-  ).values()].sort(function(a,b){ return a.nombre.localeCompare(b.nombre); });
-  sel.innerHTML = '<option value="">— Seleccionar cliente —</option>' +
-    clientes.map(function(c){ return '<option value="'+c.id+'">'+c.nombre+'</option>'; }).join('');
-  var fh = document.getElementById('fifoFecha');
-  if (fh && !fh.value) fh.value = new Date().toISOString().split('T')[0];
-}
-
-function onFifoClienteChange() {
-  var cliId = (document.getElementById('fifoCliente')||{}).value;
-  var saldo = DB_facturas.filter(function(f){ return f.clienteId===cliId && f.estado!=='pagada'; })
-    .reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
-  var el = document.getElementById('fifoSaldo');
-  if (el) el.value = saldo > 0 ? '$'+saldo.toFixed(2) : '$0.00';
-}
-
-async function registrarCobroFIFO() {
-  var errEl = document.getElementById('fifoError');
-  try {
-    var cliId  = (document.getElementById('fifoCliente')||{}).value;
-    var monto  = parseFloat((document.getElementById('fifoMonto')||{}).value || '0');
-    var tipo   = (document.getElementById('fifoTipo')||{}).value || 'transferencia';
-    var ref    = (document.getElementById('fifoRef')||{}).value || '';
-    var fecha  = (document.getElementById('fifoFecha')||{}).value || new Date().toISOString().split('T')[0];
-    if (!cliId) { if(errEl) errEl.textContent='Selecciona un cliente'; return; }
-    if (monto <= 0) { if(errEl) errEl.textContent='Ingresa un monto válido'; return; }
-    if(errEl) errEl.textContent='';
-    var r = await fetch('/api/cobros', {
-      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
-      body: JSON.stringify({ cliente_id:cliId, monto, tipo_pago:tipo, referencia:ref, fecha_pago:fecha })
-    });
-    var data = await r.json();
-    if (!r.ok) { if(errEl) errEl.textContent = data.error || 'Error al registrar'; return; }
-    // Reload data
-    await loadData();
-    cxcSetTab(0);
-  } catch(e) {
-    if(errEl) errEl.textContent = 'Error de conexión';
-  }
-}
-
-async function loadHistorialCobros() {
-  var tbody = document.getElementById('cxcHistorial');
-  if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:16px;">Cargando...</td></tr>';
-  try {
-    var r = await fetch('/api/cobros/historial', {headers:{'Authorization':'Bearer '+TOKEN}});
-    if (!r.ok) throw new Error(r.statusText);
-    var rows = await r.json();
-    if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:20px;">Sin cobros registrados</td></tr>';
-      return;
-    }
-    var metodos = {transferencia:'Transferencia',efectivo:'Efectivo',cheque:'Cheque',zelle:'Zelle'};
-    tbody.innerHTML = rows.map(function(c) {
-      var facs = (c.facturas_aplicadas||[]).filter(Boolean).join(', ') || '—';
-      return '<tr>' +
-        '<td>'+(c.fecha_pago||'').split('T')[0]+'</td>' +
-        '<td style="font-weight:600;">'+c.cliente_nombre+'</td>' +
-        '<td style="font-family:\'DM Mono\',monospace;color:var(--green);font-weight:700;">$'+parseFloat(c.monto).toLocaleString()+'</td>' +
-        '<td>'+(metodos[c.tipo_pago]||c.tipo_pago)+'</td>' +
-        '<td style="color:var(--t3);">'+(c.referencia||'—')+'</td>' +
-        '<td style="font-size:11px;color:var(--cyan);">'+facs+'</td>' +
-        '<td style="color:var(--t3);">'+(c.usuario_nombre||'—')+'</td>' +
-      '</tr>';
-    }).join('');
-  } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#e8200a;padding:20px;">Error al cargar</td></tr>';
-  }
-}
-
-function renderCobranza() { renderCartera(); }
 
 /* ── Catálogo ── */
 function renderCatalogo() {
@@ -2725,27 +2520,9 @@ async function registrarPago() {
   } catch(e) { alert('Error: ' + e.message); }
 }
 
-async function saveCobro() {
-  var factId = document.getElementById('mcFactura').value;
-  var monto  = parseFloat(document.getElementById('mcMonto').value);
-  var fecha  = document.getElementById('mcFecha').value;
-  if (!factId) { alert('Selecciona una factura'); return; }
-  if (!monto || monto <= 0) { alert('Ingresa un monto válido'); return; }
-  if (!fecha) { alert('Ingresa la fecha del pago'); return; }
-  var f = DB_facturas.find(function(x){ return x.id === factId; });
-  try {
-    await api('/cobranza/' + factId + '/pagos', { method: 'POST', body: JSON.stringify({
-      monto: monto,
-      tipo_pago: document.getElementById('mcTipoPago').value,
-      referencia: document.getElementById('mcReferencia').value || null,
-      fecha_pago: fecha,
-      notas: document.getElementById('mcNotas').value || null,
-    })});
-    DB_traz.unshift({t:'g',ev:'Pago registrado',desc:'$'+monto.toLocaleString()+' · '+(f?f.num:''),time:'Hace un momento'});
-    await loadData(); populateSelects(); renderAll();
-    closeModal('mCobro');
-    alert('✅ Pago registrado correctamente');
-  } catch(e) { alert('Error: ' + e.message); }
+function saveCobro() {
+  DB_traz.unshift({t:'g',ev:'Pago registrado',desc:'Cobro aplicado a factura',time:'Hace un momento'});
+  renderTrazabilidad(); renderCobranza(); closeModal('mCobro');
 }
 
 async function registrarStock() {
@@ -2844,19 +2621,21 @@ function reoptimizar() {
   alert(msg);
 }
 
-async function entregarPedido(dbId, numPedido) {
-  if (!confirm('¿Marcar el pedido ' + numPedido + ' como ENTREGADO?\n\nEsto generará la factura automáticamente y la registrará en Cuentas por Cobrar.')) return;
-  try {
-    var result = await api('/pedidos/' + dbId + '/estado', {
-      method: 'PATCH',
-      body: JSON.stringify({ estado_despacho: 'entregado' })
-    });
-    var factNum = result.factura ? result.factura.numero : '—';
-    DB_traz.unshift({t:'g', ev:'Pedido entregado · Factura generada',
-      desc: numPedido + ' · ' + factNum, time:'Hace un momento'});
-    await loadData(); populateSelects(); renderAll();
-    alert('✅ Pedido ' + numPedido + ' marcado como entregado.\nFactura ' + factNum + ' generada y registrada en Cobranza.');
-  } catch(e) { alert('Error: ' + e.message); }
+async function cambiarEstado(id) {
+  const p = DB_pedidos.find(function(x){ return x.id === id; });
+  if (!p) return;
+  const estados = ['pendiente','preparacion','despachado','entregado'];
+  const idx = estados.indexOf(p.estadoDesp);
+  if (idx >= 0 && idx < estados.length - 1) {
+    const nuevoEstado = estados[idx + 1];
+    try {
+      await api('/pedidos/' + p.dbId + '/estado', { method: 'PATCH',
+        body: JSON.stringify({ estado_despacho: nuevoEstado }) });
+      DB_traz.unshift({t:'o',ev:'Estado actualizado',
+        desc:id + ' → ' + nuevoEstado, time:'Hace un momento'});
+      await loadData(); renderAll();
+    } catch(e) { alert('Error: ' + e.message); }
+  }
 }
 
 function imprimirFormato() {
@@ -3059,13 +2838,13 @@ async function guardarCliente() {
   if (!nombre) { alert('El nombre del cliente es obligatorio'); return; }
   if (!tipo)   { alert('Selecciona el tipo de cliente'); return; }
   const tipoMap = {oro:1, plata:2, bronce:3};
-  const zona = document.getElementById('cliZona') ? document.getElementById('cliZona').value : '';
-  const zonaObj = DB_zonas.find(function(z){ return z.nombre === zona; });
+  const zonaMap = {Norte:1, Sur:2, Este:3, Oeste:4, Centro:5, Cono:6};
+  const zona = document.getElementById('cliZona') ? document.getElementById('cliZona').value : 'Centro';
   const payload = {
     nombre: nombre,
     ruc:           document.getElementById('cliRif') ? document.getElementById('cliRif').value || null : null,
     tipo_id:       tipoMap[tipo] || 3,
-    zona_id:       zonaObj ? zonaObj.id : null,
+    zona_id:       zonaMap[zona] || 5,
     direccion:     document.getElementById('cliDir') ? document.getElementById('cliDir').value || '' : '',
     telefono:      document.getElementById('cliTel') ? document.getElementById('cliTel').value || '' : '',
     email:         document.getElementById('cliEmail') ? document.getElementById('cliEmail').value || '' : '',
@@ -3209,7 +2988,6 @@ function verCliente(id) {
             '<div class="fg"><label>N° de referencia (opcional)</label><input type="text" id="cobroRef" placeholder="Nro. de transferencia..."></div>' +
           '</div>' +
           '<div class="fg" style="margin-bottom:12px;"><label>Notas (opcional)</label><input type="text" id="cobroNotas" placeholder="Observaciones..."></div>' +
-          '<div id="cobroError" style="display:none;margin-bottom:10px;padding:10px 12px;background:rgba(255,80,80,.1);border:1px solid rgba(255,80,80,.3);border-radius:8px;color:var(--red);font-size:12px;"></div>' +
           '<div style="display:flex;gap:8px;justify-content:flex-end;">' +
             '<button class="btn btn-ghost btn-sm" onclick="cerrarFormCobro()">Cancelar</button>' +
             '<button class="btn btn-primary btn-sm" onclick="guardarCobro(\'' + id + '\')">💾 Confirmar Cobro</button>' +
@@ -3360,36 +3138,23 @@ function cerrarFormCobro() {
 }
 
 async function guardarCobro(clienteId) {
+  var monto = parseFloat(document.getElementById('cobroMonto').value);
+  var fecha = document.getElementById('cobroFecha').value;
+  var tipo  = document.getElementById('cobroTipo').value;
+  var ref   = document.getElementById('cobroRef').value.trim();
+  var notas = document.getElementById('cobroNotas').value.trim();
+
+  if (!monto || monto <= 0) { alert('El monto debe ser mayor a 0'); return; }
+  if (!fecha) { alert('Indica la fecha del cobro'); return; }
+
   var btn = document.querySelector('#formCobro .btn-primary');
-  var errEl = document.getElementById('cobroError');
-  if (errEl) errEl.style.display = 'none';
+  if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
 
   try {
-    var montoEl = document.getElementById('cobroMonto');
-    var fechaEl = document.getElementById('cobroFecha');
-    var tipoEl  = document.getElementById('cobroTipo');
-    var refEl   = document.getElementById('cobroRef');
-    var notasEl = document.getElementById('cobroNotas');
-
-    if (!montoEl || !fechaEl) { throw new Error('Formulario no encontrado. Cierra y vuelve a abrir la ventana del cliente.'); }
-
-    var monto = parseFloat(montoEl.value);
-    var fecha = fechaEl.value;
-    var tipo  = tipoEl ? tipoEl.value : 'efectivo';
-    var ref   = refEl ? refEl.value.trim() : '';
-    var notas = notasEl ? notasEl.value.trim() : '';
-
-    if (!monto || monto <= 0) { throw new Error('El monto debe ser mayor a 0'); }
-    if (!fecha) { throw new Error('Indica la fecha del cobro'); }
-
-    if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
-
     var result = await api('/cobros', { method:'POST', body: JSON.stringify({
       cliente_id: clienteId, monto: monto, tipo_pago: tipo,
       referencia: ref||null, fecha_pago: fecha, notas: notas||null
     })});
-
-    if (!result || !result.aplicaciones) throw new Error('Respuesta inesperada del servidor');
 
     var resumen = result.aplicaciones.map(function(a) {
       return '  • Factura ' + a.factura_numero + ': $' + a.monto_aplicado.toFixed(2);
@@ -3397,18 +3162,13 @@ async function guardarCobro(clienteId) {
     alert('✅ Cobro registrado correctamente\n\nAplicado a:\n' + resumen);
 
     cerrarFormCobro();
-    if (montoEl) montoEl.value = '';
-    if (refEl)   refEl.value = '';
-    if (notasEl) notasEl.value = '';
+    document.getElementById('cobroMonto').value = '';
+    document.getElementById('cobroRef').value = '';
+    document.getElementById('cobroNotas').value = '';
     await loadData();
     cargarCxC(clienteId);
   } catch(e) {
-    if (errEl) {
-      errEl.textContent = '⚠️ ' + e.message;
-      errEl.style.display = '';
-    } else {
-      alert('Error al registrar cobro: ' + e.message);
-    }
+    alert('Error al registrar cobro: ' + e.message);
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = '💾 Confirmar Cobro'; }
   }
@@ -3428,7 +3188,7 @@ function editarCliente(id) {
   document.getElementById('cliEmail').value   = c.email || '';
   document.getElementById('cliDir').value     = c.direccion || '';
   document.getElementById('cliCiudad').value  = c.ciudad || '';
-  document.getElementById('cliZona').value    = c.zona || '';
+  document.getElementById('cliZona').value    = c.zona || 'Centro';
   document.getElementById('cliLimite').value  = c.limCredit || '';
   document.getElementById('cliDescuento').value = c.descuento || 0;
   document.getElementById('cliObs').value     = c.obs || '';
@@ -3443,13 +3203,13 @@ async function toggleCliente(id) {
   if (!c) return;
   var nuevoActivo = !c.activo;
   var tipoMap = {oro:1, plata:2, bronce:3};
-  var zonaObj2 = DB_zonas.find(function(z){ return z.nombre === c.zona; });
+  var zonaMap = {Norte:1,Sur:2,Este:3,Oeste:4,Centro:5,Cono:6};
   try {
     await api('/clientes/' + id, { method: 'PUT',
       body: JSON.stringify({
         nombre: c.nombre, ruc: c.rif||'',
         tipo_id: tipoMap[c.tipo] || 3,
-        zona_id: zonaObj2 ? zonaObj2.id : null,
+        zona_id: zonaMap[c.zona] || 5,
         direccion: c.direccion||'', telefono: c.telefono||'',
         email: c.email||'', limite_credito: c.limCredit||0,
         activo: nuevoActivo
@@ -3592,7 +3352,7 @@ function renderVentas() {
   if (!tb) return;
   tb.innerHTML = pageRows.map(function(v) {
     var fechaFmt = v.fecha ? v.fecha.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '—';
-    return '<tr onclick="verDetallePedido(\''+v.id+'\')" style="cursor:pointer;">' +
+    return '<tr onclick="abrirDetallePedido(\''+v.dbId+'\')" style="cursor:pointer;">' +
       '<td>'+fechaFmt+'</td>' +
       '<td><strong>'+v.id+'</strong></td>' +
       '<td>'+v.clienteNombre+'</td>' +
@@ -3627,10 +3387,8 @@ async function crearFactura(pedidoNum, pedidoDbId) {
   var existente = DB_facturas.find(function(f){ return f.pedidoId===pedidoDbId || f.pedidoId===p.dbId; });
   if (existente) { alert('Este pedido ya tiene la factura '+existente.num); return; }
   if (!confirm('Generar factura para el pedido '+pedidoNum+' por $'+p.total.toLocaleString()+'?')) return;
-  var cli = getCliente(p.clienteId);
-  var diasCredito = (cli && cli.diasCredito) ? cli.diasCredito : 30;
   var hoy = new Date();
-  var venc = new Date(hoy.getTime() + (diasCredito * 86400000));
+  var venc = new Date(hoy.getTime() + (30 * 86400000)); // 30 días
   var fechaV = venc.toISOString().split('T')[0];
   var numF = 'F001-' + String(Date.now()).slice(-5);
   try {
@@ -3702,11 +3460,16 @@ async function verDetallePedido(pedidoNum) {
   document.getElementById('mDetalleItemsBody').innerHTML =
     '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Cargando productos...</td></tr>';
   document.getElementById('mDetalleTotales').innerHTML = '';
+  var puedeEditar = currentUser && ['admin','comercial','logistica'].indexOf(currentUser.rol) !== -1;
+  var btnEditar = (p.estadoDesp !== 'entregado' && puedeEditar)
+    ? '<button class="btn btn-ghost" onclick="closeModal(\'mDetallePedido\');abrirEditarPedido(\'' + p.dbId + '\')">✏️ Editar</button>'
+    : '';
   var accionDetalle = p.estadoDesp === 'entregado'
     ? '<span class="badge bg">✅ Entregado</span>'
     : '<button class="btn btn-primary" onclick="closeModal(\'mDetallePedido\');entregarPedido(\'' + p.dbId + '\',\'' + p.id + '\')">📦 Marcar como Entregado</button>';
   document.getElementById('mDetalleAcciones').innerHTML =
     '<button class="btn btn-ghost" onclick="closeModal(\'mDetallePedido\')">Cerrar</button>' +
+    btnEditar +
     accionDetalle;
 
   openModal('mDetallePedido');
@@ -3750,6 +3513,87 @@ async function verDetallePedido(pedidoNum) {
   } catch(e) {
     document.getElementById('mDetalleItemsBody').innerHTML =
       '<tr><td colspan="4" style="text-align:center;color:var(--red);padding:20px;">Error al cargar detalle: ' + e.message + '</td></tr>';
+  }
+}
+
+// ── Editar Pedido ────────────────────────────────────────────────────────
+async function abrirEditarPedido(dbId) {
+  try {
+    const det = await api('/pedidos/' + dbId);
+    if (!det) return;
+    if (det.estado_despacho === 'entregado') {
+      alert('No se puede editar un pedido ya entregado'); return;
+    }
+    document.getElementById('epPedidoId').value = dbId;
+    document.getElementById('epTitulo').textContent = 'Editar Pedido ' + (det.numero || '');
+    document.getElementById('epCliente').value = det.cliente_id || '';
+    document.getElementById('epLista').value   = det.lista_precios || 'C';
+    document.getElementById('epFecha').value   = det.fecha_entrega ? String(det.fecha_entrega).split('T')[0] : '';
+    document.getElementById('epObs').value     = det.observaciones || '';
+
+    buildLines('epLines','epTotal','epCount');
+
+    const items = det.items || [];
+    items.forEach(function(it, idx) {
+      const i = idx + 1;
+      if (i > 15) return;
+      const prod = DB_productos.find(function(x){ return x.id === it.producto_id; });
+      const sel  = document.getElementById('epLines_p_' + i);
+      const qEl  = document.getElementById('epLines_q_' + i);
+      const puEl = document.getElementById('epLines_pu_' + i);
+      const presEl = document.getElementById('epLines_pres_' + i);
+      const lineEl = document.getElementById('epLines_line_' + i);
+      if (sel && prod) sel.value = prod.cod;
+      if (qEl)  qEl.value  = it.cantidad;
+      if (puEl) puEl.value = parseFloat(it.precio_unitario);
+      if (presEl && prod) presEl.value = prod.presentacion || '';
+      if (lineEl) lineEl.classList.remove('empty');
+      onLineChange('epLines','epTotal','epCount', i);
+    });
+
+    openModal('mEditarPedido');
+  } catch(e) {
+    alert('Error al cargar pedido: ' + e.message);
+  }
+}
+
+async function guardarEdicionPedido() {
+  const dbId = document.getElementById('epPedidoId').value;
+  if (!dbId) return;
+  const cliente_id    = document.getElementById('epCliente').value;
+  const lista_precios = document.getElementById('epLista').value;
+  const fecha_entrega = document.getElementById('epFecha').value || null;
+  const observaciones = document.getElementById('epObs').value || null;
+  if (!cliente_id) { alert('Selecciona un cliente'); return; }
+
+  const items = [];
+  for (let i = 1; i <= 15; i++) {
+    const sel  = document.getElementById('epLines_p_' + i);
+    const qEl  = document.getElementById('epLines_q_' + i);
+    const puEl = document.getElementById('epLines_pu_' + i);
+    if (sel && sel.value && qEl && qEl.value) {
+      const p = DB_productos.find(function(x){ return x.cod === sel.value; });
+      if (p) items.push({
+        producto_id: p.id,
+        cantidad: parseInt(qEl.value) || 1,
+        precio_unitario: parseFloat((puEl && puEl.value) || p.pA),
+        descuento_pct: 0
+      });
+    }
+  }
+  if (!items.length) { alert('Agrega al menos un producto'); return; }
+
+  try {
+    const upd = await api('/pedidos/' + dbId, {
+      method: 'PUT',
+      body: JSON.stringify({ cliente_id, lista_precios, fecha_entrega, observaciones, items })
+    });
+    if (!upd) return;
+    closeModal('mEditarPedido');
+    await loadData(); populateSelects(); renderAll();
+    alert('Pedido actualizado correctamente');
+  } catch(e) {
+    alert('Error al guardar: ' + e.message);
   }
 }
 
@@ -3922,20 +3766,12 @@ document.querySelector('#loginScreen img') && (document.getElementById('_sbLogo'
           <div class="fg">
             <label>Zona de despacho</label>
             <select id="cliZona">
-              <option value="Catia">Catia</option>
-              <option value="La Guaira">La Guaira</option>
-              <option value="La California">La California</option>
-              <option value="La Yaguara">La Yaguara</option>
-              <option value="Mariche">Mariche</option>
-              <option value="Guatire">Guatire</option>
-              <option value="Guarenas">Guarenas</option>
-              <option value="Baruta">Baruta</option>
-              <option value="Boleita Norte">Boleita Norte</option>
-              <option value="Los Teques">Los Teques</option>
-              <option value="Catia La Mar">Catia La Mar</option>
-              <option value="Sabana Grande">Sabana Grande</option>
-              <option value="San Martín">San Martín</option>
-              <option value="Bello Monte">Bello Monte</option>
+              <option value="Norte">Norte</option>
+              <option value="Sur">Sur</option>
+              <option value="Este">Este</option>
+              <option value="Oeste">Oeste</option>
+              <option value="Centro">Centro</option>
+              <option value="Cono">Cono</option>
             </select>
           </div>
         </div>
