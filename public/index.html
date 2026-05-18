@@ -2133,6 +2133,13 @@ function renderCola() {
   t.innerHTML = DB_pedidos.map(p => {
     const cli = getCliente(p.clienteId);
     const zona = p.zona || (cli ? cli.zona : '');
+    const entregado = p.estadoDesp === 'entregado';
+    const accionCell = entregado
+      ? `<td style="padding:6px 8px;"><span class="badge bg" style="font-size:10px;">✅ Entregado</span></td>`
+      : `<td onclick="event.stopPropagation()" style="padding:6px 8px;display:flex;gap:4px;align-items:center;">
+           <button class="btn btn-ghost btn-xs" onclick="verDetallePedido('${p.id}')">✏️ Editar</button>
+           <button class="btn btn-primary btn-xs" onclick="entregarPedido('${p.dbId}','${p.id}')" style="white-space:nowrap;">📦 Entregar</button>
+         </td>`;
     return `<tr style="cursor:pointer;" onclick="verDetallePedido('${p.id}')">
       <td><strong style="color:var(--orange);font-family:'DM Mono',monospace;">${p.id}</strong></td>
       <td><div style="font-weight:600;">${cli?cli.nombre:p.clienteNombre||''}</div><div style="font-size:10px;color:var(--t3);">${zona}</div></td>
@@ -2142,10 +2149,7 @@ function renderCola() {
       <td>${diasChip(p.diasAnt)}</td>
       <td>${estadoDesp(p.estadoDesp)}</td>
       <td>${estadoPago(p.estadoPago)}</td>
-      <td onclick="event.stopPropagation()" style="display:flex;gap:4px;">
-        <button class="btn btn-ghost btn-xs" onclick="cambiarEstado('${p.id}')">&#9654;</button>
-        <button class="btn btn-cyan btn-xs" onclick="crearFactura('${p.id}','${p.dbId}')" title="Generar factura">🧾</button>
-      </td>
+      ${accionCell}
     </tr>`;
   }).join('');
 }
@@ -3348,7 +3352,7 @@ function renderVentas() {
   if (!tb) return;
   tb.innerHTML = pageRows.map(function(v) {
     var fechaFmt = v.fecha ? v.fecha.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '—';
-    return '<tr onclick="abrirDetallePedido(\''+v.dbId+'\')" style="cursor:pointer;">' +
+    return '<tr onclick="verDetallePedido(\''+v.id+'\')" style="cursor:pointer;">' +
       '<td>'+fechaFmt+'</td>' +
       '<td><strong>'+v.id+'</strong></td>' +
       '<td>'+v.clienteNombre+'</td>' +
