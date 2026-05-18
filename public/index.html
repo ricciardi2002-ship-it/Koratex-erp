@@ -1215,6 +1215,48 @@ textarea { resize:vertical; min-height:65px; }
       </div>
     </div>
 
+    <!-- ══ USUARIOS ══ -->
+    <div class="page" id="page-usuarios">
+      <div class="ph">
+        <div class="ph-text"><h2>Gestión de Usuarios</h2><p>Crear, editar y activar/desactivar cuentas del sistema</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">+ Nuevo Usuario</button>
+        </div>
+      </div>
+      <div id="usuariosTable" style="overflow-x:auto;"></div>
+    </div>
+
+    <!-- Modal Nuevo/Editar Usuario -->
+    <div id="modalUsuario" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;align-items:center;justify-content:center;">
+      <div style="background:var(--bg2);border-radius:16px;padding:32px;min-width:340px;max-width:420px;width:90%;position:relative;">
+        <button onclick="cerrarModalUsuario()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--t2);">✕</button>
+        <h3 id="modalUsuarioTitulo" style="margin:0 0 20px;">Nuevo Usuario</h3>
+        <input type="hidden" id="uEditId">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:4px;">Nombre completo</label>
+            <input id="uNombre" class="input" style="width:100%;box-sizing:border-box;" placeholder="Ej: Juan Pérez">
+          </div>
+          <div>
+            <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:4px;">Email</label>
+            <input id="uEmail" class="input" type="email" style="width:100%;box-sizing:border-box;" placeholder="usuario@empresa.com">
+          </div>
+          <div>
+            <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:4px;">Contraseña <span id="uPassLabel" style="color:var(--t3);">(requerida)</span></label>
+            <input id="uPassword" class="input" type="password" style="width:100%;box-sizing:border-box;" placeholder="Mínimo 6 caracteres">
+          </div>
+          <div>
+            <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:4px;">Rol</label>
+            <select id="uRol" class="input" style="width:100%;box-sizing:border-box;">
+              <option value="">Cargando roles...</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="guardarUsuario()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+
     <!-- ══ VENTAS ══ -->
     <div class="page" id="page-ventas">
       <div class="ph">
@@ -1637,7 +1679,7 @@ function getAlertas() {
 /* ════════ ROLE SYSTEM ════════ */
 let currentRole = 'admin';
 const ROLES = {
-  admin:     {label:'Administrador', av:'AD', nav:['dashboard','ventas','nuevo-pedido','cola','clientes','despacho','inventario','cobranza','catalogo','finanzas','trazabilidad','alertas','exportar']},
+  admin:     {label:'Administrador', av:'AD', nav:['dashboard','ventas','nuevo-pedido','cola','clientes','despacho','inventario','cobranza','catalogo','finanzas','trazabilidad','alertas','exportar','usuarios']},
   comercial: {label:'Comercial',     av:'CM', nav:['nuevo-pedido','ventas','cola','clientes','cobranza','catalogo','alertas']},
   logistica: {label:'Logística',     av:'LG', nav:['dashboard','cola','despacho','inventario','alertas']},
   finanzas:  {label:'Finanzas',      av:'FN', nav:['dashboard','ventas','cobranza','finanzas','alertas']},
@@ -1656,6 +1698,7 @@ const NAV = {
   'trazabilidad': {label:'Trazabilidad',      icon:'🔍', group:'Sistema'},
   'alertas':      {label:'Alertas',           icon:'🔔', group:'Sistema', badge:3},
   'exportar':     {label:'Exportar / Akkio',  icon:'📥', group:'Sistema'},
+  'usuarios':     {label:'Usuarios',           icon:'👤', group:'Sistema'},
 };
 
 function enterAs(role) { quickLogin(role + '@koratex.com'); }
@@ -1691,6 +1734,7 @@ function navigate(page) {
   document.getElementById('tbTitle').innerHTML = `<span>Koratex</span> · ${item ? item.label : page}`;
   closeSb();
   if (TOKEN) { loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(e){ console.warn('loadData:', e); }); }
+  if (page === 'usuarios') loadUsuarios();
 }
 function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
@@ -3405,6 +3449,114 @@ async function verDetallePedido(pedidoNum) {
     document.getElementById('mDetalleItemsBody').innerHTML =
       '<tr><td colspan="4" style="text-align:center;color:var(--red);padding:20px;">Error al cargar detalle: ' + e.message + '</td></tr>';
   }
+}
+
+// ── Usuarios ──────────────────────────────────────────────────────────────
+var DB_roles_lista = [];
+
+async function loadUsuarios() {
+  try {
+    const [usersRes, rolesRes] = await Promise.all([
+      fetch('/api/usuarios', {headers:{Authorization:'Bearer '+TOKEN}}),
+      fetch('/api/usuarios/roles', {headers:{Authorization:'Bearer '+TOKEN}})
+    ]);
+    const users = await usersRes.json();
+    const roles = await rolesRes.json();
+    DB_roles_lista = roles;
+    var sel = document.getElementById('uRol');
+    if (sel) {
+      sel.innerHTML = roles.map(function(r) {
+        return '<option value="'+r.id+'">'+r.nombre+'</option>';
+      }).join('');
+    }
+    var tbl = document.getElementById('usuariosTable');
+    if (!tbl) return;
+    if (!users.length) {
+      tbl.innerHTML = '<p style="color:var(--t3);padding:24px;">No hay usuarios registrados.</p>';
+      return;
+    }
+    var rows = users.map(function(u) {
+      var badge = u.activo
+        ? '<span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:11px;">Activo</span>'
+        : '<span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:11px;">Inactivo</span>';
+      var toggleLbl = u.activo ? 'Desactivar' : 'Activar';
+      var toggleStyle = u.activo ? 'color:#dc2626;' : 'color:#16a34a;';
+      return '<tr style="border-bottom:1px solid var(--border);">'
+        + '<td style="padding:10px 12px;">'+u.nombre+'</td>'
+        + '<td style="padding:10px 12px;color:var(--t3);">'+u.email+'</td>'
+        + '<td style="padding:10px 12px;">'+u.rol+'</td>'
+        + '<td style="padding:10px 12px;">'+badge+'</td>'
+        + '<td style="padding:10px 12px;white-space:nowrap;">'
+        + '<button class="btn btn-ghost btn-sm" onclick="abrirModalUsuario(\''+u.id+'\')">✏️ Editar</button> '
+        + '<button class="btn btn-ghost btn-sm" style="'+toggleStyle+'" onclick="toggleUsuario(\''+u.id+'\')">'+toggleLbl+'</button>'
+        + '</td>'
+        + '</tr>';
+    }).join('');
+    tbl.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:13px;">'
+      + '<thead><tr style="background:var(--bg3);"><th style="padding:10px 12px;text-align:left;">Nombre</th><th style="padding:10px 12px;text-align:left;">Email</th><th style="padding:10px 12px;text-align:left;">Rol</th><th style="padding:10px 12px;text-align:left;">Estado</th><th style="padding:10px 12px;text-align:left;">Acciones</th></tr></thead>'
+      + '<tbody>'+rows+'</tbody></table>';
+  } catch(e) { console.error('loadUsuarios', e); }
+}
+
+function abrirModalUsuario(id) {
+  document.getElementById('uEditId').value = id || '';
+  document.getElementById('uNombre').value = '';
+  document.getElementById('uEmail').value = '';
+  document.getElementById('uPassword').value = '';
+  if (id) {
+    document.getElementById('modalUsuarioTitulo').textContent = 'Editar Usuario';
+    document.getElementById('uPassLabel').textContent = '(dejar vacío para no cambiar)';
+    // Pre-fill from loaded data
+    fetch('/api/usuarios', {headers:{Authorization:'Bearer '+TOKEN}})
+      .then(function(r){return r.json();})
+      .then(function(users){
+        var u = users.find(function(x){return x.id===id;});
+        if (!u) return;
+        document.getElementById('uNombre').value = u.nombre;
+        document.getElementById('uEmail').value = u.email;
+        var sel = document.getElementById('uRol');
+        if (sel) sel.value = u.rol_id;
+      });
+  } else {
+    document.getElementById('modalUsuarioTitulo').textContent = 'Nuevo Usuario';
+    document.getElementById('uPassLabel').textContent = '(requerida)';
+  }
+  var m = document.getElementById('modalUsuario');
+  m.style.display = 'flex';
+}
+
+function cerrarModalUsuario() {
+  document.getElementById('modalUsuario').style.display = 'none';
+}
+
+async function guardarUsuario() {
+  var id       = document.getElementById('uEditId').value;
+  var nombre   = document.getElementById('uNombre').value.trim();
+  var email    = document.getElementById('uEmail').value.trim();
+  var password = document.getElementById('uPassword').value;
+  var rol_id   = document.getElementById('uRol').value;
+  if (!nombre || !email || !rol_id) { alert('Nombre, email y rol son obligatorios'); return; }
+  if (!id && !password) { alert('La contraseña es obligatoria para nuevos usuarios'); return; }
+  var body = {nombre: nombre, email: email, rol_id: parseInt(rol_id)};
+  if (password) body.password = password;
+  try {
+    var url    = id ? '/api/usuarios/'+id : '/api/usuarios';
+    var method = id ? 'PATCH' : 'POST';
+    var r = await fetch(url, {method:method, headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    var data = await r.json();
+    if (!r.ok) { alert(data.error || 'Error al guardar'); return; }
+    cerrarModalUsuario();
+    loadUsuarios();
+  } catch(e) { alert('Error de red'); }
+}
+
+async function toggleUsuario(id) {
+  try {
+    var r = await fetch('/api/usuarios/'+id+'/toggle', {method:'PATCH', headers:{Authorization:'Bearer '+TOKEN}});
+    var data = await r.json();
+    if (!r.ok) { alert(data.error || 'Error'); return; }
+    loadUsuarios();
+  } catch(e) { alert('Error de red'); }
 }
 
 function exportarClientes() {
