@@ -2332,14 +2332,14 @@ function renderCartera() {
           moraBadge +
         '</div>' +
         (!pagada ? '<div class="cxc-fac-btns">' +
-          '<button class="btn btn-ghost btn-xs" onclick="mostrarFormPago(''+f.id+'','+saldo+',''+f.num+'',false)">💵 Abonar</button>' +
-          '<button class="btn btn-primary btn-xs" onclick="mostrarFormPago(''+f.id+'','+saldo+',''+f.num+'',true)">✅ Pagar nota completa</button>' +
+          '<button class="btn btn-ghost btn-xs" onclick="mostrarFormPago(\''+f.id+'\','+saldo+',\''+f.num+'\',false)">💵 Abonar</button>' +
+          '<button class="btn btn-primary btn-xs" onclick="mostrarFormPago(\''+f.id+'\','+saldo+',\''+f.num+'\',true)">✅ Pagar nota completa</button>' +
         '</div>' : '') +
         '<div class="cxc-pago-form" id="pagoForm_'+f.id+'"></div>' +
       '</div>';
     }).join('');
     return '<div class="cxc-cli-card">' +
-      '<div class="cxc-cli-header" onclick="toggleCxcCli('body_'+cliId+'')">' +
+      '<div class="cxc-cli-header" onclick="toggleCxcCli(\'body_'+cliId+'\')">' +
         '<div>' +
           '<div class="cxc-cli-nombre">'+c.nombre+'</div>' +
           '<div class="cxc-cli-sub">'+c.facturas.length+' factura'+(c.facturas.length!==1?'s':'')+
@@ -2394,8 +2394,8 @@ function mostrarFormPago(factId, saldo, num, completo) {
       '</div>' +
       '<div id="perr_'+factId+'" style="color:#e8200a;font-size:12px;min-height:14px;"></div>' +
       '<div style="display:flex;gap:8px;">' +
-        '<button class="btn btn-primary btn-sm" onclick="enviarPagoDirecto(''+factId+'')">Confirmar</button>' +
-        '<button class="btn btn-ghost btn-sm" onclick="document.getElementById('pagoForm_'+factId+'').style.display='none'">Cancelar</button>' +
+        '<button class="btn btn-primary btn-sm" onclick="enviarPagoDirecto(\''+factId+'\')">Confirmar</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'pagoForm_'+factId+'\').style.display=\'none\'">Cancelar</button>' +
       '</div>' +
     '</div>';
   formEl.style.display = '';
@@ -2494,7 +2494,7 @@ async function loadHistorialCobros() {
       return '<tr>' +
         '<td>'+(c.fecha_pago||'').split('T')[0]+'</td>' +
         '<td style="font-weight:600;">'+c.cliente_nombre+'</td>' +
-        '<td style="font-family:'DM Mono',monospace;color:var(--green);font-weight:700;">$'+parseFloat(c.monto).toLocaleString()+'</td>' +
+        '<td style="font-family:\'DM Mono\',monospace;color:var(--green);font-weight:700;">$'+parseFloat(c.monto).toLocaleString()+'</td>' +
         '<td>'+(metodos[c.tipo_pago]||c.tipo_pago)+'</td>' +
         '<td style="color:var(--t3);">'+(c.referencia||'—')+'</td>' +
         '<td style="font-size:11px;color:var(--cyan);">'+facs+'</td>' +
