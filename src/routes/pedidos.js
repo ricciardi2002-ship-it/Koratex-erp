@@ -231,4 +231,105 @@ router.patch('/:id/estado', auth, roles('admin', 'logistica', 'finanzas', 'comer
   }
 });
 
+// PUT /api/pedidos/:id — editar pedido pendiente (recalcula totales y ajusta stock reservado)
+router.put('/:id', auth, roles('admin', 'comercial', 'logistica'), async (req, res, next) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const pRes = await client.query('SELECT * FROM pedidos WHERE id = $1', [req.params.id]);
+    if (!pRes.rows.length) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+    const pedido = pRes.rows[0];
+
+    if (pedido.estado_despacho === 'entregado') {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'No se puede editar un pedido ya entregado' });
+    }
+
+    if (req.user.rol === 'comercial') {
+      const own = await client.query(
+        'SELECT id FROM clientes WHERE id=$1 AND vendedor_id=$2',
+        [pedido.cliente_id, req.user.id]
+      );
+      if (!own.rows.length) {
+        await client.query('ROLLBACK');
+        return res.status(403).json({ error: 'Acceso denegado' });
+      }
+    }
+
+    const { cliente_id, lista_precios, fecha_entrega, observaciones, items } = req.body;
+    if (!items || !items.length) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Debe incluir al menos un item' });
+    }
+
+    // Revertir stock_reservado de los items actuales
+    const oldItems = await client.query(
+      'SELECT producto_id, cantidad FROM pedido_items WHERE pedido_id = $1',
+      [pedido.id]
+    );
+    for (const it of oldItems.rows) {
+      await client.query(
+        `UPDATE inventario_pt SET stock_reservado = GREATEST(0, stock_reservado - $1)
+         WHERE producto_id = $2`,
+        [it.cantidad, it.producto_id]
+      );
+    }
+
+    // Borrar items viejos
+    await client.query('DELETE FROM pedido_items WHERE pedido_id = $1', [pedido.id]);
+
+    // Recalcular y reinsertar items
+    let subtotal = 0;
+    const processed = items.map((it, idx) => {
+      const sub = it.cantidad * it.precio_unitario * (1 - (it.descuento_pct || 0) / 100);
+      subtotal += sub;
+      return { ...it, linea: idx + 1, subtotal: sub };
+    });
+    const igv = subtotal * 0.18;
+    const total = subtotal + igv;
+
+    for (const it of processed) {
+      await client.query(
+        `INSERT INTO pedido_items (pedido_id, producto_id, linea, cantidad,
+          precio_unitario, descuento_pct, subtotal, notas)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+        [pedido.id, it.producto_id, it.linea, it.cantidad,
+         it.precio_unitario, it.descuento_pct || 0, it.subtotal, it.notas || null]
+      );
+      await client.query(
+        `UPDATE inventario_pt SET stock_reservado = stock_reservado + $1
+         WHERE producto_id = $2`,
+        [it.cantidad, it.producto_id]
+      );
+    }
+
+    const updRes = await client.query(
+      `UPDATE pedidos SET
+         cliente_id    = COALESCE($1, cliente_id),
+         lista_precios = COALESCE($2, lista_precios),
+         fecha_entrega = $3,
+         observaciones = $4,
+         subtotal      = $5,
+         igv           = $6,
+         total         = $7,
+         updated_at    = NOW()
+       WHERE id = $8 RETURNING *`,
+      [cliente_id || null, lista_precios || null, fecha_entrega || null,
+       observaciones || null, subtotal, igv, total, pedido.id]
+    );
+
+    await client.query('COMMIT');
+    res.json(updRes.rows[0]);
+  } catch (err) {
+    await client.query('ROLLBACK');
+    next(err);
+  } finally {
+    client.release();
+  }
+});
+
 module.exports = router;

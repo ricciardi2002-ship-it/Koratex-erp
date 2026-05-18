@@ -1473,6 +1473,62 @@ textarea { resize:vertical; min-height:65px; }
   </div>
 </div>
 
+<!-- Modal Editar Pedido -->
+<div class="modal-overlay" id="mEditarPedido">
+  <div class="modal" style="max-width:880px;width:96%;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="epTitulo">Editar Pedido</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px;">Solo pedidos no entregados · Recalcula totales y ajusta stock reservado</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('mEditarPedido')">✕</button>
+    </div>
+    <div style="padding:20px 24px;">
+      <input type="hidden" id="epPedidoId">
+      <div class="fs">
+        <div class="fg2">
+          <div class="fg full">
+            <label>Cliente</label>
+            <select id="epCliente"><option value="">— Seleccionar cliente —</option></select>
+          </div>
+          <div class="fg">
+            <label>Lista de precios</label>
+            <select id="epLista">
+              <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Fecha de entrega</label>
+            <input type="date" id="epFecha">
+          </div>
+          <div class="fg full">
+            <label>Observaciones</label>
+            <textarea id="epObs" placeholder="Instrucciones especiales, horario, etc."></textarea>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="card-title" style="margin-bottom:8px;">Productos del Pedido <span style="font-size:10px;color:var(--t3);text-transform:none;font-weight:400;">(máx. 15 líneas)</span></div>
+        <div class="lines-head">
+          <div>#</div><div>Producto</div><div>Presentación</div><div>Cantidad</div><div>Precio unit.</div><div>Subtotal</div><div></div>
+        </div>
+        <div id="epLines"></div>
+        <div class="ototal">
+          <div>
+            <div class="ototal-label">Total del pedido (+ IGV 18%)</div>
+            <div id="epCount" style="font-size:10px;color:var(--orange);opacity:.7;">0 ítems</div>
+          </div>
+          <div class="ototal-val" id="epTotal">$0.00</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+        <button class="btn btn-ghost" onclick="closeModal('mEditarPedido')">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarEdicionPedido()">💾 Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 
 /* ════════ API LAYER ════════ */
@@ -1776,7 +1832,7 @@ function tipoBadge(t) {
 
 /* ════════ POPULATE SELECTS ════════ */
 function populateSelects() {
-  ['npCliente','mpCliente'].forEach(id => {
+  ['npCliente','mpCliente','epCliente'].forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     el.innerHTML = '<option value="">— Seleccionar cliente —</option>' +
       DB_clientes.map(c => `<option value="${c.id}">${c.nombre} · ${c.tipo.toUpperCase()}</option>`).join('');
@@ -1847,6 +1903,7 @@ function buildLines(containerId, totalId, countId) {
 function buildAllLines() {
   buildLines('npLines', 'npTotal', 'npCount');
   buildLines('mpLines', 'mpTotal', 'mpCount');
+  buildLines('epLines', 'epTotal', 'epCount');
 }
 
 function onLineChange(cid, tid, cnid, i, tipoOverride) {
@@ -3403,9 +3460,17 @@ async function verDetallePedido(pedidoNum) {
   document.getElementById('mDetalleItemsBody').innerHTML =
     '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Cargando productos...</td></tr>';
   document.getElementById('mDetalleTotales').innerHTML = '';
+  var puedeEditar = currentUser && ['admin','comercial','logistica'].indexOf(currentUser.rol) !== -1;
+  var btnEditar = (p.estadoDesp !== 'entregado' && puedeEditar)
+    ? '<button class="btn btn-ghost" onclick="closeModal(\'mDetallePedido\');abrirEditarPedido(\'' + p.dbId + '\')">✏️ Editar</button>'
+    : '';
+  var accionDetalle = p.estadoDesp === 'entregado'
+    ? '<span class="badge bg">✅ Entregado</span>'
+    : '<button class="btn btn-primary" onclick="closeModal(\'mDetallePedido\');entregarPedido(\'' + p.dbId + '\',\'' + p.id + '\')">📦 Marcar como Entregado</button>';
   document.getElementById('mDetalleAcciones').innerHTML =
     '<button class="btn btn-ghost" onclick="closeModal(\'mDetallePedido\')">Cerrar</button>' +
-    '<button class="btn btn-primary" onclick="closeModal(\'mDetallePedido\');cambiarEstado(\'' + p.id + '\')">&#9654; Avanzar estado</button>';
+    btnEditar +
+    accionDetalle;
 
   openModal('mDetallePedido');
 
@@ -3448,6 +3513,87 @@ async function verDetallePedido(pedidoNum) {
   } catch(e) {
     document.getElementById('mDetalleItemsBody').innerHTML =
       '<tr><td colspan="4" style="text-align:center;color:var(--red);padding:20px;">Error al cargar detalle: ' + e.message + '</td></tr>';
+  }
+}
+
+// ── Editar Pedido ────────────────────────────────────────────────────────
+async function abrirEditarPedido(dbId) {
+  try {
+    const det = await api('/pedidos/' + dbId);
+    if (!det) return;
+    if (det.estado_despacho === 'entregado') {
+      alert('No se puede editar un pedido ya entregado'); return;
+    }
+    document.getElementById('epPedidoId').value = dbId;
+    document.getElementById('epTitulo').textContent = 'Editar Pedido ' + (det.numero || '');
+    document.getElementById('epCliente').value = det.cliente_id || '';
+    document.getElementById('epLista').value   = det.lista_precios || 'C';
+    document.getElementById('epFecha').value   = det.fecha_entrega ? String(det.fecha_entrega).split('T')[0] : '';
+    document.getElementById('epObs').value     = det.observaciones || '';
+
+    buildLines('epLines','epTotal','epCount');
+
+    const items = det.items || [];
+    items.forEach(function(it, idx) {
+      const i = idx + 1;
+      if (i > 15) return;
+      const prod = DB_productos.find(function(x){ return x.id === it.producto_id; });
+      const sel  = document.getElementById('epLines_p_' + i);
+      const qEl  = document.getElementById('epLines_q_' + i);
+      const puEl = document.getElementById('epLines_pu_' + i);
+      const presEl = document.getElementById('epLines_pres_' + i);
+      const lineEl = document.getElementById('epLines_line_' + i);
+      if (sel && prod) sel.value = prod.cod;
+      if (qEl)  qEl.value  = it.cantidad;
+      if (puEl) puEl.value = parseFloat(it.precio_unitario);
+      if (presEl && prod) presEl.value = prod.presentacion || '';
+      if (lineEl) lineEl.classList.remove('empty');
+      onLineChange('epLines','epTotal','epCount', i);
+    });
+
+    openModal('mEditarPedido');
+  } catch(e) {
+    alert('Error al cargar pedido: ' + e.message);
+  }
+}
+
+async function guardarEdicionPedido() {
+  const dbId = document.getElementById('epPedidoId').value;
+  if (!dbId) return;
+  const cliente_id    = document.getElementById('epCliente').value;
+  const lista_precios = document.getElementById('epLista').value;
+  const fecha_entrega = document.getElementById('epFecha').value || null;
+  const observaciones = document.getElementById('epObs').value || null;
+  if (!cliente_id) { alert('Selecciona un cliente'); return; }
+
+  const items = [];
+  for (let i = 1; i <= 15; i++) {
+    const sel  = document.getElementById('epLines_p_' + i);
+    const qEl  = document.getElementById('epLines_q_' + i);
+    const puEl = document.getElementById('epLines_pu_' + i);
+    if (sel && sel.value && qEl && qEl.value) {
+      const p = DB_productos.find(function(x){ return x.cod === sel.value; });
+      if (p) items.push({
+        producto_id: p.id,
+        cantidad: parseInt(qEl.value) || 1,
+        precio_unitario: parseFloat((puEl && puEl.value) || p.pA),
+        descuento_pct: 0
+      });
+    }
+  }
+  if (!items.length) { alert('Agrega al menos un producto'); return; }
+
+  try {
+    const upd = await api('/pedidos/' + dbId, {
+      method: 'PUT',
+      body: JSON.stringify({ cliente_id, lista_precios, fecha_entrega, observaciones, items })
+    });
+    if (!upd) return;
+    closeModal('mEditarPedido');
+    await loadData(); populateSelects(); renderAll();
+    alert('Pedido actualizado correctamente');
+  } catch(e) {
+    alert('Error al guardar: ' + e.message);
   }
 }
 
