@@ -17,7 +17,7 @@ router.post('/login', async (req, res, next) => {
     const result = await query(
       `SELECT u.id, u.nombre, u.email, u.password_hash, u.activo, r.nombre as rol
        FROM usuarios u JOIN roles r ON r.id = u.rol_id
-       WHERE u.email = $1`,
+       WHERE LOWER(u.email) = LOWER($1)`,
       [email]
     );
 
