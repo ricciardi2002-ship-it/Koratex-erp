@@ -2412,7 +2412,7 @@ async function enviarPagoDirecto(factId) {
     if (monto <= 0) { if(errEl) errEl.textContent='Ingresa un monto válido'; return; }
     if(errEl) errEl.textContent='';
     var r = await fetch('/api/cobros/factura/'+factId, {
-      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.token},
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
       body: JSON.stringify({ monto, tipo_pago:tipo, referencia:ref, fecha_pago:fecha })
     });
     var data = await r.json();
@@ -2463,7 +2463,7 @@ async function registrarCobroFIFO() {
     if (monto <= 0) { if(errEl) errEl.textContent='Ingresa un monto válido'; return; }
     if(errEl) errEl.textContent='';
     var r = await fetch('/api/cobros', {
-      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.token},
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
       body: JSON.stringify({ cliente_id:cliId, monto, tipo_pago:tipo, referencia:ref, fecha_pago:fecha })
     });
     var data = await r.json();
@@ -2481,7 +2481,7 @@ async function loadHistorialCobros() {
   if (!tbody) return;
   tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:16px;">Cargando...</td></tr>';
   try {
-    var r = await fetch('/api/cobros/historial', {headers:{'Authorization':'Bearer '+localStorage.token}});
+    var r = await fetch('/api/cobros/historial', {headers:{'Authorization':'Bearer '+TOKEN}});
     if (!r.ok) throw new Error(r.statusText);
     var rows = await r.json();
     if (!rows.length) {
