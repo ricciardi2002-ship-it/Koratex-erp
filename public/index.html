@@ -547,6 +547,21 @@ textarea { resize:vertical; min-height:65px; }
   box-shadow:var(--sh);
 }
 .pago-rapido-title { font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
+.cxc-tab-btn { padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s; }
+.cxc-tab-btn.active { color:var(--orange);border-bottom-color:var(--orange); }
+.cxc-cli-card { background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden; }
+.cxc-cli-header { display:flex;justify-content:space-between;align-items:center;padding:13px 16px;cursor:pointer;transition:background .15s; }
+.cxc-cli-header:hover { background:var(--bg3); }
+.cxc-cli-nombre { font-size:14px;font-weight:700;color:var(--t1); }
+.cxc-cli-sub { font-size:11px;color:var(--t3);margin-top:2px; }
+.cxc-cli-saldo { font-size:16px;font-weight:800;color:var(--orange);font-family:'DM Mono',monospace; }
+.cxc-cli-body { border-top:1px solid var(--border); }
+.cxc-fac-row { border-bottom:1px solid var(--border);padding:10px 16px; }
+.cxc-fac-row:last-child { border-bottom:none; }
+.cxc-fac-top { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+.cxc-fac-num { font-family:'DM Mono',monospace;color:var(--cyan);font-size:12px;font-weight:700;min-width:90px; }
+.cxc-fac-btns { display:flex;gap:6px;margin-top:8px; }
+.cxc-pago-form { background:var(--bg3);border-top:1px solid var(--border);padding:12px 16px;display:none; }
 
 /* ══════════════════════════
    TIMELINE
@@ -908,71 +923,77 @@ textarea { resize:vertical; min-height:65px; }
     <!-- ══ COBRANZA (Problema 4) ══ -->
     <div class="page" id="page-cobranza">
       <div class="ph">
-        <div class="ph-text"><h2>Gestión de Cobranza</h2><p>Registro en 2 toques · Alertas automáticas · Sin olvidar pagos</p></div>
-        <div class="ph-actions">
-          <button class="btn btn-primary" onclick="openModal('mCobro')">💳 Registrar Pago</button>
-        </div>
+        <div class="ph-text"><h2>Cobranza</h2><p>Cartera · Abonos · Historial de cobros</p></div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi ko"><div class="kpi-label">Total por cobrar</div><div class="kpi-val" id="cKpiTotal">—</div><div class="kpi-sub" id="cKpiTotalSub">Corriente + vencido</div></div>
-        <div class="kpi kr"><div class="kpi-label">Facturas en mora</div><div class="kpi-val" id="cKpiMora">—</div><div class="kpi-sub" id="cKpiMoraSub">—</div></div>
-        <div class="kpi kg"><div class="kpi-label">Cobrado acumulado</div><div class="kpi-val" id="cKpiCobrado">—</div><div class="kpi-sub" id="cKpiCobradoSub">—</div></div>
-        <div class="kpi ka"><div class="kpi-label">Facturas pendientes</div><div class="kpi-val" id="cKpiPend">—</div><div class="kpi-sub" id="cKpiPendSub">—</div></div>
+        <div class="kpi ko"><div class="kpi-label">Por cobrar</div><div class="kpi-val" id="cKpiTotal">—</div><div class="kpi-sub" id="cKpiTotalSub">—</div></div>
+        <div class="kpi kr"><div class="kpi-label">En mora</div><div class="kpi-val" id="cKpiMora">—</div><div class="kpi-sub" id="cKpiMoraSub">—</div></div>
+        <div class="kpi kg"><div class="kpi-label">Cobrado total</div><div class="kpi-val" id="cKpiCobrado">—</div><div class="kpi-sub" id="cKpiCobradoSub">—</div></div>
+        <div class="kpi ka"><div class="kpi-label">Facturas pend.</div><div class="kpi-val" id="cKpiPend">—</div><div class="kpi-sub" id="cKpiPendSub">—</div></div>
       </div>
-
-      <div class="g2">
-        <div>
-          <!-- REGISTRAR PAGO RÁPIDO -->
-          <div class="pago-rapido" style="margin-bottom:14px;">
-            <div class="pago-rapido-title">💳 Pago rápido — 2 toques</div>
-            <div class="fg2" style="margin-bottom:10px;">
-              <div class="fg">
-                <label>Factura / Cliente</label>
-                <select id="prFactura" onchange="onFacturaChange()">
-                  <option value="">— Seleccionar factura —</option>
+      <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);">
+        <button id="cxcTab0" class="cxc-tab-btn active" onclick="cxcSetTab(0)">📋 Cartera</button>
+        <button id="cxcTab1" class="cxc-tab-btn" onclick="cxcSetTab(1)">💳 Registrar Cobro</button>
+        <button id="cxcTab2" class="cxc-tab-btn" onclick="cxcSetTab(2)">📜 Historial</button>
+      </div>
+      <div id="cxcPane0">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <input type="text" id="cxcSearch" placeholder="🔍 Buscar cliente..." oninput="renderCartera()"
+            style="flex:1;min-width:180px;padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);">
+          <select id="cxcFiltro" onchange="renderCartera()"
+            style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--t1);">
+            <option value="">Todas</option>
+            <option value="mora">En mora</option>
+            <option value="vigente">Al día</option>
+            <option value="pagada">Pagadas</option>
+          </select>
+        </div>
+        <div id="cxcCartera"></div>
+      </div>
+      <div id="cxcPane1" style="display:none;">
+        <div class="card" style="max-width:520px;">
+          <div class="card-title">💳 Registrar Cobro — distribución automática (FIFO)</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:14px;">El monto se aplica a las facturas más antiguas primero.</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <div class="fg"><label>Cliente</label>
+              <select id="fifoCliente" onchange="onFifoClienteChange()" style="width:100%;"><option value="">— Seleccionar cliente —</option></select>
+            </div>
+            <div class="fg"><label>Saldo pendiente</label>
+              <input type="text" id="fifoSaldo" readonly style="color:var(--orange);font-weight:700;">
+            </div>
+            <div class="fg"><label>Monto a cobrar</label>
+              <input type="number" id="fifoMonto" placeholder="0.00" step="0.01" style="width:100%;">
+            </div>
+            <div class="fg2">
+              <div class="fg"><label>Forma de pago</label>
+                <select id="fifoTipo" style="width:100%;">
+                  <option value="transferencia">Transferencia</option>
+                  <option value="efectivo">Efectivo</option>
+                  <option value="cheque">Cheque</option>
+                  <option value="zelle">Zelle</option>
                 </select>
               </div>
-              <div class="fg">
-                <label>Saldo pendiente</label>
-                <input type="text" id="prSaldo" readonly placeholder="Auto">
-              </div>
-              <div class="fg">
-                <label>Monto a pagar</label>
-                <input type="number" id="prMonto" placeholder="0.00" step="0.01">
-              </div>
-              <div class="fg">
-                <label>Tipo de pago</label>
-                <select id="prTipo"><option>Transferencia</option><option>Efectivo</option><option>Cheque</option><option>Yape</option></select>
-              </div>
+              <div class="fg"><label>Referencia</label><input type="text" id="fifoRef" placeholder="Nro. referencia"></div>
             </div>
-            <button class="btn btn-green btn-block" onclick="registrarPago()">✅ Registrar Pago Ahora</button>
-          </div>
-
-          <!-- FACTURAS URGENTES -->
-          <div class="card">
-            <div class="card-title">🚨 Urgentes — Mora y próximas a vencer</div>
-            <div id="cobrosUrgentes"></div>
+            <div class="fg"><label>Fecha</label><input type="date" id="fifoFecha"></div>
+            <div id="fifoError" style="color:#e8200a;font-size:12px;min-height:16px;"></div>
+            <button class="btn btn-primary" onclick="registrarCobroFIFO()">✅ Registrar Cobro</button>
           </div>
         </div>
-
+      </div>
+      <div id="cxcPane2" style="display:none;">
         <div class="tw">
           <div class="tw-toolbar">
-            <div class="tw-title">Todas las Facturas</div>
-            <select style="padding:5px 9px;font-size:11px;border-radius:7px;width:auto;" id="filtroCobranza" onchange="renderCobranza()">
-              <option value="">Todas</option>
-              <option value="mora">En mora</option>
-              <option value="vigente">Vigentes</option>
-              <option value="pagada">Pagadas</option>
-            </select>
+            <div class="tw-title">Historial de Cobros</div>
+            <button class="btn btn-ghost btn-sm" onclick="loadHistorialCobros()">🔄 Actualizar</button>
           </div>
           <table>
-            <thead><tr><th>Factura</th><th>Cliente</th><th>Monto</th><th>Saldo</th><th>Vence</th><th>Mora</th><th>Estado</th></tr></thead>
-            <tbody id="cobranzaTable"></tbody>
+            <thead><tr><th>Fecha</th><th>Cliente</th><th>Monto</th><th>Forma</th><th>Ref.</th><th>Aplicado a</th><th>Registró</th></tr></thead>
+            <tbody id="cxcHistorial"><tr><td colspan="7" style="text-align:center;color:var(--t3);padding:20px;">Presiona Actualizar para cargar</td></tr></tbody>
           </table>
         </div>
       </div>
     </div>
-
 
     <!-- ══ CLIENTES ══ -->
     <div class="page" id="page-clientes">
@@ -2233,7 +2254,43 @@ function renderMP() {
 }
 
 /* ── Cobranza ── */
-function renderCobranza() {
+function cxcSetTab(n) {
+  [0,1,2].forEach(function(i) {
+    var btn = document.getElementById('cxcTab'+i);
+    var pane = document.getElementById('cxcPane'+i);
+    if (btn) btn.classList.toggle('active', i===n);
+    if (pane) pane.style.display = i===n ? '' : 'none';
+  });
+  if (n===2) loadHistorialCobros();
+  if (n===1) populateFifoClientes();
+}
+
+function renderCartera() {
+  var search = (document.getElementById('cxcSearch')||{value:''}).value.toLowerCase();
+  var filtro = (document.getElementById('cxcFiltro')||{value:''}).value;
+
+  // group facturas by client
+  var byClient = {};
+  DB_facturas.forEach(function(f) {
+    if (filtro === 'pagada'  && f.estado !== 'pagada') return;
+    if (filtro === 'mora'    && (f.mora <= 0 || f.estado === 'pagada')) return;
+    if (filtro === 'vigente' && (f.mora > 0 || f.estado === 'pagada')) return;
+    if (!byClient[f.clienteId]) {
+      byClient[f.clienteId] = { nombre: f.clienteNombre, facturas: [], saldo: 0, mora: false };
+    }
+    byClient[f.clienteId].facturas.push(f);
+    byClient[f.clienteId].saldo += Math.max(0, f.total - f.pagado);
+    if (f.mora > 0 && f.estado !== 'pagada') byClient[f.clienteId].mora = true;
+  });
+
+  var clients = Object.entries(byClient)
+    .filter(function(e) { return !search || e[1].nombre.toLowerCase().includes(search); })
+    .sort(function(a,b) { return (b[1].mora - a[1].mora) || (b[1].saldo - a[1].saldo); });
+
+  var el = document.getElementById('cxcCartera');
+  if (!el) return;
+
+  // KPIs
   var totalPorCobrar = DB_facturas.filter(function(f){ return f.estado!=='pagada'; }).reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
   var enMora    = DB_facturas.filter(function(f){ return f.mora>0 && f.estado!=='pagada'; });
   var moraMonto = enMora.reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
@@ -2241,60 +2298,215 @@ function renderCobranza() {
   var pendCount = DB_facturas.filter(function(f){ return f.estado!=='pagada'; }).length;
   var totalF    = DB_facturas.length;
   var pct       = totalF > 0 ? Math.round(DB_facturas.filter(function(f){ return f.estado==='pagada'; }).length/totalF*100) : 0;
-  var el;
-  el=document.getElementById('cKpiTotal');     if(el) el.textContent='$'+Math.round(totalPorCobrar).toLocaleString();
-  el=document.getElementById('cKpiTotalSub');  if(el) el.textContent=pendCount+' factura'+(pendCount!==1?'s':'')+' por cobrar';
-  el=document.getElementById('cKpiMora');      if(el) el.textContent='$'+Math.round(moraMonto).toLocaleString();
-  el=document.getElementById('cKpiMoraSub');   if(el) el.innerHTML=enMora.length>0?'<span class="kpi-dn">'+enMora.length+' en mora</span>':'Sin mora';
-  el=document.getElementById('cKpiCobrado');   if(el) el.textContent='$'+Math.round(cobrado).toLocaleString();
-  el=document.getElementById('cKpiCobradoSub');if(el) el.innerHTML='<span class="kpi-up">'+pct+'% cobrado</span>';
-  el=document.getElementById('cKpiPend');      if(el) el.textContent=pendCount;
-  el=document.getElementById('cKpiPendSub');   if(el) el.textContent=totalF+' facturas totales';
-  // Urgentes
-  const cu = document.getElementById('cobrosUrgentes');
-  if (cu) {
-    const urgentes = DB_facturas.filter(f => f.estado !== 'pagada' && (f.mora > 0 || f.total - f.pagado > 0));
-    cu.innerHTML = urgentes.map(f => {
-      const cli = getCliente(f.clienteId);
-      const saldo = f.total - f.pagado;
-      const cls = f.mora > 15 ? 'cobro-mora' : f.mora > 0 ? 'cobro-mora' : 'cobro-vence';
-      return `<div class="cobro-card ${cls}">
-        <div class="cobro-info">
-          <div class="cobro-cliente">${cli?cli.nombre:''}</div>
-          <div class="cobro-fac">${f.num} · Vence: ${f.venc}</div>
-        </div>
-        <div class="cobro-right">
-          <div class="cobro-saldo" style="color:${f.mora>0?'var(--red)':'var(--amber)'};">$${saldo.toLocaleString()}</div>
-          <div class="cobro-dias">${f.mora > 0 ? `<span class="badge br">${f.mora}d mora</span>` : '<span class="badge ba">Próxima</span>'}</div>
-        </div>
-        <button class="btn btn-primary btn-xs" style="flex-shrink:0;" onclick="openModal('mCobro')">Cobrar</button>
-      </div>`;
-    }).join('');
+  var q; q=document.getElementById('cKpiTotal');     if(q) q.textContent='$'+Math.round(totalPorCobrar).toLocaleString();
+  q=document.getElementById('cKpiTotalSub');  if(q) q.textContent=pendCount+' factura'+(pendCount!==1?'s':'')+' por cobrar';
+  q=document.getElementById('cKpiMora');      if(q) q.textContent='$'+Math.round(moraMonto).toLocaleString();
+  q=document.getElementById('cKpiMoraSub');   if(q) q.innerHTML=enMora.length>0?'<span class="kpi-dn">'+enMora.length+' en mora</span>':'Sin mora';
+  q=document.getElementById('cKpiCobrado');   if(q) q.textContent='$'+Math.round(cobrado).toLocaleString();
+  q=document.getElementById('cKpiCobradoSub');if(q) q.innerHTML='<span class="kpi-up">'+pct+'% cobrado</span>';
+  q=document.getElementById('cKpiPend');      if(q) q.textContent=pendCount;
+  q=document.getElementById('cKpiPendSub');   if(q) q.textContent=totalF+' facturas totales';
+
+  if (!clients.length) {
+    el.innerHTML = '<div style="color:var(--t3);text-align:center;padding:40px;">Sin facturas que mostrar</div>';
+    return;
   }
 
-  // Tabla
-  const ct = document.getElementById('cobranzaTable');
-  if (!ct) return;
-  const filtro = document.getElementById('filtroCobranza');
-  const f = filtro ? filtro.value : '';
-  const facturas = f ? DB_facturas.filter(x => x.estado === f) : DB_facturas;
-  ct.innerHTML = facturas.map(f => {
-    const cli = getCliente(f.clienteId);
-    const saldo = f.total - f.pagado;
-    const moraSem = f.mora > 15 ? 'sem-crit' : f.mora > 0 ? 'sem-warn' : 'sem-ok';
-    const estBadge = f.estado === 'pagada' ? 'bg' : f.mora > 0 ? 'br' : 'ba';
-    const estLabel = f.estado === 'pagada' ? 'Pagada' : f.mora > 0 ? 'En mora' : 'Vigente';
-    return `<tr>
-      <td style="font-family:'DM Mono',monospace;color:var(--cyan);">${f.num}</td>
-      <td style="font-weight:600;">${cli?cli.nombre:''} ${tipoBadge(cli?cli.tipo:'')}</td>
-      <td style="font-family:'DM Mono',monospace;">$${f.total.toLocaleString()}</td>
-      <td style="font-family:'DM Mono',monospace;color:${saldo>0?'var(--red)':'var(--green)'};">$${saldo.toLocaleString()}</td>
-      <td style="color:var(--t2);">${f.venc}</td>
-      <td>${f.mora > 0 ? `<span class="sem ${moraSem}"><span class="sem-dot"></span>${f.mora}d</span>` : '<span style="color:var(--t3);">—</span>'}</td>
-      <td><span class="badge ${estBadge}">${estLabel}</span></td>
-    </tr>`;
+  el.innerHTML = clients.map(function(entry) {
+    var cliId = entry[0]; var c = entry[1];
+    var moraCount = c.facturas.filter(function(f){ return f.mora>0 && f.estado!=='pagada'; }).length;
+    var rows = c.facturas.map(function(f) {
+      var saldo = Math.max(0, f.total - f.pagado);
+      var pagada = f.estado === 'pagada';
+      var moraBadge = pagada ? '<span class="badge bg">Pagada</span>'
+        : f.mora > 0 ? '<span class="badge br">'+f.mora+'d mora</span>'
+        : f.estado === 'abonado' ? '<span class="badge bb">Abonado</span>'
+        : '<span class="badge ba">Al día</span>';
+      return '<div class="cxc-fac-row" id="facRow_'+f.id+'">' +
+        '<div class="cxc-fac-top">' +
+          '<span class="cxc-fac-num">'+f.num+'</span>' +
+          '<span style="color:var(--t2);font-size:12px;">Total: <b>$'+f.total.toLocaleString()+'</b></span>' +
+          (f.pagado > 0 ? '<span style="color:var(--t3);font-size:12px;">Abonado: $'+f.pagado.toLocaleString()+'</span>' : '') +
+          '<span style="font-size:12px;">Saldo: <b style="color:'+(saldo>0?'var(--orange)':'var(--green)')+'">$'+saldo.toLocaleString()+'</b></span>' +
+          '<span style="color:var(--t3);font-size:11px;">Vence: '+f.venc+'</span>' +
+          moraBadge +
+        '</div>' +
+        (!pagada ? '<div class="cxc-fac-btns">' +
+          '<button class="btn btn-ghost btn-xs" onclick="mostrarFormPago(''+f.id+'','+saldo+',''+f.num+'',false)">💵 Abonar</button>' +
+          '<button class="btn btn-primary btn-xs" onclick="mostrarFormPago(''+f.id+'','+saldo+',''+f.num+'',true)">✅ Pagar nota completa</button>' +
+        '</div>' : '') +
+        '<div class="cxc-pago-form" id="pagoForm_'+f.id+'"></div>' +
+      '</div>';
+    }).join('');
+    return '<div class="cxc-cli-card">' +
+      '<div class="cxc-cli-header" onclick="toggleCxcCli('body_'+cliId+'')">' +
+        '<div>' +
+          '<div class="cxc-cli-nombre">'+c.nombre+'</div>' +
+          '<div class="cxc-cli-sub">'+c.facturas.length+' factura'+(c.facturas.length!==1?'s':'')+
+            (moraCount > 0 ? ' · <span style="color:#e8200a;">'+moraCount+' en mora</span>' : ' · Al día') +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div class="cxc-cli-saldo">$'+Math.round(c.saldo).toLocaleString()+'</div>' +
+          '<div style="font-size:10px;color:var(--t3);">pendiente ▾</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cxc-cli-body" id="body_'+cliId+'" style="display:none;">'+rows+'</div>' +
+    '</div>';
   }).join('');
 }
+
+function toggleCxcCli(bodyId) {
+  var el = document.getElementById(bodyId);
+  if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+
+function mostrarFormPago(factId, saldo, num, completo) {
+  var formEl = document.getElementById('pagoForm_'+factId);
+  if (!formEl) return;
+  if (formEl.style.display !== 'none' && formEl.dataset.open === factId) {
+    formEl.style.display = 'none'; formEl.dataset.open = ''; return;
+  }
+  var hoy = new Date().toISOString().split('T')[0];
+  var montoVal = completo ? saldo.toFixed(2) : '';
+  formEl.innerHTML =
+    '<div style="display:flex;flex-direction:column;gap:9px;">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--cyan);">' +
+        (completo ? '✅ Pagar nota completa — '+num : '💵 Abonar a '+num) +
+      '</div>' +
+      '<div class="fg2">' +
+        '<div class="fg"><label>Monto</label>' +
+          '<input type="number" id="pmonto_'+factId+'" value="'+montoVal+'" placeholder="0.00" step="0.01"' +
+          (completo ? ' readonly' : '') + '>' +
+        '</div>' +
+        '<div class="fg"><label>Forma de pago</label>' +
+          '<select id="ptipo_'+factId+'">' +
+            '<option value="transferencia">Transferencia</option>' +
+            '<option value="efectivo">Efectivo</option>' +
+            '<option value="cheque">Cheque</option>' +
+            '<option value="zelle">Zelle</option>' +
+          '</select>' +
+        '</div>' +
+      '</div>' +
+      '<div class="fg2">' +
+        '<div class="fg"><label>Referencia</label><input type="text" id="pref_'+factId+'" placeholder="Nro. ref."></div>' +
+        '<div class="fg"><label>Fecha</label><input type="date" id="pfecha_'+factId+'" value="'+hoy+'"></div>' +
+      '</div>' +
+      '<div id="perr_'+factId+'" style="color:#e8200a;font-size:12px;min-height:14px;"></div>' +
+      '<div style="display:flex;gap:8px;">' +
+        '<button class="btn btn-primary btn-sm" onclick="enviarPagoDirecto(''+factId+'')">Confirmar</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="document.getElementById('pagoForm_'+factId+'').style.display='none'">Cancelar</button>' +
+      '</div>' +
+    '</div>';
+  formEl.style.display = '';
+  formEl.dataset.open = factId;
+}
+
+async function enviarPagoDirecto(factId) {
+  try {
+    var monto   = parseFloat((document.getElementById('pmonto_'+factId)||{}).value || '0');
+    var tipo    = (document.getElementById('ptipo_'+factId)||{}).value || 'transferencia';
+    var ref     = (document.getElementById('pref_'+factId)||{}).value || '';
+    var fecha   = (document.getElementById('pfecha_'+factId)||{}).value || new Date().toISOString().split('T')[0];
+    var errEl   = document.getElementById('perr_'+factId);
+    if (monto <= 0) { if(errEl) errEl.textContent='Ingresa un monto válido'; return; }
+    if(errEl) errEl.textContent='';
+    var r = await fetch('/api/cobros/factura/'+factId, {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.token},
+      body: JSON.stringify({ monto, tipo_pago:tipo, referencia:ref, fecha_pago:fecha })
+    });
+    var data = await r.json();
+    if (!r.ok) { if(errEl) errEl.textContent = data.error || 'Error al registrar'; return; }
+    // Update local DB_facturas
+    var idx = DB_facturas.findIndex(function(f){ return f.id === factId; });
+    if (idx >= 0) {
+      DB_facturas[idx].pagado = parseFloat(data.factura.monto_pagado) || DB_facturas[idx].pagado;
+      DB_facturas[idx].estado = data.factura.estado;
+    }
+    renderCartera();
+  } catch(e) {
+    var errEl = document.getElementById('perr_'+factId);
+    if(errEl) errEl.textContent = 'Error de conexión';
+  }
+}
+
+function populateFifoClientes() {
+  var sel = document.getElementById('fifoCliente');
+  if (!sel) return;
+  var clientes = [...new Map(
+    DB_facturas.filter(function(f){ return f.estado !== 'pagada'; })
+    .map(function(f){ return [f.clienteId, {id:f.clienteId, nombre:f.clienteNombre}]; })
+  ).values()].sort(function(a,b){ return a.nombre.localeCompare(b.nombre); });
+  sel.innerHTML = '<option value="">— Seleccionar cliente —</option>' +
+    clientes.map(function(c){ return '<option value="'+c.id+'">'+c.nombre+'</option>'; }).join('');
+  var fh = document.getElementById('fifoFecha');
+  if (fh && !fh.value) fh.value = new Date().toISOString().split('T')[0];
+}
+
+function onFifoClienteChange() {
+  var cliId = (document.getElementById('fifoCliente')||{}).value;
+  var saldo = DB_facturas.filter(function(f){ return f.clienteId===cliId && f.estado!=='pagada'; })
+    .reduce(function(s,f){ return s+(f.total-f.pagado); }, 0);
+  var el = document.getElementById('fifoSaldo');
+  if (el) el.value = saldo > 0 ? '$'+saldo.toFixed(2) : '$0.00';
+}
+
+async function registrarCobroFIFO() {
+  var errEl = document.getElementById('fifoError');
+  try {
+    var cliId  = (document.getElementById('fifoCliente')||{}).value;
+    var monto  = parseFloat((document.getElementById('fifoMonto')||{}).value || '0');
+    var tipo   = (document.getElementById('fifoTipo')||{}).value || 'transferencia';
+    var ref    = (document.getElementById('fifoRef')||{}).value || '';
+    var fecha  = (document.getElementById('fifoFecha')||{}).value || new Date().toISOString().split('T')[0];
+    if (!cliId) { if(errEl) errEl.textContent='Selecciona un cliente'; return; }
+    if (monto <= 0) { if(errEl) errEl.textContent='Ingresa un monto válido'; return; }
+    if(errEl) errEl.textContent='';
+    var r = await fetch('/api/cobros', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.token},
+      body: JSON.stringify({ cliente_id:cliId, monto, tipo_pago:tipo, referencia:ref, fecha_pago:fecha })
+    });
+    var data = await r.json();
+    if (!r.ok) { if(errEl) errEl.textContent = data.error || 'Error al registrar'; return; }
+    // Reload data
+    await loadData();
+    cxcSetTab(0);
+  } catch(e) {
+    if(errEl) errEl.textContent = 'Error de conexión';
+  }
+}
+
+async function loadHistorialCobros() {
+  var tbody = document.getElementById('cxcHistorial');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:16px;">Cargando...</td></tr>';
+  try {
+    var r = await fetch('/api/cobros/historial', {headers:{'Authorization':'Bearer '+localStorage.token}});
+    if (!r.ok) throw new Error(r.statusText);
+    var rows = await r.json();
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:20px;">Sin cobros registrados</td></tr>';
+      return;
+    }
+    var metodos = {transferencia:'Transferencia',efectivo:'Efectivo',cheque:'Cheque',zelle:'Zelle'};
+    tbody.innerHTML = rows.map(function(c) {
+      var facs = (c.facturas_aplicadas||[]).filter(Boolean).join(', ') || '—';
+      return '<tr>' +
+        '<td>'+(c.fecha_pago||'').split('T')[0]+'</td>' +
+        '<td style="font-weight:600;">'+c.cliente_nombre+'</td>' +
+        '<td style="font-family:'DM Mono',monospace;color:var(--green);font-weight:700;">$'+parseFloat(c.monto).toLocaleString()+'</td>' +
+        '<td>'+(metodos[c.tipo_pago]||c.tipo_pago)+'</td>' +
+        '<td style="color:var(--t3);">'+(c.referencia||'—')+'</td>' +
+        '<td style="font-size:11px;color:var(--cyan);">'+facs+'</td>' +
+        '<td style="color:var(--t3);">'+(c.usuario_nombre||'—')+'</td>' +
+      '</tr>';
+    }).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#e8200a;padding:20px;">Error al cargar</td></tr>';
+  }
+}
+
+function renderCobranza() { renderCartera(); }
 
 /* ── Catálogo ── */
 function renderCatalogo() {
