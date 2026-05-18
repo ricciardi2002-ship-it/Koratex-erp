@@ -743,10 +743,6 @@ textarea { resize:vertical; min-height:65px; }
                 <input type="text" id="npLista" readonly placeholder="Auto">
               </div>
               <div class="fg">
-                <label>Fecha de entrega</label>
-                <input type="date" id="npFecha">
-              </div>
-              <div class="fg">
                 <label>Zona de entrega</label>
                 <input type="text" id="npZona" readonly placeholder="Auto">
               </div>
@@ -2482,7 +2478,7 @@ async function confirmarPedido() {
 
 function resetNP() {
   const sel = document.getElementById('npCliente'); if (sel) sel.value = '';
-  ['npTipo','npLista','npZona','npObs','npFecha'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['npTipo','npLista','npZona','npObs'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('npResumen').innerHTML = '<div style="color:var(--t3);font-size:13px;padding:20px 0;text-align:center;">Selecciona un cliente para ver el resumen</div>';
   buildLines('npLines','npTotal','npCount');
 }
