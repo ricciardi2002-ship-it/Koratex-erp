@@ -1250,6 +1250,18 @@ textarea { resize:vertical; min-height:65px; }
     </div>
 
 
+    <!-- ══ AUDITORÍA ══ -->
+    <div class="page" id="page-auditoria">
+      <div class="ph">
+        <div class="ph-text"><h2>Auditoría de Accesos</h2><p>Registro de todos los inicios de sesión y cierres · Solo visible para administradores</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost btn-sm" onclick="loadAuditoria()">🔄 Actualizar</button>
+        </div>
+      </div>
+      <div id="auditoriaTable" style="overflow-x:auto;"></div>
+    </div>
+
+
     <!-- ══ VENTAS ══ -->
     <div class="page" id="page-ventas">
       <div class="ph">
@@ -1728,7 +1740,7 @@ function getAlertas() {
 /* ════════ ROLE SYSTEM ════════ */
 let currentRole = 'admin';
 const ROLES = {
-  admin:     {label:'Administrador', av:'AD', nav:['dashboard','ventas','nuevo-pedido','cola','clientes','despacho','inventario','cobranza','catalogo','finanzas','trazabilidad','alertas','exportar','usuarios']},
+  admin:     {label:'Administrador', av:'AD', nav:['dashboard','ventas','nuevo-pedido','cola','clientes','despacho','inventario','cobranza','catalogo','finanzas','trazabilidad','alertas','exportar','usuarios','auditoria']},
   comercial: {label:'Comercial',     av:'CM', nav:['nuevo-pedido','ventas','cola','clientes','cobranza','catalogo','alertas']},
   logistica: {label:'Logística',     av:'LG', nav:['dashboard','cola','despacho','inventario','alertas']},
   finanzas:  {label:'Finanzas',      av:'FN', nav:['dashboard','ventas','cobranza','finanzas','alertas']},
@@ -1748,6 +1760,7 @@ const NAV = {
   'alertas':      {label:'Alertas',           icon:'🔔', group:'Sistema', badge:3},
   'exportar':     {label:'Exportar / Akkio',  icon:'📥', group:'Sistema'},
   'usuarios':     {label:'Usuarios',           icon:'👤', group:'Sistema'},
+  'auditoria':    {label:'Auditoría',          icon:'🔐', group:'Sistema'},
 };
 
 function enterAs(role) { quickLogin(role + '@koratex.com'); }
@@ -1784,6 +1797,7 @@ function navigate(page) {
   closeSb();
   if (TOKEN) { loadData().then(function(){ populateSelects(); buildAllLines(); renderAll(); }).catch(function(e){ console.warn('loadData:', e); }); }
   if (page === 'usuarios') loadUsuarios();
+  if (page === 'auditoria') loadAuditoria();
 }
 function openSb()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('open'); }
 function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
@@ -3700,6 +3714,44 @@ async function toggleUsuario(id) {
     if (!r.ok) { alert(data.error || 'Error'); return; }
     loadUsuarios();
   } catch(e) { alert('Error de red'); }
+}
+
+// ── Auditoría ─────────────────────────────────────────────────────────────
+async function loadAuditoria() {
+  var tbl = document.getElementById('auditoriaTable');
+  if (!tbl) return;
+  tbl.innerHTML = '<p style="color:var(--t3);padding:24px;">Cargando...</p>';
+  try {
+    var r = await fetch('/api/auth/audit', {headers:{Authorization:'Bearer '+TOKEN}});
+    if (!r.ok) { tbl.innerHTML = '<p style="color:var(--red);padding:24px;">Error al cargar auditoría</p>'; return; }
+    var rows = await r.json();
+    if (!rows.length) { tbl.innerHTML = '<p style="color:var(--t3);padding:24px;">Sin registros aún.</p>'; return; }
+    var html = '<table style="width:100%;border-collapse:collapse;font-size:13px;">'
+      + '<thead><tr style="background:var(--bg3);">'
+      + '<th style="padding:10px 12px;text-align:left;">Fecha</th>'
+      + '<th style="padding:10px 12px;text-align:left;">Usuario</th>'
+      + '<th style="padding:10px 12px;text-align:left;">Acción</th>'
+      + '<th style="padding:10px 12px;text-align:left;">Detalle</th>'
+      + '<th style="padding:10px 12px;text-align:left;">IP</th>'
+      + '</tr></thead><tbody>';
+    rows.forEach(function(r) {
+      var fecha = r.created_at ? new Date(r.created_at).toLocaleString('es-VE') : '—';
+      var accionBadge = r.accion === 'login_ok'
+        ? '<span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:99px;font-size:11px;">✅ Login</span>'
+        : r.accion === 'login_fallido'
+        ? '<span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:99px;font-size:11px;">❌ Fallido</span>'
+        : '<span style="background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:99px;font-size:11px;">🚪 Logout</span>';
+      html += '<tr style="border-bottom:1px solid var(--border);">'
+        + '<td style="padding:8px 12px;color:var(--t3);font-size:12px;">'+fecha+'</td>'
+        + '<td style="padding:8px 12px;">'+(r.usuario_nombre||'—')+'</td>'
+        + '<td style="padding:8px 12px;">'+accionBadge+'</td>'
+        + '<td style="padding:8px 12px;color:var(--t3);">'+r.detalle+'</td>'
+        + '<td style="padding:8px 12px;font-family:monospace;font-size:11px;color:var(--t3);">'+r.ip+'</td>'
+        + '</tr>';
+    });
+    html += '</tbody></table>';
+    tbl.innerHTML = html;
+  } catch(e) { tbl.innerHTML = '<p style="color:var(--red);padding:24px;">Error: '+e.message+'</p>'; }
 }
 
 function exportarClientes() {

@@ -20,6 +20,7 @@ async function initDb() {
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
   )`);
+  await query(`ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS ultimo_acceso TIMESTAMPTZ`);
 
   await query(`CREATE TABLE IF NOT EXISTS tipos_cliente (
     id SERIAL PRIMARY KEY,
@@ -299,6 +300,34 @@ async function seedData() {
 
   // Normalizar emails existentes a minúsculas (idempotente)
   await query(`UPDATE usuarios SET email = LOWER(email) WHERE email <> LOWER(email)`);
+
+  // Tabla de auditoría de accesos
+  await query(`CREATE TABLE IF NOT EXISTS audit_log (
+    id         BIGSERIAL PRIMARY KEY,
+    usuario_id UUID REFERENCES usuarios(id),
+    accion     VARCHAR(30) NOT NULL,
+    detalle    TEXT,
+    ip         VARCHAR(45),
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  )`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_audit_log_created ON audit_log(created_at DESC)`);
+
+  // Desactivar cuentas demo de seed si existen con contraseña por defecto
+  // (las cuentas reales tienen emails distintos a los de seed)
+  const bcrypt = require('bcryptjs');
+  const demoHash = await bcrypt.hash('koratex2025', 10);
+  // Solo desactiva si la contraseña AÚN es koratex2025 (usuarios demo no cambiados)
+  const demos = await query(
+    `SELECT id, password_hash FROM usuarios
+     WHERE email IN ('logistica@koratex.com','finanzas@koratex.com','comercial@koratex.com')`
+  );
+  for (const d of demos.rows) {
+    const isDefault = await bcrypt.compare('koratex2025', d.password_hash);
+    if (isDefault) {
+      await query(`UPDATE usuarios SET activo = FALSE WHERE id = $1`, [d.id]);
+      console.log('🔒 Cuenta demo desactivada (contraseña por defecto no cambiada):', d.id);
+    }
+  }
 
   await query(`INSERT INTO tipos_cliente (nombre, dias_credito, lista_precios) VALUES
     ('oro',60,'A'),('plata',30,'B'),('bronce',15,'C')
