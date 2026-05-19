@@ -628,18 +628,15 @@ textarea { resize:vertical; min-height:65px; }
     </div>
     <div class="login-sub" style="font-size:10px;letter-spacing:2px;color:#555;">MORTERO SECO, C.A. &nbsp;·&nbsp; J-30805882-3 &nbsp;·&nbsp; SISTEMA ERP</div>
     <form onsubmit="event.preventDefault();doLogin();" style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
-      <div class="fg"><label>Usuario</label><input id="loginEmail" type="email" value="admin@koratex.com" placeholder="usuario@koratex.com" required></div>
-      <div class="fg"><label>Contraseña</label><input id="loginPass" type="password" value="koratex2025" required></div>
+      <div class="fg"><label>Usuario</label><input id="loginEmail" type="email" placeholder="usuario@koratex.com" required></div>
+      <div class="fg"><label>Contraseña</label><input id="loginPass" type="password" required></div>
       <div id="loginError" style="color:#e8200a;font-size:12px;text-align:center;min-height:16px;"></div>
       <button type="submit" id="loginBtn" class="btn btn-primary" style="padding:12px;font-size:14px;letter-spacing:1px;">Entrar al sistema</button>
     </form>
     <div class="login-sep"></div>
     <div class="login-label">Acceso rápido por rol</div>
     <div class="role-grid">
-      <button class="role-btn" onclick="quickLogin('admin@koratex.com')"><div class="ri">⚙️</div><div class="rn">Admin</div><div class="rd">Acceso total</div></button>
-      <button class="role-btn" onclick="quickLogin('comercial@koratex.com')"><div class="ri">📊</div><div class="rn">Comercial</div><div class="rd">Pedidos</div></button>
-      <button class="role-btn" onclick="quickLogin('logistica@koratex.com')"><div class="ri">🚚</div><div class="rn">Logística</div><div class="rd">Despacho</div></button>
-      <button class="role-btn" onclick="quickLogin('finanzas@koratex.com')"><div class="ri">💰</div><div class="rn">Finanzas</div><div class="rd">Cobranza</div></button>
+
     </div>
   </div>
 </div>
@@ -1663,8 +1660,8 @@ async function doLogin() {
 
 function quickLogin(email) {
   document.getElementById('loginEmail').value = email;
-  document.getElementById('loginPass').value  = 'koratex2025';
-  doLogin();
+  document.getElementById('loginPass').value  = '';
+  document.getElementById('loginPass').focus();
 }
 
 async function enterApp() {
