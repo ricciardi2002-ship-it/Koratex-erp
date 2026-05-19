@@ -247,11 +247,7 @@ router.put('/:id', auth, roles('admin', 'comercial', 'logistica'), async (req, r
       return res.status(404).json({ error: 'Pedido no encontrado' });
     }
     const pedido = pRes.rows[0];
-
-    if (pedido.estado_despacho === 'entregado') {
-      await client.query('ROLLBACK');
-      return res.status(400).json({ error: 'No se puede editar un pedido ya entregado' });
-    }
+    const wasDelivered = pedido.estado_despacho === 'entregado';
 
     if (req.user.rol === 'comercial') {
       const own = await client.query(
@@ -270,17 +266,25 @@ router.put('/:id', auth, roles('admin', 'comercial', 'logistica'), async (req, r
       return res.status(400).json({ error: 'Debe incluir al menos un item' });
     }
 
-    // Revertir stock_reservado de los items actuales
+    // Revertir stock de los items actuales (reservado si pendiente, total si ya entregado)
     const oldItems = await client.query(
       'SELECT producto_id, cantidad FROM pedido_items WHERE pedido_id = $1',
       [pedido.id]
     );
     for (const it of oldItems.rows) {
-      await client.query(
-        `UPDATE inventario_pt SET stock_reservado = GREATEST(0, stock_reservado - $1)
-         WHERE producto_id = $2`,
-        [it.cantidad, it.producto_id]
-      );
+      if (wasDelivered) {
+        await client.query(
+          `UPDATE inventario_pt SET stock_total = stock_total + $1
+           WHERE producto_id = $2`,
+          [it.cantidad, it.producto_id]
+        );
+      } else {
+        await client.query(
+          `UPDATE inventario_pt SET stock_reservado = GREATEST(0, stock_reservado - $1)
+           WHERE producto_id = $2`,
+          [it.cantidad, it.producto_id]
+        );
+      }
     }
 
     // Borrar items viejos
@@ -304,11 +308,38 @@ router.put('/:id', auth, roles('admin', 'comercial', 'logistica'), async (req, r
         [pedido.id, it.producto_id, it.linea, it.cantidad,
          it.precio_unitario, it.descuento_pct || 0, it.subtotal, it.notas || null]
       );
-      await client.query(
-        `UPDATE inventario_pt SET stock_reservado = stock_reservado + $1
-         WHERE producto_id = $2`,
-        [it.cantidad, it.producto_id]
+      if (wasDelivered) {
+        await client.query(
+          `UPDATE inventario_pt SET stock_total = GREATEST(0, stock_total - $1)
+           WHERE producto_id = $2`,
+          [it.cantidad, it.producto_id]
+        );
+      } else {
+        await client.query(
+          `UPDATE inventario_pt SET stock_reservado = stock_reservado + $1
+           WHERE producto_id = $2`,
+          [it.cantidad, it.producto_id]
+        );
+      }
+    }
+
+    // Si tiene factura asociada, actualizar monto_total y recomputar estado
+    if (wasDelivered) {
+      const factRes = await client.query(
+        `SELECT * FROM facturas WHERE pedido_id = $1`, [pedido.id]
       );
+      if (factRes.rows.length) {
+        const fact = factRes.rows[0];
+        const pagado = parseFloat(fact.monto_pagado);
+        let nuevoEstado;
+        if (pagado <= 0.001) nuevoEstado = 'pendiente';
+        else if (pagado >= total - 0.001) nuevoEstado = 'pagada';
+        else nuevoEstado = 'abonado';
+        await client.query(
+          `UPDATE facturas SET monto_total = $1, estado = $2 WHERE id = $3`,
+          [total, nuevoEstado, fact.id]
+        );
+      }
     }
 
     const updRes = await client.query(
