@@ -1475,7 +1475,7 @@ textarea { resize:vertical; min-height:65px; }
     <div class="modal-header">
       <div>
         <div class="modal-title" id="epTitulo">Editar Pedido</div>
-        <div style="font-size:12px;color:var(--t3);margin-top:2px;">Solo pedidos no entregados · Recalcula totales y ajusta stock reservado</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px;">Recalcula totales, ajusta stock y actualiza la factura si existe</div>
       </div>
       <button class="modal-close" onclick="closeModal('mEditarPedido')">✕</button>
     </div>
@@ -2135,9 +2135,12 @@ function renderCola() {
     const zona = p.zona || (cli ? cli.zona : '');
     const entregado = p.estadoDesp === 'entregado';
     const accionCell = entregado
-      ? `<td style="padding:6px 8px;"><span class="badge bg" style="font-size:10px;">✅ Entregado</span></td>`
+      ? `<td onclick="event.stopPropagation()" style="padding:6px 8px;display:flex;gap:4px;align-items:center;">
+           <span class="badge bg" style="font-size:10px;">✅ Entregado</span>
+           <button class="btn btn-ghost btn-xs" onclick="abrirEditarPedido('${p.dbId}')">✏️ Editar</button>
+         </td>`
       : `<td onclick="event.stopPropagation()" style="padding:6px 8px;display:flex;gap:4px;align-items:center;">
-           <button class="btn btn-ghost btn-xs" onclick="verDetallePedido('${p.id}')">✏️ Editar</button>
+           <button class="btn btn-ghost btn-xs" onclick="abrirEditarPedido('${p.dbId}')">✏️ Editar</button>
            <button class="btn btn-primary btn-xs" onclick="entregarPedido('${p.dbId}','${p.id}')" style="white-space:nowrap;">📦 Entregar</button>
          </td>`;
     return `<tr style="cursor:pointer;" onclick="verDetallePedido('${p.id}')">
@@ -3461,7 +3464,7 @@ async function verDetallePedido(pedidoNum) {
     '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px;">Cargando productos...</td></tr>';
   document.getElementById('mDetalleTotales').innerHTML = '';
   var puedeEditar = currentUser && ['admin','comercial','logistica'].indexOf(currentUser.rol) !== -1;
-  var btnEditar = (p.estadoDesp !== 'entregado' && puedeEditar)
+  var btnEditar = puedeEditar
     ? '<button class="btn btn-ghost" onclick="closeModal(\'mDetallePedido\');abrirEditarPedido(\'' + p.dbId + '\')">✏️ Editar</button>'
     : '';
   var accionDetalle = p.estadoDesp === 'entregado'
@@ -3521,9 +3524,6 @@ async function abrirEditarPedido(dbId) {
   try {
     const det = await api('/pedidos/' + dbId);
     if (!det) return;
-    if (det.estado_despacho === 'entregado') {
-      alert('No se puede editar un pedido ya entregado'); return;
-    }
     document.getElementById('epPedidoId').value = dbId;
     document.getElementById('epTitulo').textContent = 'Editar Pedido ' + (det.numero || '');
     document.getElementById('epCliente').value = det.cliente_id || '';
