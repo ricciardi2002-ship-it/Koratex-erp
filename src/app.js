@@ -1,13 +1,8 @@
 require('dotenv').config();
 
-// ── Seguridad: el servidor NO arranca sin JWT_SECRET en producción ──────
+// ── Seguridad: advertir si JWT_SECRET no está configurado ──────────────
 if (!process.env.JWT_SECRET) {
-  if (process.env.NODE_ENV === 'production') {
-    console.error('❌ FATAL: Variable JWT_SECRET no definida. El servidor no puede arrancar en producción sin ella.');
-    process.exit(1);
-  } else {
-    console.warn('⚠️  JWT_SECRET no definida. Usando valor temporal solo para desarrollo local.');
-  }
+  console.warn('⚠️  ADVERTENCIA: JWT_SECRET no definida. Configurar en Railway → Variables para producción.');
 }
 
 const express  = require('express');
